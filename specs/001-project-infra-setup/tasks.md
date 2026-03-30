@@ -37,9 +37,9 @@
 
 **CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T008 Create auth store in `src/stores/authStore.ts` — Zustand store with `accessToken: string | null`, `setAccessToken(token: string)`, `clearAuth()`. In-memory only, no persistence middleware.
-- [ ] T009 [P] Create UI store in `src/stores/uiStore.ts` — Zustand store with `sidebarOpen: boolean (default true)`, `selectedModuleId: string | null`, `zoom: number (default 1, clamped 0.25–3.0)`, `theme: 'light' | 'dark' | 'system' (default 'system')` with setters. Theme preference persisted to localStorage.
-- [ ] T010 [P] Create TanStack Query client in `src/lib/query-client.ts` — `new QueryClient` with defaults: `staleTime: 0`, `gcTime: 300_000`, `retry: (count, error) => error.response?.status === 401 ? false : count < 3`, `refetchOnWindowFocus: true`.
+- [x] T008 Create auth store in `src/stores/authStore.ts` — Zustand store with `accessToken: string | null`, `setAccessToken(token: string)`, `clearAuth()`. In-memory only, no persistence middleware.
+- [x] T009 [P] Create UI store in `src/stores/uiStore.ts` — Zustand store with `sidebarOpen: boolean (default true)`, `selectedModuleId: string | null`, `zoom: number (default 1, clamped 0.25–3.0)`, `theme: 'light' | 'dark' | 'system' (default 'system')` with setters. Theme preference persisted to localStorage.
+- [x] T010 [P] Create TanStack Query client in `src/lib/query-client.ts` — `new QueryClient` with defaults: `staleTime: 0`, `gcTime: 300_000`, `retry: (count, error) => error.response?.status === 401 ? false : count < 3`, `refetchOnWindowFocus: true`.
 
 **Checkpoint**: Stores and query client ready. All user stories can now reference these.
 
