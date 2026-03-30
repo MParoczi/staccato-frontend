@@ -129,7 +129,7 @@
 - [x] CHK079 - Is the assumption "backend API is not yet available" validated — does any infrastructure code require a running backend to function? [Assumption, Spec §Assumptions] — PASS: All infrastructure works without backend: Axios is configured (not called), routes render placeholders, types compile standalone, stores are in-memory.
 - [x] CHK080 - Is the Tailwind CSS v4 requirement compatible with the current Vite 8 version (plugin availability confirmed)? [Assumption] — PASS: @tailwindcss/vite is the official Vite plugin. Confirmed in research §R1.
 - [x] CHK081 - Is the shadcn/ui v2 requirement confirmed as compatible with Tailwind v4 and React 19? [Assumption] — PASS: shadcn/ui v2 released with Tailwind v4 support. Confirmed in research §R2.
-- [x] CHK082 - Are all npm package names and minimum versions specified for the 13+ dependencies to install? [Gap] — PASS: npm install gets latest compatible versions. Exact versions are locked in package-lock.json after install. Version pinning is a dev workflow, not a spec requirement.
+- [x] CHK082 - Are all package names and minimum versions specified for the 13+ dependencies to install? [Gap] — PASS: pnpm add gets latest compatible versions. Exact versions are locked in pnpm-lock.yaml after install. Version pinning is a dev workflow, not a spec requirement.
 - [x] CHK083 - Is the `@react-oauth/google` package (listed in constitution Technology Stack) included in the install requirements? [Gap, Spec §FR-022/023] — PASS: **Fixed** — FR-024 added: "System MUST install the Google OAuth client library as a dependency."
 
 ## Notes

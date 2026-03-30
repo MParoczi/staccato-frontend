@@ -19,15 +19,15 @@
 
 **Purpose**: Install all dependencies, configure build tooling, establish the project skeleton before any feature-level wiring.
 
-- [ ] T001 Install core dependencies: `npm install zustand @tanstack/react-query @tanstack/react-query-devtools react-router axios react-hook-form zod react-i18next i18next i18next-browser-languagedetector @microsoft/signalr @react-oauth/google`
-- [ ] T002 Install Tailwind CSS v4 and Vite plugin: `npm install tailwindcss @tailwindcss/vite` and add tailwindcss plugin to `vite.config.ts`
+- [ ] T001 Install core dependencies: `pnpm add zustand @tanstack/react-query @tanstack/react-query-devtools react-router axios react-hook-form zod react-i18next i18next i18next-browser-languagedetector @microsoft/signalr @react-oauth/google`
+- [ ] T002 Install Tailwind CSS v4 and Vite plugin: `pnpm add tailwindcss @tailwindcss/vite` and add tailwindcss plugin to `vite.config.ts`
 - [ ] T003 Configure path alias `@/` → `src/` in `tsconfig.app.json` (paths + baseUrl) and `vite.config.ts` (resolve.alias)
-- [ ] T004 Initialize shadcn/ui: run `npx shadcn@latest init` with style=default, baseColor=stone, cssVariables=yes — creates `components.json`, `src/lib/utils.ts`, and initial CSS variables in `src/index.css`
-- [ ] T005 Install all 19 shadcn/ui components: `npx shadcn@latest add button card dialog dropdown-menu form input label popover select sheet tabs toast tooltip command separator badge checkbox table scroll-area`
+- [ ] T004 Initialize shadcn/ui: run `pnpm dlx shadcn@latest init` with style=default, baseColor=stone, cssVariables=yes — creates `components.json`, `src/lib/utils.ts`, and initial CSS variables in `src/index.css`
+- [ ] T005 Install all 19 shadcn/ui components: `pnpm dlx shadcn@latest add button card dialog dropdown-menu form input label popover select sheet tabs toast tooltip command separator badge checkbox table scroll-area`
 - [ ] T006 Create `.env.example` at project root with `VITE_API_BASE_URL=http://localhost:5000` and `VITE_GOOGLE_CLIENT_ID=your-google-client-id`
 - [ ] T007 Create folder structure skeleton: `src/api/`, `src/components/layout/`, `src/components/common/`, `src/features/`, `src/hooks/`, `src/stores/`, `src/lib/types/`, `src/lib/constants/`, `src/i18n/`, `src/routes/` — add `.gitkeep` to empty directories
 
-**Checkpoint**: All dependencies installed, build tool configured, folder structure in place. `npm run dev` starts without errors.
+**Checkpoint**: All dependencies installed, build tool configured, folder structure in place. `pnpm run dev` starts without errors.
 
 ---
 
@@ -49,7 +49,7 @@
 
 **Goal**: The dev server starts, all imports resolve, folder conventions work, and the app renders a root page.
 
-**Independent Test**: Run `npm run dev`, confirm no errors. Import a type from `@/lib/types`, confirm TypeScript resolves it. Import the Axios instance from `@/api/client`, confirm it's configured.
+**Independent Test**: Run `pnpm run dev`, confirm no errors. Import a type from `@/lib/types`, confirm TypeScript resolves it. Import the Axios instance from `@/api/client`, confirm it's configured.
 
 ### Implementation
 
@@ -60,7 +60,7 @@
 - [ ] T015 [P] [US1] Create API module stubs for all domains — `src/api/notebooks.ts`, `src/api/lessons.ts`, `src/api/modules.ts`, `src/api/chords.ts`, `src/api/instruments.ts`, `src/api/exports.ts`, `src/api/presets.ts`, `src/api/users.ts`. Each exports typed async function signatures matching the backend API contract. Import types from `@/lib/types`. Function bodies use the main Axios client.
 - [ ] T016 [US1] Update `src/main.tsx` — wrap the app with `QueryClientProvider` (from query-client.ts), initialize i18n (import `@/i18n`), render `<App />` inside `<React.StrictMode>`.
 - [ ] T017 [US1] Update `src/App.tsx` — render `<RouterProvider>` with the router from `@/routes`. Import and render `<Toaster />` from shadcn toast.
-- [ ] T018 [US1] Verify: run `npm run dev` — app starts, no TypeScript errors, no console errors. Run `npx tsc --noEmit` — all types compile.
+- [ ] T018 [US1] Verify: run `pnpm run dev` — app starts, no TypeScript errors, no console errors. Run `pnpm dlx tsc --noEmit` — all types compile.
 
 **Checkpoint**: Dev server runs. All imports resolve. Axios configured. Types compile. This is the MVP — a developer can start building features.
 
@@ -156,7 +156,7 @@
 - [ ] T046 [P] [US6] Create module constants in `src/lib/constants/modules.ts` — define `MODULE_MIN_SIZES: Record<ModuleType, { minWidth: number; minHeight: number }>` with all 12 values from backend docs. Define `MODULE_ALLOWED_BLOCKS: Record<ModuleType, BuildingBlockType[]>` with all 12 mappings (Breadcrumb=empty array, FreeText=all types).
 - [ ] T047 [P] [US6] Create music constants in `src/lib/constants/music.ts` — define `CHROMATIC_SCALE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'] as const`.
 - [ ] T048 [US6] Create barrel re-export in `src/lib/constants/index.ts` — re-export all constants from grid.ts, modules.ts, music.ts.
-- [ ] T049 [US6] Verify: run `npx tsc --noEmit` — all types compile. Import `ModuleType` — autocomplete shows 12 values. Construct invalid `NotebookDetail` — TypeScript error fires.
+- [ ] T049 [US6] Verify: run `pnpm dlx tsc --noEmit` — all types compile. Import `ModuleType` — autocomplete shows 12 values. Construct invalid `NotebookDetail` — TypeScript error fires.
 
 **Checkpoint**: All 20+ types, 7 enums, and 4 constant tables compile and match backend docs.
 
@@ -167,9 +167,9 @@
 **Purpose**: Final validation and cleanup.
 
 - [ ] T050 Delete `src/App.css` (empty, unused — styles are in index.css)
-- [ ] T051 Run full build: `npm run build` — confirm zero TypeScript errors, zero warnings
-- [ ] T052 Run linter: `npm run lint` — fix any lint errors introduced by new files
-- [ ] T053 Verify quickstart.md workflow: fresh clone → `npm install` → `cp .env.example .env` → `npm run dev` → app starts and renders root page
+- [ ] T051 Run full build: `pnpm run build` — confirm zero TypeScript errors, zero warnings
+- [ ] T052 Run linter: `pnpm run lint` — fix any lint errors introduced by new files
+- [ ] T053 Verify quickstart.md workflow: fresh clone → `pnpm install` → `cp .env.example .env` → `pnpm run dev` → app starts and renders root page
 
 ---
 
@@ -199,7 +199,7 @@
 ### Parallel Opportunities
 
 ```
-Phase 1 (sequential — npm installs + shadcn init)
+Phase 1 (sequential — pnpm adds + shadcn init)
   ↓
 Phase 2: T008 ──┬── T009 [P] ── T010 [P]
                  ↓
@@ -249,7 +249,7 @@ T048     src/lib/constants/index.ts   (depends on T045-T047)
 1. Complete Phase 1: Setup (install deps, configure tooling)
 2. Complete Phase 2: Foundational (stores, query client)
 3. Complete Phase 3: User Story 1 (theme, Axios, entry points)
-4. **STOP and VALIDATE**: `npm run dev` starts, types compile, Axios configured
+4. **STOP and VALIDATE**: `pnpm run dev` starts, types compile, Axios configured
 5. This is the minimum needed for a developer to start feature work
 
 ### Incremental Delivery

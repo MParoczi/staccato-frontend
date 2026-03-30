@@ -5,7 +5,7 @@
 ## Prerequisites
 
 - Node.js LTS (20+)
-- npm or pnpm
+- pnpm
 
 ## Getting Started
 
@@ -16,7 +16,7 @@ cd Frontend
 git checkout 001-project-infra-setup
 
 # Install dependencies
-npm install
+pnpm install
 
 # Copy environment config
 cp .env.example .env
@@ -26,7 +26,7 @@ cp .env.example .env
 #   VITE_GOOGLE_CLIENT_ID=your-google-client-id
 
 # Start dev server
-npm run dev
+pnpm run dev
 ```
 
 The app should start at `http://localhost:5173`.
