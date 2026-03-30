@@ -143,20 +143,20 @@
 
 ### Implementation
 
-- [ ] T036 [P] [US6] Create shared enums in `src/lib/types/common.ts` — define `ModuleType` (12 values), `BuildingBlockType` (10 values), `BorderStyle` (4 values), `FontFamily` (3 values), `PageSize` (5 values), `InstrumentKey` (7 values), `Language` (2 values) as TypeScript union types matching backend docs exactly.
-- [ ] T037 [P] [US6] Create auth types in `src/lib/types/auth.ts` — define `User` interface matching backend: id, email, firstName, lastName, language, defaultPageSize, defaultInstrumentId, avatarUrl, scheduledDeletionAt (all with correct nullability).
-- [ ] T038 [P] [US6] Create notebook types in `src/lib/types/notebooks.ts` — define `NotebookSummary`, `NotebookDetail`, `NotebookModuleStyle`, `NotebookIndex`, `NotebookIndexEntry` interfaces matching backend docs field-for-field.
-- [ ] T039 [P] [US6] Create lesson types in `src/lib/types/lessons.ts` — define `LessonSummary`, `LessonDetail`, `LessonPage` interfaces.
-- [ ] T040 [P] [US6] Create module types in `src/lib/types/modules.ts` — define `Module` interface with `content: BuildingBlock[]`. Define `BuildingBlock` as base interface with `type: BuildingBlockType` (full discriminated union deferred to editor feature).
-- [ ] T041 [P] [US6] Create chord types in `src/lib/types/chords.ts` — define `Instrument`, `ChordSummary`, `ChordDetail`, `ChordPosition`, `ChordBarre`, `ChordString` interfaces. Ensure `ChordString.state` uses literal union `'open' | 'fretted' | 'muted'`.
-- [ ] T042 [P] [US6] Create export types in `src/lib/types/exports.ts` — define `PdfExport` interface with `status` as literal union `'Pending' | 'Processing' | 'Ready' | 'Failed'`.
-- [ ] T043 [P] [US6] Create style types in `src/lib/types/styles.ts` — define `SystemStylePreset`, `UserSavedPreset`, `StyleEntry` interfaces.
-- [ ] T044 [US6] Create barrel re-export in `src/lib/types/index.ts` — re-export all types and enums from all domain files so consumers can use `import { NotebookSummary, ModuleType } from '@/lib/types'`.
-- [ ] T045 [P] [US6] Create grid constants in `src/lib/constants/grid.ts` — define `PAGE_SIZE_DIMENSIONS: Record<PageSize, { width: number; height: number }>` with values: A4=42x59, A5=29x42, A6=21x29, B5=35x50, B6=25x35.
-- [ ] T046 [P] [US6] Create module constants in `src/lib/constants/modules.ts` — define `MODULE_MIN_SIZES: Record<ModuleType, { minWidth: number; minHeight: number }>` with all 12 values from backend docs. Define `MODULE_ALLOWED_BLOCKS: Record<ModuleType, BuildingBlockType[]>` with all 12 mappings (Breadcrumb=empty array, FreeText=all types).
-- [ ] T047 [P] [US6] Create music constants in `src/lib/constants/music.ts` — define `CHROMATIC_SCALE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'] as const`.
-- [ ] T048 [US6] Create barrel re-export in `src/lib/constants/index.ts` — re-export all constants from grid.ts, modules.ts, music.ts.
-- [ ] T049 [US6] Verify: run `pnpm dlx tsc --noEmit` — all types compile. Import `ModuleType` — autocomplete shows 12 values. Construct invalid `NotebookDetail` — TypeScript error fires.
+- [x] T036 [P] [US6] Create shared enums in `src/lib/types/common.ts` — define `ModuleType` (12 values), `BuildingBlockType` (10 values), `BorderStyle` (4 values), `FontFamily` (3 values), `PageSize` (5 values), `InstrumentKey` (7 values), `Language` (2 values) as TypeScript union types matching backend docs exactly.
+- [x] T037 [P] [US6] Create auth types in `src/lib/types/auth.ts` — define `User` interface matching backend: id, email, firstName, lastName, language, defaultPageSize, defaultInstrumentId, avatarUrl, scheduledDeletionAt (all with correct nullability).
+- [x] T038 [P] [US6] Create notebook types in `src/lib/types/notebooks.ts` — define `NotebookSummary`, `NotebookDetail`, `NotebookModuleStyle`, `NotebookIndex`, `NotebookIndexEntry` interfaces matching backend docs field-for-field.
+- [x] T039 [P] [US6] Create lesson types in `src/lib/types/lessons.ts` — define `LessonSummary`, `LessonDetail`, `LessonPage` interfaces.
+- [x] T040 [P] [US6] Create module types in `src/lib/types/modules.ts` — define `Module` interface with `content: BuildingBlock[]`. Define `BuildingBlock` as base interface with `type: BuildingBlockType` (full discriminated union deferred to editor feature).
+- [x] T041 [P] [US6] Create chord types in `src/lib/types/chords.ts` — define `Instrument`, `ChordSummary`, `ChordDetail`, `ChordPosition`, `ChordBarre`, `ChordString` interfaces. Ensure `ChordString.state` uses literal union `'open' | 'fretted' | 'muted'`.
+- [x] T042 [P] [US6] Create export types in `src/lib/types/exports.ts` — define `PdfExport` interface with `status` as literal union `'Pending' | 'Processing' | 'Ready' | 'Failed'`.
+- [x] T043 [P] [US6] Create style types in `src/lib/types/styles.ts` — define `SystemStylePreset`, `UserSavedPreset`, `StyleEntry` interfaces.
+- [x] T044 [US6] Create barrel re-export in `src/lib/types/index.ts` — re-export all types and enums from all domain files so consumers can use `import { NotebookSummary, ModuleType } from '@/lib/types'`.
+- [x] T045 [P] [US6] Create grid constants in `src/lib/constants/grid.ts` — define `PAGE_SIZE_DIMENSIONS: Record<PageSize, { width: number; height: number }>` with values: A4=42x59, A5=29x42, A6=21x29, B5=35x50, B6=25x35.
+- [x] T046 [P] [US6] Create module constants in `src/lib/constants/modules.ts` — define `MODULE_MIN_SIZES: Record<ModuleType, { minWidth: number; minHeight: number }>` with all 12 values from backend docs. Define `MODULE_ALLOWED_BLOCKS: Record<ModuleType, BuildingBlockType[]>` with all 12 mappings (Breadcrumb=empty array, FreeText=all types).
+- [x] T047 [P] [US6] Create music constants in `src/lib/constants/music.ts` — define `CHROMATIC_SCALE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'] as const`.
+- [x] T048 [US6] Create barrel re-export in `src/lib/constants/index.ts` — re-export all constants from grid.ts, modules.ts, music.ts.
+- [x] T049 [US6] Verify: run `pnpm dlx tsc --noEmit` — all types compile. Import `ModuleType` — autocomplete shows 12 values. Construct invalid `NotebookDetail` — TypeScript error fires.
 
 **Checkpoint**: All 20+ types, 7 enums, and 4 constant tables compile and match backend docs.
 
