@@ -111,8 +111,8 @@
 
 ### Implementation
 
-- [ ] T030 [US4] Verify Axios interceptor chain in `src/api/client.ts` — confirm request interceptor injects both headers, response interceptor catches 401, refresh via raw-client works, shared promise dedup prevents concurrent refreshes, failed refresh clears auth and redirects. (Implementation was done in T013; this task is verification + any fixes.)
-- [ ] T031 [US4] Verify auth API module in `src/api/auth.ts` — confirm `refreshToken()` uses raw-client (not main client), typed responses match backend DTOs. (Implementation was done in T014; this task is verification.)
+- [x] T030 [US4] Verify Axios interceptor chain in `src/api/client.ts` — confirm request interceptor injects both headers, response interceptor catches 401, refresh via raw-client works, shared promise dedup prevents concurrent refreshes, failed refresh clears auth and redirects. (Implementation was done in T013; this task is verification + any fixes.)
+- [x] T031 [US4] Verify auth API module in `src/api/auth.ts` — confirm `refreshToken()` uses raw-client (not main client), typed responses match backend DTOs. (Implementation was done in T014; this task is verification.)
 
 **Checkpoint**: All four Axios behaviors verified. No infinite refresh loops possible.
 
