@@ -166,10 +166,10 @@
 
 **Purpose**: Final validation and cleanup.
 
-- [ ] T050 Delete `src/App.css` (empty, unused — styles are in index.css)
-- [ ] T051 Run full build: `pnpm run build` — confirm zero TypeScript errors, zero warnings
-- [ ] T052 Run linter: `pnpm run lint` — fix any lint errors introduced by new files
-- [ ] T053 Verify quickstart.md workflow: fresh clone → `pnpm install` → `cp .env.example .env` → `pnpm run dev` → app starts and renders root page
+- [x] T050 Delete `src/App.css` (empty, unused — styles are in index.css)
+- [x] T051 Run full build: `pnpm run build` — confirm zero TypeScript errors, zero warnings
+- [x] T052 Run linter: `pnpm run lint` — fix any lint errors introduced by new files
+- [x] T053 Verify quickstart.md workflow: fresh clone → `pnpm install` → `cp .env.example .env` → `pnpm run dev` → app starts and renders root page
 
 ---
 

@@ -11,10 +11,7 @@ export function ProtectedRoute() {
   );
 
   useEffect(() => {
-    if (accessToken) {
-      setStatus('idle');
-      return;
-    }
+    if (accessToken) return;
 
     let cancelled = false;
     silentRefresh()
@@ -29,6 +26,10 @@ export function ProtectedRoute() {
       cancelled = true;
     };
   }, [accessToken]);
+
+  if (accessToken) {
+    return <Outlet />;
+  }
 
   if (status === 'refreshing') {
     return (
