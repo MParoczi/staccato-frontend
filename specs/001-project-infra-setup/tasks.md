@@ -95,9 +95,9 @@
 
 ### Implementation
 
-- [ ] T027 [US3] Verify and refine the earthy theme CSS variables in `src/index.css` — render shadcn Button (default, secondary, destructive, outline, ghost variants), Card, Badge, Dialog, and Toast components in a temporary test page. Visually confirm: primary=warm brown, secondary=olive, accent=gold, background=cream (#FAF8F5 range), destructive=muted terracotta-red. Adjust oklch values until all variants look cohesive and professional. Verify dark mode toggle works (add/remove `.dark` class on `<html>`).
-- [ ] T028 [US3] Validate WCAG AA contrast ratios — check primary-foreground on primary, destructive-foreground on destructive, foreground on background, muted-foreground on muted for both light and dark modes. All must meet 4.5:1 for normal text, 3:1 for large text. Adjust values if any fail.
-- [ ] T029 [US3] Remove any temporary test page created during verification. Ensure `src/index.css` is clean and contains only the final theme variables.
+- [x] T027 [US3] Verify and refine the earthy theme CSS variables in `src/index.css` — render shadcn Button (default, secondary, destructive, outline, ghost variants), Card, Badge, Dialog, and Toast components in a temporary test page. Visually confirm: primary=warm brown, secondary=olive, accent=gold, background=cream (#FAF8F5 range), destructive=muted terracotta-red. Adjust oklch values until all variants look cohesive and professional. Verify dark mode toggle works (add/remove `.dark` class on `<html>`).
+- [x] T028 [US3] Validate WCAG AA contrast ratios — check primary-foreground on primary, destructive-foreground on destructive, foreground on background, muted-foreground on muted for both light and dark modes. All must meet 4.5:1 for normal text, 3:1 for large text. Adjust values if any fail.
+- [x] T029 [US3] Remove any temporary test page created during verification. Ensure `src/index.css` is clean and contains only the final theme variables.
 
 **Checkpoint**: All shadcn/ui components render in earthy tones. WCAG AA compliant. Dark mode works.
 
