@@ -126,10 +126,10 @@
 
 ### Implementation
 
-- [ ] T032 [US5] Create i18n configuration in `src/i18n/index.ts` — initialize i18next with: `fallbackLng: 'en'`, `interpolation: { escapeValue: false }`, `keySeparator: '.'`, browser language detection (i18next-browser-languagedetector), eager-loaded resources from en.json and hu.json. Export the initialized i18next instance.
-- [ ] T033 [P] [US5] Create English translation skeleton in `src/i18n/en.json` — namespace structure with sample keys: `common` (save, cancel, delete, loading, error, success, notFound, goBack), `auth` (login.title, login.email, login.password, login.submit, register.title), `notebooks` (dashboard.title, create.title), `editor` (blocks.addBlock), `chords` (library.title, search.placeholder), `exports` (history.title), `profile` (settings.title).
-- [ ] T034 [P] [US5] Create Hungarian translation skeleton in `src/i18n/hu.json` — same structure as en.json with Hungarian translations for all sample keys: `common` (Mentés, Mégse, Törlés, Betöltés..., Hiba, Sikeres, Az oldal nem található, Visszalépés), `auth` (Bejelentkezés, E-mail cím, Jelszó, Bejelentkezés gomb, Regisztráció), etc.
-- [ ] T035 [US5] Verify: import `useTranslation` in a component, call `t('common.save')` — returns "Save". Change i18next language to 'hu' — returns "Mentés".
+- [x] T032 [US5] Create i18n configuration in `src/i18n/index.ts` — initialize i18next with: `fallbackLng: 'en'`, `interpolation: { escapeValue: false }`, `keySeparator: '.'`, browser language detection (i18next-browser-languagedetector), eager-loaded resources from en.json and hu.json. Export the initialized i18next instance.
+- [x] T033 [P] [US5] Create English translation skeleton in `src/i18n/en.json` — namespace structure with sample keys: `common` (save, cancel, delete, loading, error, success, notFound, goBack), `auth` (login.title, login.email, login.password, login.submit, register.title), `notebooks` (dashboard.title, create.title), `editor` (blocks.addBlock), `chords` (library.title, search.placeholder), `exports` (history.title), `profile` (settings.title).
+- [x] T034 [P] [US5] Create Hungarian translation skeleton in `src/i18n/hu.json` — same structure as en.json with Hungarian translations for all sample keys: `common` (Mentés, Mégse, Törlés, Betöltés..., Hiba, Sikeres, Az oldal nem található, Visszalépés), `auth` (Bejelentkezés, E-mail cím, Jelszó, Bejelentkezés gomb, Regisztráció), etc.
+- [x] T035 [US5] Verify: import `useTranslation` in a component, call `t('common.save')` — returns "Save". Change i18next language to 'hu' — returns "Mentés".
 
 **Checkpoint**: i18n works for both languages. Browser detection falls back to English for unsupported languages.
 
