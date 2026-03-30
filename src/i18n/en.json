@@ -1,0 +1,54 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "notFound": "Page not found",
+    "goBack": "Go back"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign in",
+      "email": "Email address",
+      "password": "Password",
+      "submit": "Sign in"
+    },
+    "register": {
+      "title": "Create account"
+    }
+  },
+  "notebooks": {
+    "dashboard": {
+      "title": "My Notebooks"
+    },
+    "create": {
+      "title": "New Notebook"
+    }
+  },
+  "editor": {
+    "blocks": {
+      "addBlock": "Add block"
+    }
+  },
+  "chords": {
+    "library": {
+      "title": "Chord Library"
+    },
+    "search": {
+      "placeholder": "Search chords..."
+    }
+  },
+  "exports": {
+    "history": {
+      "title": "Export History"
+    }
+  },
+  "profile": {
+    "settings": {
+      "title": "Settings"
+    }
+  }
+}

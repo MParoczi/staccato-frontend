@@ -1,0 +1,54 @@
+{
+  "common": {
+    "save": "Mentés",
+    "cancel": "Mégse",
+    "delete": "Törlés",
+    "loading": "Betöltés...",
+    "error": "Hiba történt",
+    "success": "Sikeres",
+    "notFound": "Az oldal nem található",
+    "goBack": "Visszalépés"
+  },
+  "auth": {
+    "login": {
+      "title": "Bejelentkezés",
+      "email": "E-mail cím",
+      "password": "Jelszó",
+      "submit": "Bejelentkezés"
+    },
+    "register": {
+      "title": "Regisztráció"
+    }
+  },
+  "notebooks": {
+    "dashboard": {
+      "title": "Füzeteim"
+    },
+    "create": {
+      "title": "Új füzet"
+    }
+  },
+  "editor": {
+    "blocks": {
+      "addBlock": "Blokk hozzáadása"
+    }
+  },
+  "chords": {
+    "library": {
+      "title": "Akkordkönyvtár"
+    },
+    "search": {
+      "placeholder": "Akkordok keresése..."
+    }
+  },
+  "exports": {
+    "history": {
+      "title": "Exportálási előzmények"
+    }
+  },
+  "profile": {
+    "settings": {
+      "title": "Beállítások"
+    }
+  }
+}

@@ -1,11 +1,14 @@
-import './App.css'
+import { RouterProvider } from 'react-router';
+import { Toaster } from '@/components/ui/sonner';
+import { router } from '@/routes';
 
 function App() {
-
   return (
-    <div>
-    </div>
-  )
+    <>
+      <RouterProvider router={router} />
+      <Toaster />
+    </>
+  );
 }
 
-export default App
+export default App;
