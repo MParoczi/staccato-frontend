@@ -1,11 +1,11 @@
+import { RouterProvider } from 'react-router';
 import { Toaster } from '@/components/ui/sonner';
+import { router } from '@/routes';
 
 function App() {
   return (
     <>
-      <div>
-        <h1>Staccato</h1>
-      </div>
+      <RouterProvider router={router} />
       <Toaster />
     </>
   );
