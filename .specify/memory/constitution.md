@@ -224,7 +224,11 @@ to the form fields using React Hook Form's `setError` method.
 
 Business rule errors (422/409 with code/message) MUST be displayed as
 toast notifications or inline error banners — not as form field
-errors.
+errors. Exception: A business error that is directly attributable to
+a single form field (e.g., 409 duplicate email targeting the email
+field) MAY be displayed as a form field error via `setError` when
+(a) the error is immediately actionable by editing that specific
+field, and (b) showing it elsewhere would reduce discoverability.
 
 **Rationale:** Matching client and server validation rules provides
 immediate feedback and reduces round-trips. Separating validation
