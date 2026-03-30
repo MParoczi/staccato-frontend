@@ -19,13 +19,13 @@
 
 **Purpose**: Install all dependencies, configure build tooling, establish the project skeleton before any feature-level wiring.
 
-- [ ] T001 Install core dependencies: `pnpm add zustand @tanstack/react-query @tanstack/react-query-devtools react-router axios react-hook-form zod react-i18next i18next i18next-browser-languagedetector @microsoft/signalr @react-oauth/google`
-- [ ] T002 Install Tailwind CSS v4 and Vite plugin: `pnpm add tailwindcss @tailwindcss/vite` and add tailwindcss plugin to `vite.config.ts`
-- [ ] T003 Configure path alias `@/` → `src/` in `tsconfig.app.json` (paths + baseUrl) and `vite.config.ts` (resolve.alias)
-- [ ] T004 Initialize shadcn/ui: run `pnpm dlx shadcn@latest init` with style=default, baseColor=stone, cssVariables=yes — creates `components.json`, `src/lib/utils.ts`, and initial CSS variables in `src/index.css`
-- [ ] T005 Install all 19 shadcn/ui components: `pnpm dlx shadcn@latest add button card dialog dropdown-menu form input label popover select sheet tabs toast tooltip command separator badge checkbox table scroll-area`
-- [ ] T006 Create `.env.example` at project root with `VITE_API_BASE_URL=http://localhost:5000` and `VITE_GOOGLE_CLIENT_ID=your-google-client-id`
-- [ ] T007 Create folder structure skeleton: `src/api/`, `src/components/layout/`, `src/components/common/`, `src/features/`, `src/hooks/`, `src/stores/`, `src/lib/types/`, `src/lib/constants/`, `src/i18n/`, `src/routes/` — add `.gitkeep` to empty directories
+- [x] T001 Install core dependencies: `pnpm add zustand @tanstack/react-query @tanstack/react-query-devtools react-router axios react-hook-form zod react-i18next i18next i18next-browser-languagedetector @microsoft/signalr @react-oauth/google`
+- [x] T002 Install Tailwind CSS v4 and Vite plugin: `pnpm add tailwindcss @tailwindcss/vite` and add tailwindcss plugin to `vite.config.ts`
+- [x] T003 Configure path alias `@/` → `src/` in `tsconfig.app.json` (paths + baseUrl) and `vite.config.ts` (resolve.alias)
+- [x] T004 Initialize shadcn/ui: run `pnpm dlx shadcn@latest init` with style=default, baseColor=stone, cssVariables=yes — creates `components.json`, `src/lib/utils.ts`, and initial CSS variables in `src/index.css`
+- [x] T005 Install all 19 shadcn/ui components: `pnpm dlx shadcn@latest add button card dialog dropdown-menu form input label popover select sheet tabs toast tooltip command separator badge checkbox table scroll-area`
+- [x] T006 Create `.env.example` at project root with `VITE_API_BASE_URL=http://localhost:5000` and `VITE_GOOGLE_CLIENT_ID=your-google-client-id`
+- [x] T007 Create folder structure skeleton: `src/api/`, `src/components/layout/`, `src/components/common/`, `src/features/`, `src/hooks/`, `src/stores/`, `src/lib/types/`, `src/lib/constants/`, `src/i18n/`, `src/routes/` — add `.gitkeep` to empty directories
 
 **Checkpoint**: All dependencies installed, build tool configured, folder structure in place. `pnpm run dev` starts without errors.
 

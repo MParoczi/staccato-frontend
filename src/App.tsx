@@ -1,9 +1,7 @@
-import './App.css'
-
 function App() {
-
   return (
     <div>
+      <h1>Staccato</h1>
     </div>
   )
 }
