@@ -27,7 +27,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
       </div>
 
       {/* Form panel */}
-      <div className="flex flex-1 flex-col items-center justify-center px-4 py-12 lg:w-3/5">
+      <main className="flex flex-1 flex-col items-center justify-center px-4 py-12 lg:w-3/5">
         {/* Mobile branding — shown below lg */}
         <div className="mb-8 flex flex-col items-center lg:hidden">
           <div className="flex items-center gap-2 text-primary">
@@ -41,7 +41,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
         <Card className="w-full max-w-md">
           <CardContent className="pt-2">{children}</CardContent>
         </Card>
-      </div>
+      </main>
     </div>
   );
 }

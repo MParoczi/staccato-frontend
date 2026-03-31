@@ -21,7 +21,7 @@ export function AppLayout() {
     <div className="flex min-h-screen flex-col">
       <header className="flex items-center justify-end border-b bg-muted/40 px-4 py-2">
         <Button variant="ghost" size="sm" onClick={handleLogout}>
-          <LogOut className="size-4" />
+          <LogOut className="size-4" aria-hidden="true" />
           {t('signOut')}
         </Button>
       </header>
