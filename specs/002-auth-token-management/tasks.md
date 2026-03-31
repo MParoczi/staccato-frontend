@@ -91,13 +91,13 @@
 
 ### Tests for User Story 3
 
-- [ ] T020 [P] [US3] Unit test for auth store in `src/stores/authStore.test.ts` — test cases: initial state has null accessToken and null expiresAt, setAuth stores token and computes correct expiresAt (Date.now() + expiresIn * 1000), clearAuth resets both to null, setAuth overwrites previous values.
+- [x] T020 [P] [US3] Unit test for auth store in `src/stores/authStore.test.ts` — test cases: initial state has null accessToken and null expiresAt, setAuth stores token and computes correct expiresAt (Date.now() + expiresIn * 1000), clearAuth resets both to null, setAuth overwrites previous values.
 
 ### Implementation for User Story 3
 
-- [ ] T021 [P] [US3] Create useProactiveRefresh hook in `src/features/auth/hooks/useProactiveRefresh.ts` — read `expiresAt` from `useAuthStore`. In a `useEffect` keyed on `expiresAt`: if `expiresAt` is null, do nothing; compute `delay = (expiresAt - Date.now()) * 0.8`; if delay <= 0, return (expired); schedule `setTimeout(() => silentRefresh(), delay)`; return cleanup that clears the timeout. Import `silentRefresh` from `@/api/client`.
-- [ ] T022 [US3] Update ProtectedRoute in `src/routes/protected-route.tsx` — replace the text "Loading..." with a proper full-screen centered spinner using Lucide `Loader2` icon with `animate-spin` class (FR-012). Ensure three states are clearly handled: `refreshing` (spinner), `idle` with token (Outlet), `failed` (Navigate to /login with `state={{ from: location }}`). Maintain existing logic structure.
-- [ ] T023 [US3] Integrate useProactiveRefresh in `src/routes/app-layout.tsx` — call `useProactiveRefresh()` at the top level of the AppLayout component so the timer runs for all authenticated routes. The hook handles its own cleanup.
+- [x] T021 [P] [US3] Create useProactiveRefresh hook in `src/features/auth/hooks/useProactiveRefresh.ts` — read `expiresAt` from `useAuthStore`. In a `useEffect` keyed on `expiresAt`: if `expiresAt` is null, do nothing; compute `delay = (expiresAt - Date.now()) * 0.8`; if delay <= 0, return (expired); schedule `setTimeout(() => silentRefresh(), delay)`; return cleanup that clears the timeout. Import `silentRefresh` from `@/api/client`.
+- [x] T022 [US3] Update ProtectedRoute in `src/routes/protected-route.tsx` — replace the text "Loading..." with a proper full-screen centered spinner using Lucide `Loader2` icon with `animate-spin` class (FR-012). Ensure three states are clearly handled: `refreshing` (spinner), `idle` with token (Outlet), `failed` (Navigate to /login with `state={{ from: location }}`). Maintain existing logic structure.
+- [x] T023 [US3] Integrate useProactiveRefresh in `src/routes/app-layout.tsx` — call `useProactiveRefresh()` at the top level of the AppLayout component so the timer runs for all authenticated routes. The hook handles its own cleanup.
 
 **Checkpoint**: Full session persistence works. Page reloads restore session. Proactive refresh prevents 401s during normal use.
 
