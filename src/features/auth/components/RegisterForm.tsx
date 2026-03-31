@@ -14,6 +14,7 @@ import {
   registerSchema,
   type RegisterFormData,
 } from '../schemas/register-schema';
+import { useRateLimitError } from '../hooks/useRateLimitError';
 import { register as registerUser } from '@/api/auth';
 import { useAuthStore } from '@/stores/authStore';
 import type { ValidationErrorResponse } from '@/lib/types';
@@ -22,6 +23,7 @@ export function RegisterForm() {
   const { t } = useTranslation('translation', { keyPrefix: 'auth.register' });
   const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
+  const { isLimited, secondsRemaining, handleError: handleRateLimit } = useRateLimitError();
 
   const {
     register,
@@ -52,7 +54,9 @@ export function RegisterForm() {
       const axiosErr = err as AxiosError;
       const status = axiosErr.response?.status;
 
-      if (status === 409) {
+      if (handleRateLimit(axiosErr)) {
+        // 429 handled by rate limit hook
+      } else if (status === 409) {
         setError('email', { message: t('errors.emailTaken') });
       } else if (status === 400) {
         const body = axiosErr.response?.data as
@@ -88,7 +92,13 @@ export function RegisterForm() {
         <p className="text-sm text-muted-foreground">{t('subtitle')}</p>
       </div>
 
-      {errors.root && (
+      {isLimited && (
+        <p aria-live="polite" className="text-sm text-destructive">
+          {t('errors.rateLimited', { seconds: secondsRemaining })}
+        </p>
+      )}
+
+      {errors.root && !isLimited && (
         <p role="alert" className="text-sm text-destructive">
           {errors.root.message}
         </p>
@@ -174,7 +184,7 @@ export function RegisterForm() {
       </div>
 
       {/* Submit */}
-      <Button type="submit" size="lg" disabled={submitting} className="w-full">
+      <Button type="submit" size="lg" disabled={submitting || isLimited} className="w-full">
         {submitting ? (
           <Loader2 className="size-4 animate-spin" aria-hidden="true" />
         ) : null}

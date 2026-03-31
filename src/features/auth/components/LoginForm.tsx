@@ -12,6 +12,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { PasswordInput } from './PasswordInput';
 import { GoogleSignInButton } from './GoogleSignInButton';
 import { loginSchema, type LoginFormData } from '../schemas/login-schema';
+import { useRateLimitError } from '../hooks/useRateLimitError';
 import { login } from '@/api/auth';
 import { useAuthStore } from '@/stores/authStore';
 
@@ -20,6 +21,7 @@ export function LoginForm() {
   const navigate = useNavigate();
   const location = useLocation();
   const [submitting, setSubmitting] = useState(false);
+  const { isLimited, secondsRemaining, handleError: handleRateLimit } = useRateLimitError();
 
   const {
     register,
@@ -44,7 +46,9 @@ export function LoginForm() {
       await navigate(from ?? '/app/notebooks', { replace: true });
     } catch (err) {
       const axiosErr = err as AxiosError;
-      if (axiosErr.response?.status === 401) {
+      if (handleRateLimit(axiosErr)) {
+        // 429 handled by rate limit hook
+      } else if (axiosErr.response?.status === 401) {
         setError('root', { message: t('errors.invalidCredentials') });
       } else if (
         axiosErr.response &&
@@ -68,7 +72,13 @@ export function LoginForm() {
         <p className="text-sm text-muted-foreground">{t('subtitle')}</p>
       </div>
 
-      {errors.root && (
+      {isLimited && (
+        <p aria-live="polite" className="text-sm text-destructive">
+          {t('errors.rateLimited', { seconds: secondsRemaining })}
+        </p>
+      )}
+
+      {errors.root && !isLimited && (
         <p role="alert" className="text-sm text-destructive">
           {errors.root.message}
         </p>
@@ -124,7 +134,7 @@ export function LoginForm() {
       </div>
 
       {/* Submit */}
-      <Button type="submit" size="lg" disabled={submitting} className="w-full">
+      <Button type="submit" size="lg" disabled={submitting || isLimited} className="w-full">
         {submitting ? (
           <Loader2 className="size-4 animate-spin" aria-hidden="true" />
         ) : null}
