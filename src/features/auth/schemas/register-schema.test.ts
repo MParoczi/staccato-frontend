@@ -21,39 +21,39 @@ describe('registerSchema', () => {
 
   it('fails when email is missing', () => {
     expect(parseError({ ...valid, email: '' }, 'email')).toBe(
-      'auth.register.errors.emailRequired',
+      'errors.emailRequired',
     );
   });
 
   it('fails when email format is invalid', () => {
     expect(parseError({ ...valid, email: 'bad' }, 'email')).toBe(
-      'auth.register.errors.emailInvalid',
+      'errors.emailInvalid',
     );
   });
 
   it('fails when email exceeds 256 characters', () => {
     const longEmail = 'a'.repeat(251) + '@b.com';
     expect(parseError({ ...valid, email: longEmail }, 'email')).toBe(
-      'auth.register.errors.emailMax',
+      'errors.emailMax',
     );
   });
 
   it('fails when displayName is under 2 characters', () => {
     expect(parseError({ ...valid, displayName: 'A' }, 'displayName')).toBe(
-      'auth.register.errors.displayNameMin',
+      'errors.displayNameMin',
     );
   });
 
   it('fails when displayName exceeds 100 characters', () => {
     expect(
       parseError({ ...valid, displayName: 'A'.repeat(101) }, 'displayName'),
-    ).toBe('auth.register.errors.displayNameMax');
+    ).toBe('errors.displayNameMax');
   });
 
   it('fails when password is under 8 characters', () => {
     const data = { ...valid, password: 'Ab1', confirmPassword: 'Ab1' };
     expect(parseError(data, 'password')).toBe(
-      'auth.register.errors.passwordMin',
+      'errors.passwordMin',
     );
   });
 
@@ -64,7 +64,7 @@ describe('registerSchema', () => {
       confirmPassword: 'password1',
     };
     expect(parseError(data, 'password')).toBe(
-      'auth.register.errors.passwordUppercase',
+      'errors.passwordUppercase',
     );
   });
 
@@ -75,7 +75,7 @@ describe('registerSchema', () => {
       confirmPassword: 'PASSWORD1',
     };
     expect(parseError(data, 'password')).toBe(
-      'auth.register.errors.passwordLowercase',
+      'errors.passwordLowercase',
     );
   });
 
@@ -86,14 +86,14 @@ describe('registerSchema', () => {
       confirmPassword: 'Password',
     };
     expect(parseError(data, 'password')).toBe(
-      'auth.register.errors.passwordDigit',
+      'errors.passwordDigit',
     );
   });
 
   it('fails when passwords do not match', () => {
     const data = { ...valid, confirmPassword: 'Different1' };
     expect(parseError(data, 'confirmPassword')).toBe(
-      'auth.register.errors.passwordsMismatch',
+      'errors.passwordsMismatch',
     );
   });
 

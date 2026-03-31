@@ -4,26 +4,26 @@ export const registerSchema = z
   .object({
     email: z
       .string()
-      .min(1, 'auth.register.errors.emailRequired')
-      .email('auth.register.errors.emailInvalid')
-      .max(256, 'auth.register.errors.emailMax'),
+      .min(1, 'errors.emailRequired')
+      .email('errors.emailInvalid')
+      .max(256, 'errors.emailMax'),
     displayName: z
       .string()
-      .min(2, 'auth.register.errors.displayNameMin')
-      .max(100, 'auth.register.errors.displayNameMax'),
+      .min(2, 'errors.displayNameMin')
+      .max(100, 'errors.displayNameMax'),
     password: z
       .string()
-      .min(1, 'auth.register.errors.passwordRequired')
-      .min(8, 'auth.register.errors.passwordMin')
-      .regex(/[A-Z]/, 'auth.register.errors.passwordUppercase')
-      .regex(/[a-z]/, 'auth.register.errors.passwordLowercase')
-      .regex(/\d/, 'auth.register.errors.passwordDigit'),
+      .min(1, 'errors.passwordRequired')
+      .min(8, 'errors.passwordMin')
+      .regex(/[A-Z]/, 'errors.passwordUppercase')
+      .regex(/[a-z]/, 'errors.passwordLowercase')
+      .regex(/\d/, 'errors.passwordDigit'),
     confirmPassword: z
       .string()
-      .min(1, 'auth.register.errors.confirmPasswordRequired'),
+      .min(1, 'errors.confirmPasswordRequired'),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: 'auth.register.errors.passwordsMismatch',
+    message: 'errors.passwordsMismatch',
     path: ['confirmPassword'],
   });
 

@@ -21,7 +21,7 @@ describe('loginSchema', () => {
       const emailErrors = result.error.issues.filter(
         (i) => i.path[0] === 'email',
       );
-      expect(emailErrors[0].message).toBe('auth.login.errors.emailRequired');
+      expect(emailErrors[0].message).toBe('errors.emailRequired');
     }
   });
 
@@ -35,7 +35,7 @@ describe('loginSchema', () => {
       const emailErrors = result.error.issues.filter(
         (i) => i.path[0] === 'email',
       );
-      expect(emailErrors[0].message).toBe('auth.login.errors.emailInvalid');
+      expect(emailErrors[0].message).toBe('errors.emailInvalid');
     }
   });
 
@@ -49,7 +49,7 @@ describe('loginSchema', () => {
       const pwErrors = result.error.issues.filter(
         (i) => i.path[0] === 'password',
       );
-      expect(pwErrors[0].message).toBe('auth.login.errors.passwordRequired');
+      expect(pwErrors[0].message).toBe('errors.passwordRequired');
     }
   });
 
@@ -63,7 +63,7 @@ describe('loginSchema', () => {
       const pwErrors = result.error.issues.filter(
         (i) => i.path[0] === 'password',
       );
-      expect(pwErrors[0].message).toBe('auth.login.errors.passwordMin');
+      expect(pwErrors[0].message).toBe('errors.passwordMin');
     }
   });
 

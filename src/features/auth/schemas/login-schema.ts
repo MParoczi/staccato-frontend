@@ -3,12 +3,12 @@ import { z } from 'zod';
 export const loginSchema = z.object({
   email: z
     .string()
-    .min(1, 'auth.login.errors.emailRequired')
-    .email('auth.login.errors.emailInvalid'),
+    .min(1, 'errors.emailRequired')
+    .email('errors.emailInvalid'),
   password: z
     .string()
-    .min(1, 'auth.login.errors.passwordRequired')
-    .min(8, 'auth.login.errors.passwordMin'),
+    .min(1, 'errors.passwordRequired')
+    .min(8, 'errors.passwordMin'),
   rememberMe: z.boolean().default(false),
 });
 
