@@ -127,7 +127,7 @@
 
 ### Implementation for User Story 5
 
-- [ ] T027 [US5] Add logout functionality to AppLayout in `src/routes/app-layout.tsx` — add a minimal top header bar with a logout button (Lucide `LogOut` icon + "Sign out" text, localized). On click: call `rawClient.delete('/auth/logout')` fire-and-forget (don't await — clear state regardless), call `useAuthStore.getState().clearAuth()`, navigate to `/login` using `useNavigate()`. Import `rawClient` from `@/api/raw-client`. Style the header with earthy theme (subtle bottom border, warm background).
+- [x] T027 [US5] Add logout functionality to AppLayout in `src/routes/app-layout.tsx` — add a minimal top header bar with a logout button (Lucide `LogOut` icon + "Sign out" text, localized). On click: call `rawClient.delete('/auth/logout')` fire-and-forget (don't await — clear state regardless), call `useAuthStore.getState().clearAuth()`, navigate to `/login` using `useNavigate()`. Import `rawClient` from `@/api/raw-client`. Style the header with earthy theme (subtle bottom border, warm background).
 
 **Checkpoint**: Full auth lifecycle works — login, register, session persistence, and logout.
 

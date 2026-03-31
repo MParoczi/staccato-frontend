@@ -68,7 +68,8 @@
     },
     "branding": {
       "tagline": "Your musical notebook, reimagined"
-    }
+    },
+    "signOut": "Sign out"
   },
   "notebooks": {
     "dashboard": {

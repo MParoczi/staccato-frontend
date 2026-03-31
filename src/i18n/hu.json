@@ -68,7 +68,8 @@
     },
     "branding": {
       "tagline": "Zenei füzeted, újragondolva"
-    }
+    },
+    "signOut": "Kijelentkezés"
   },
   "notebooks": {
     "dashboard": {
