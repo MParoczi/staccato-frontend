@@ -4,8 +4,8 @@ import { PublicLayout } from './public-layout';
 import { ProtectedRoute } from './protected-route';
 import { AppLayout } from './app-layout';
 import { NotFoundPage } from './not-found';
+import { LoginPage } from '@/features/auth/LoginPage';
 import {
-  LoginPage,
   RegisterPage,
   NotebooksDashboard,
   NewNotebook,
