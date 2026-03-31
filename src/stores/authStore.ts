@@ -2,12 +2,18 @@ import { create } from 'zustand';
 
 interface AuthState {
   accessToken: string | null;
-  setAccessToken: (token: string) => void;
+  expiresAt: number | null;
+  setAuth: (token: string, expiresIn: number) => void;
   clearAuth: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
   accessToken: null,
-  setAccessToken: (token) => set({ accessToken: token }),
-  clearAuth: () => set({ accessToken: null }),
+  expiresAt: null,
+  setAuth: (token, expiresIn) =>
+    set({
+      accessToken: token,
+      expiresAt: Date.now() + expiresIn * 1000,
+    }),
+  clearAuth: () => set({ accessToken: null, expiresAt: null }),
 }));

@@ -8,7 +8,15 @@ export type {
   Language,
 } from './common';
 
-export type { User } from './auth';
+export type {
+  User,
+  AuthResponse,
+  LoginRequest,
+  RegisterRequest,
+  GoogleAuthRequest,
+  ValidationErrorResponse,
+  BusinessErrorResponse,
+} from './auth';
 
 export type {
   NotebookSummary,
