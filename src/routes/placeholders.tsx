@@ -1,7 +1,3 @@
-export function RegisterPage() {
-  return <div>Register</div>;
-}
-
 export function NotebooksDashboard() {
   return <div>Notebooks Dashboard</div>;
 }
