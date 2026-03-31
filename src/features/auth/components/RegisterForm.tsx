@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PasswordInput } from './PasswordInput';
+import { GoogleSignInButton } from './GoogleSignInButton';
 import {
   registerSchema,
   type RegisterFormData,
@@ -179,6 +180,13 @@ export function RegisterForm() {
         ) : null}
         {t('submit')}
       </Button>
+
+      <GoogleSignInButton
+        variant="register"
+        onSuccess={() => {
+          void navigate('/app/notebooks', { replace: true });
+        }}
+      />
     </form>
   );
 }

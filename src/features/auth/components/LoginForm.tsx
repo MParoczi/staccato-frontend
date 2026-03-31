@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { PasswordInput } from './PasswordInput';
+import { GoogleSignInButton } from './GoogleSignInButton';
 import { loginSchema, type LoginFormData } from '../schemas/login-schema';
 import { login } from '@/api/auth';
 import { useAuthStore } from '@/stores/authStore';
@@ -129,6 +130,14 @@ export function LoginForm() {
         ) : null}
         {t('submit')}
       </Button>
+
+      <GoogleSignInButton
+        variant="login"
+        onSuccess={() => {
+          const from = (location.state as { from?: Location })?.from;
+          void navigate(from ?? '/app/notebooks', { replace: true });
+        }}
+      />
     </form>
   );
 }
