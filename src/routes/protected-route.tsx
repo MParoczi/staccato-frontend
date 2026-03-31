@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router';
+import { Loader2 } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
 import { silentRefresh } from '@/api/auth';
 
@@ -34,7 +35,7 @@ export function ProtectedRoute() {
   if (status === 'refreshing') {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="text-muted-foreground">Loading...</div>
+        <Loader2 className="size-8 animate-spin text-muted-foreground" aria-label="Loading" />
       </div>
     );
   }

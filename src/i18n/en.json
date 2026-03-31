@@ -11,14 +11,65 @@
   },
   "auth": {
     "login": {
-      "title": "Sign in",
+      "title": "Sign in to Staccato",
+      "subtitle": "Welcome back",
       "email": "Email address",
       "password": "Password",
-      "submit": "Sign in"
+      "rememberMe": "Remember me",
+      "submit": "Sign in",
+      "noAccount": "Don't have an account?",
+      "registerLink": "Create one",
+      "googleButton": "Sign in with Google",
+      "errors": {
+        "emailRequired": "Email is required",
+        "emailInvalid": "Enter a valid email address",
+        "passwordRequired": "Password is required",
+        "passwordMin": "Password must be at least 8 characters",
+        "invalidCredentials": "Invalid email or password",
+        "googleFailed": "Google authentication failed",
+        "rateLimited": "Too many attempts, try again in {{seconds}} seconds",
+        "networkError": "Unable to connect. Please check your connection.",
+        "genericError": "Something went wrong. Please try again."
+      }
     },
     "register": {
-      "title": "Create account"
-    }
+      "title": "Create your account",
+      "subtitle": "Start your musical journey",
+      "email": "Email address",
+      "displayName": "Display name",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "submit": "Create account",
+      "hasAccount": "Already have an account?",
+      "loginLink": "Sign in",
+      "googleButton": "Sign up with Google",
+      "errors": {
+        "emailRequired": "Email is required",
+        "emailInvalid": "Enter a valid email address",
+        "emailMax": "Email must be 256 characters or fewer",
+        "displayNameMin": "Display name must be at least 2 characters",
+        "displayNameMax": "Display name must be 100 characters or fewer",
+        "passwordRequired": "Password is required",
+        "passwordMin": "Password must be at least 8 characters",
+        "passwordUppercase": "Must contain at least one uppercase letter",
+        "passwordLowercase": "Must contain at least one lowercase letter",
+        "passwordDigit": "Must contain at least one number",
+        "confirmPasswordRequired": "Please confirm your password",
+        "passwordsMismatch": "Passwords do not match",
+        "emailTaken": "Email already registered",
+        "googleFailed": "Google authentication failed",
+        "rateLimited": "Too many attempts, try again in {{seconds}} seconds",
+        "networkError": "Unable to connect. Please check your connection.",
+        "genericError": "Something went wrong. Please try again."
+      }
+    },
+    "common": {
+      "or": "or"
+    },
+    "branding": {
+      "tagline": "Your musical notebook, reimagined"
+    },
+    "signOut": "Sign out"
   },
   "notebooks": {
     "dashboard": {

@@ -39,11 +39,11 @@ export function silentRefresh(): Promise<string> {
   if (!isRefreshing) {
     isRefreshing = true;
     refreshPromise = rawClient
-      .post<{ accessToken: string }>('/auth/refresh')
+      .post<{ accessToken: string; expiresIn: number }>('/auth/refresh')
       .then((res) => {
-        const newToken = res.data.accessToken;
-        useAuthStore.getState().setAccessToken(newToken);
-        return newToken;
+        const { accessToken, expiresIn } = res.data;
+        useAuthStore.getState().setAuth(accessToken, expiresIn);
+        return accessToken;
       })
       .catch((err) => {
         useAuthStore.getState().clearAuth();

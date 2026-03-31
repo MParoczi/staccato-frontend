@@ -11,3 +11,34 @@ export interface User {
   avatarUrl: string | null;
   scheduledDeletionAt: string | null;
 }
+
+export interface AuthResponse {
+  accessToken: string;
+  expiresIn: number;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+}
+
+export interface RegisterRequest {
+  email: string;
+  displayName: string;
+  password: string;
+}
+
+export interface GoogleAuthRequest {
+  idToken: string;
+}
+
+export interface ValidationErrorResponse {
+  errors: Record<string, string[]>;
+}
+
+export interface BusinessErrorResponse {
+  code: string;
+  message: string;
+  details?: Record<string, unknown>;
+}
