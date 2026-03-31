@@ -11,13 +11,63 @@
   },
   "auth": {
     "login": {
-      "title": "Bejelentkezés",
+      "title": "Bejelentkezés a Staccato-ba",
+      "subtitle": "Bentebb erre",
       "email": "E-mail cím",
       "password": "Jelszó",
-      "submit": "Bejelentkezés"
+      "rememberMe": "Emlékezz rám",
+      "submit": "Bejelentkezés",
+      "noAccount": "Nincs még fiókod?",
+      "registerLink": "Regisztrálj",
+      "googleButton": "Bejelentkezés Google-lel",
+      "errors": {
+        "emailRequired": "Az e-mail cím megadása kötelező",
+        "emailInvalid": "Adj meg egy érvényes e-mail címet",
+        "passwordRequired": "A jelszó megadása kötelező",
+        "passwordMin": "A jelszónak legalább 8 karakter hosszúnak kell lennie",
+        "invalidCredentials": "Hibás e-mail cím vagy jelszó",
+        "googleFailed": "A Google hitelesítés sikertelen",
+        "rateLimited": "Túl sok próbálkozás, próbáld újra {{seconds}} másodperc múlva",
+        "networkError": "Nem sikerült csatlakozni. Ellenőrizd az internetkapcsolatot.",
+        "genericError": "Valami hiba történt. Próbáld újra."
+      }
     },
     "register": {
-      "title": "Regisztráció"
+      "title": "Fiók létrehozása",
+      "subtitle": "Kezdd el zenei utadat",
+      "email": "E-mail cím",
+      "displayName": "Megjelenítési név",
+      "password": "Jelszó",
+      "confirmPassword": "Jelszó megerősítése",
+      "submit": "Fiók létrehozása",
+      "hasAccount": "Már van fiókod?",
+      "loginLink": "Jelentkezz be",
+      "googleButton": "Regisztráció Google-lel",
+      "errors": {
+        "emailRequired": "Az e-mail cím megadása kötelező",
+        "emailInvalid": "Adj meg egy érvényes e-mail címet",
+        "emailMax": "Az e-mail cím legfeljebb 256 karakter lehet",
+        "displayNameMin": "A megjelenítési név legalább 2 karakter hosszú legyen",
+        "displayNameMax": "A megjelenítési név legfeljebb 100 karakter lehet",
+        "passwordRequired": "A jelszó megadása kötelező",
+        "passwordMin": "A jelszónak legalább 8 karakter hosszúnak kell lennie",
+        "passwordUppercase": "Tartalmaznia kell legalább egy nagybetűt",
+        "passwordLowercase": "Tartalmaznia kell legalább egy kisbetűt",
+        "passwordDigit": "Tartalmaznia kell legalább egy számot",
+        "confirmPasswordRequired": "Erősítsd meg a jelszavadat",
+        "passwordsMismatch": "A jelszavak nem egyeznek",
+        "emailTaken": "Ez az e-mail cím már regisztrálva van",
+        "googleFailed": "A Google hitelesítés sikertelen",
+        "rateLimited": "Túl sok próbálkozás, próbáld újra {{seconds}} másodperc múlva",
+        "networkError": "Nem sikerült csatlakozni. Ellenőrizd az internetkapcsolatot.",
+        "genericError": "Valami hiba történt. Próbáld újra."
+      }
+    },
+    "common": {
+      "or": "vagy"
+    },
+    "branding": {
+      "tagline": "Zenei füzeted, újragondolva"
     }
   },
   "notebooks": {
