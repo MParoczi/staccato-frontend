@@ -47,6 +47,8 @@
   --color-notebook-dot: var(--notebook-dot);
   --color-notebook-selection: var(--notebook-selection);
   --color-notebook-hover: var(--notebook-hover);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -91,6 +93,10 @@
   --sidebar-border: oklch(0.88 0.015 75);
   --sidebar-ring: oklch(0.47 0.11 55);
 
+  /* Warning — warm amber/gold */
+  --warning: oklch(0.88 0.10 85);
+  --warning-foreground: oklch(0.25 0.05 55);
+
   /* Zone 2 — Notebook Canvas (Light) */
   --notebook-paper: oklch(0.98 0.006 85);
   --notebook-dot: oklch(0.82 0.015 75);
@@ -131,6 +137,10 @@
   --sidebar-accent-foreground: oklch(0.90 0.03 85);
   --sidebar-border: oklch(0.32 0.02 55);
   --sidebar-ring: oklch(0.72 0.08 55);
+
+  /* Warning — warm amber/gold (Dark) */
+  --warning: oklch(0.42 0.08 85);
+  --warning-foreground: oklch(0.92 0.06 85);
 
   /* Zone 2 — Notebook Canvas (Dark) */
   --notebook-paper: oklch(0.25 0.015 75);
