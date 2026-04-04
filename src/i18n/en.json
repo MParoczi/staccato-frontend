@@ -106,7 +106,11 @@
       "firstName": "First name",
       "lastName": "Last name",
       "email": "Email address",
-      "save": "Save changes"
+      "save": "Save changes",
+      "firstNameRequired": "First name is required",
+      "firstNameMax": "First name must be 100 characters or fewer",
+      "lastNameRequired": "Last name is required",
+      "lastNameMax": "Last name must be 100 characters or fewer"
     },
     "avatar": {
       "upload": "Upload avatar",

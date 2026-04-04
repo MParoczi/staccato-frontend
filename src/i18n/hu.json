@@ -106,7 +106,11 @@
       "firstName": "Keresztnév",
       "lastName": "Vezetéknév",
       "email": "E-mail cím",
-      "save": "Változtatások mentése"
+      "save": "Változtatások mentése",
+      "firstNameRequired": "A keresztnév megadása kötelező",
+      "firstNameMax": "A keresztnév legfeljebb 100 karakter lehet",
+      "lastNameRequired": "A vezetéknév megadása kötelező",
+      "lastNameMax": "A vezetéknév legfeljebb 100 karakter lehet"
     },
     "avatar": {
       "upload": "Profilkép feltöltése",
