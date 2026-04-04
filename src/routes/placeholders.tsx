@@ -18,10 +18,6 @@ export function PageEditor() {
   return <div>Page Editor</div>;
 }
 
-export function ProfilePage() {
-  return <div>Profile</div>;
-}
-
 export function ExportsPage() {
   return <div>Exports</div>;
 }
