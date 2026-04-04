@@ -6,6 +6,7 @@ import { useProactiveRefresh } from '@/features/auth/hooks/useProactiveRefresh';
 import { useAuthStore } from '@/stores/authStore';
 import { rawClient } from '@/api/raw-client';
 import { useCurrentUser } from '@/features/profile/hooks/useCurrentUser';
+import { DeletionBanner } from '@/components/common/DeletionBanner';
 
 export function AppLayout() {
   useProactiveRefresh();
@@ -27,6 +28,7 @@ export function AppLayout() {
           {t('signOut')}
         </Button>
       </header>
+      <DeletionBanner />
       <div className="flex flex-1">
         <aside>{/* Sidebar slot — implemented in a future feature */}</aside>
         <main className="flex-1">

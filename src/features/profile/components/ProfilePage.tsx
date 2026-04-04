@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ProfileInfoSection } from './ProfileInfoSection';
 import { PreferencesSection } from './PreferencesSection';
+import { AccountDeletionSection } from './AccountDeletionSection';
 
 function ProfilePageSkeleton() {
   return (
@@ -54,14 +55,7 @@ export function ProfilePage() {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>{t('deletion.title')}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {/* AccountDeletionSection — implemented in Phase 6 */}
-        </CardContent>
-      </Card>
+      <AccountDeletionSection user={user} />
     </div>
   );
 }
