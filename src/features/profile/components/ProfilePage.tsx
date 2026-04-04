@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { useCurrentUser } from '@/features/profile/hooks/useCurrentUser';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ProfileInfoSection } from './ProfileInfoSection';
 
 function ProfilePageSkeleton() {
   return (
@@ -38,17 +39,7 @@ export function ProfilePage() {
         {t('settings.title')}
       </h1>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>{t('info.title')}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {/* ProfileInfoSection — implemented in Phase 3 */}
-          <p className="text-sm text-muted-foreground">
-            {user.firstName} {user.lastName}
-          </p>
-        </CardContent>
-      </Card>
+      <ProfileInfoSection user={user} />
 
       <Card>
         <CardHeader>
