@@ -41,7 +41,7 @@ export function useDeleteAvatar() {
       if (data?.message) {
         toast.error(data.message);
       } else {
-        toast.error(t('profile.errors.uploadFailed'));
+        toast.error(t('common.error'));
       }
     },
   });

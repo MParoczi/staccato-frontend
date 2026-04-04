@@ -52,6 +52,7 @@ export function AvatarUpload({
   const isDeleting = deleteMutation.isPending;
   const isPreviewing = previewUrl !== null;
 
+  // Show preview if one exists, otherwise the real avatar (null if load failed)
   const displayUrl = previewUrl ?? (imgError ? null : avatarUrl);
 
   const revokePreview = useCallback(() => {
