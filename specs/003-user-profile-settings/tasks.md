@@ -120,7 +120,7 @@
 
 ### Implementation for User Story 5
 
-- [ ] T028 [US5] Create `PresetsSection` component in `src/features/profile/components/PresetsSection.tsx` — renders inside a Card. Uses `useUserPresets` hook. Shows preset names as simple rows with subtle border-b between items. Empty state: localized "No saved presets yet" message with a muted icon. "Manage presets" link at the bottom pointing to the Styling feature page (rendered as a disabled/muted link since Styling feature is not yet built). Loading state: skeleton rows
+- [x] T028 [US5] Create `PresetsSection` component in `src/features/profile/components/PresetsSection.tsx` — renders inside a Card. Uses `useUserPresets` hook. Shows preset names as simple rows with subtle border-b between items. Empty state: localized "No saved presets yet" message with a muted icon. "Manage presets" link at the bottom pointing to the Styling feature page (rendered as a disabled/muted link since Styling feature is not yet built). Loading state: skeleton rows
 
 **Checkpoint**: User Story 5 complete. Read-only preset list with empty state.
 
