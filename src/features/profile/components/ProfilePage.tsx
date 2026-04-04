@@ -3,6 +3,7 @@ import { useCurrentUser } from '@/features/profile/hooks/useCurrentUser';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ProfileInfoSection } from './ProfileInfoSection';
+import { PreferencesSection } from './PreferencesSection';
 
 function ProfilePageSkeleton() {
   return (
@@ -41,17 +42,7 @@ export function ProfilePage() {
 
       <ProfileInfoSection user={user} />
 
-      <Card>
-        <CardHeader>
-          <CardTitle>{t('preferences.title')}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {/* PreferencesSection — implemented in Phase 5 */}
-          <p className="text-sm text-muted-foreground">
-            {t('preferences.autoSaveNote')}
-          </p>
-        </CardContent>
-      </Card>
+      <PreferencesSection user={user} />
 
       <Card>
         <CardHeader>
