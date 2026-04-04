@@ -10,6 +10,7 @@ export type {
 
 export type {
   User,
+  UpdateProfileRequest,
   AuthResponse,
   LoginRequest,
   RegisterRequest,
