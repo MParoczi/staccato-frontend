@@ -1,10 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { useCurrentUser } from '@/features/profile/hooks/useCurrentUser';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ProfileInfoSection } from './ProfileInfoSection';
 import { PreferencesSection } from './PreferencesSection';
 import { AccountDeletionSection } from './AccountDeletionSection';
+import { PresetsSection } from './PresetsSection';
 
 function ProfilePageSkeleton() {
   return (
@@ -45,15 +46,7 @@ export function ProfilePage() {
 
       <PreferencesSection user={user} />
 
-      <Card>
-        <CardHeader>
-          <CardTitle>{t('presets.title')}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {/* PresetsSection — implemented in Phase 7 */}
-          <p className="text-sm text-muted-foreground">{t('presets.empty')}</p>
-        </CardContent>
-      </Card>
+      <PresetsSection />
 
       <AccountDeletionSection user={user} />
     </div>
