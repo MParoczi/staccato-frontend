@@ -5,9 +5,11 @@ import { Button } from '@/components/ui/button';
 import { useProactiveRefresh } from '@/features/auth/hooks/useProactiveRefresh';
 import { useAuthStore } from '@/stores/authStore';
 import { rawClient } from '@/api/raw-client';
+import { useCurrentUser } from '@/features/profile/hooks/useCurrentUser';
 
 export function AppLayout() {
   useProactiveRefresh();
+  useCurrentUser();
   const { t } = useTranslation('translation', { keyPrefix: 'auth' });
   const navigate = useNavigate();
 

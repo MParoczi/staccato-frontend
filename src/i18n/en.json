@@ -100,6 +100,65 @@
   "profile": {
     "settings": {
       "title": "Settings"
+    },
+    "info": {
+      "title": "Profile Information",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email address",
+      "save": "Save changes"
+    },
+    "avatar": {
+      "upload": "Upload avatar",
+      "delete": "Delete avatar",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "deleteConfirm": "Are you sure you want to delete your avatar?",
+      "deleteConfirmTitle": "Delete avatar"
+    },
+    "preferences": {
+      "title": "Preferences",
+      "language": "Language",
+      "pageSize": "Default page size",
+      "instrument": "Default instrument",
+      "none": "None",
+      "saved": "Saved",
+      "autoSaveNote": "Changes save automatically"
+    },
+    "deletion": {
+      "title": "Account Deletion",
+      "deleteButton": "Delete Account",
+      "dialogTitle": "Delete your account?",
+      "dialogBody": "Your account and all your data will be permanently deleted after 30 days. You can cancel the deletion at any time during this period.",
+      "cancelButton": "Cancel Deletion",
+      "scheduledMessage": "Your account is scheduled for deletion on {{date}}. All your data will be permanently removed.",
+      "manage": "Manage"
+    },
+    "presets": {
+      "title": "Saved Style Presets",
+      "empty": "No saved presets yet",
+      "manageLink": "Manage presets"
+    },
+    "errors": {
+      "avatarInvalid": "Invalid file type. Please select a JPG, PNG, or WebP image.",
+      "avatarTooLarge": "File too large. Maximum size is 2MB.",
+      "deletionAlreadyScheduled": "Account is already scheduled for deletion.",
+      "deletionNotScheduled": "No deletion is scheduled.",
+      "saveFailed": "Failed to save changes. Please try again.",
+      "uploadFailed": "Failed to upload avatar. Please try again."
+    },
+    "success": {
+      "saved": "Profile updated successfully.",
+      "avatarUploaded": "Avatar uploaded successfully.",
+      "avatarDeleted": "Avatar deleted successfully.",
+      "deletionScheduled": "Account deletion scheduled.",
+      "deletionCanceled": "Account deletion canceled."
+    },
+    "unsaved": {
+      "title": "Unsaved changes",
+      "message": "You have unsaved changes. Are you sure you want to leave?",
+      "leave": "Leave",
+      "stay": "Stay"
     }
   }
 }

@@ -100,6 +100,65 @@
   "profile": {
     "settings": {
       "title": "Beállítások"
+    },
+    "info": {
+      "title": "Profiladatok",
+      "firstName": "Keresztnév",
+      "lastName": "Vezetéknév",
+      "email": "E-mail cím",
+      "save": "Változtatások mentése"
+    },
+    "avatar": {
+      "upload": "Profilkép feltöltése",
+      "delete": "Profilkép törlése",
+      "confirm": "Megerősítés",
+      "cancel": "Mégse",
+      "deleteConfirm": "Biztosan törölni szeretnéd a profilképedet?",
+      "deleteConfirmTitle": "Profilkép törlése"
+    },
+    "preferences": {
+      "title": "Beállítások",
+      "language": "Nyelv",
+      "pageSize": "Alapértelmezett oldalméret",
+      "instrument": "Alapértelmezett hangszer",
+      "none": "Nincs",
+      "saved": "Mentve",
+      "autoSaveNote": "A változtatások automatikusan mentésre kerülnek"
+    },
+    "deletion": {
+      "title": "Fiók törlése",
+      "deleteButton": "Fiók törlése",
+      "dialogTitle": "Törlöd a fiókodat?",
+      "dialogBody": "A fiókod és minden adatod 30 nap múlva véglegesen törlésre kerül. A törlést bármikor visszavonhatod ez idő alatt.",
+      "cancelButton": "Törlés visszavonása",
+      "scheduledMessage": "A fiókod törlése {{date}} napra van ütemezve. Minden adatod véglegesen eltávolításra kerül.",
+      "manage": "Kezelés"
+    },
+    "presets": {
+      "title": "Mentett stílusbeállítások",
+      "empty": "Még nincsenek mentett beállítások",
+      "manageLink": "Beállítások kezelése"
+    },
+    "errors": {
+      "avatarInvalid": "Érvénytelen fájltípus. Kérjük, válassz JPG, PNG vagy WebP képet.",
+      "avatarTooLarge": "A fájl túl nagy. A maximális méret 2MB.",
+      "deletionAlreadyScheduled": "A fiók törlése már ütemezve van.",
+      "deletionNotScheduled": "Nincs ütemezett törlés.",
+      "saveFailed": "A mentés sikertelen. Kérjük, próbáld újra.",
+      "uploadFailed": "A profilkép feltöltése sikertelen. Kérjük, próbáld újra."
+    },
+    "success": {
+      "saved": "Profil sikeresen frissítve.",
+      "avatarUploaded": "Profilkép sikeresen feltöltve.",
+      "avatarDeleted": "Profilkép sikeresen törölve.",
+      "deletionScheduled": "Fiók törlése ütemezve.",
+      "deletionCanceled": "Fiók törlése visszavonva."
+    },
+    "unsaved": {
+      "title": "Mentetlen változtatások",
+      "message": "Mentetlen változtatásaid vannak. Biztosan el szeretnél navigálni?",
+      "leave": "Elhagyás",
+      "stay": "Maradás"
     }
   }
 }

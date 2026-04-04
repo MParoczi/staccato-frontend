@@ -12,10 +12,10 @@ import {
   NotebookView,
   NotebookIndex,
   PageEditor,
-  ProfilePage,
   ExportsPage,
   ChordsPage,
 } from './placeholders';
+import { ProfilePage } from '@/features/profile/components/ProfilePage';
 
 export const router = createBrowserRouter([
   {
