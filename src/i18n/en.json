@@ -123,11 +123,15 @@
     "preferences": {
       "title": "Preferences",
       "language": "Language",
+      "languageEn": "English",
+      "languageHu": "Hungarian",
       "pageSize": "Default page size",
       "instrument": "Default instrument",
       "none": "None",
       "saved": "Saved",
-      "autoSaveNote": "Changes save automatically"
+      "autoSaveNote": "Changes save automatically",
+      "instrumentsError": "Failed to load instruments",
+      "retry": "Retry"
     },
     "deletion": {
       "title": "Account Deletion",

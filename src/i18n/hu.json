@@ -123,11 +123,15 @@
     "preferences": {
       "title": "Beállítások",
       "language": "Nyelv",
+      "languageEn": "English",
+      "languageHu": "Magyar",
       "pageSize": "Alapértelmezett oldalméret",
       "instrument": "Alapértelmezett hangszer",
       "none": "Nincs",
       "saved": "Mentve",
-      "autoSaveNote": "A változtatások automatikusan mentésre kerülnek"
+      "autoSaveNote": "A változtatások automatikusan mentésre kerülnek",
+      "instrumentsError": "A hangszerek betöltése sikertelen",
+      "retry": "Újra"
     },
     "deletion": {
       "title": "Fiók törlése",
