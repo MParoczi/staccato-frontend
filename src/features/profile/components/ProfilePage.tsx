@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { useCurrentUser } from '@/features/profile/hooks/useCurrentUser';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { PageErrorBoundary } from '@/components/common/PageErrorBoundary';
 import { ProfileInfoSection } from './ProfileInfoSection';
 import { PreferencesSection } from './PreferencesSection';
 import { AccountDeletionSection } from './AccountDeletionSection';
@@ -37,18 +38,20 @@ export function ProfilePage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6 p-6">
-      <h1 className="text-2xl font-semibold tracking-tight">
-        {t('settings.title')}
-      </h1>
+    <PageErrorBoundary>
+      <div className="mx-auto max-w-2xl space-y-6 p-6">
+        <h1 className="text-2xl font-semibold tracking-tight">
+          {t('settings.title')}
+        </h1>
 
-      <ProfileInfoSection user={user} />
+        <ProfileInfoSection user={user} />
 
-      <PreferencesSection user={user} />
+        <PreferencesSection user={user} />
 
-      <PresetsSection />
+        <PresetsSection />
 
-      <AccountDeletionSection user={user} />
-    </div>
+        <AccountDeletionSection user={user} />
+      </div>
+    </PageErrorBoundary>
   );
 }

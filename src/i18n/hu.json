@@ -7,7 +7,12 @@
     "error": "Hiba történt",
     "success": "Sikeres",
     "notFound": "Az oldal nem található",
-    "goBack": "Visszalépés"
+    "goBack": "Visszalépés",
+    "errorBoundary": {
+      "title": "Valami hiba történt",
+      "message": "Váratlan hiba lépett fel. Kérjük, próbáld újra.",
+      "retry": "Újrapróbálás"
+    }
   },
   "auth": {
     "login": {
