@@ -1,4 +1,4 @@
-import type { User, Language, PageSize } from '@/lib/types';
+import type { User, UpdateProfileRequest } from '@/lib/types';
 import { apiClient } from './client';
 
 export async function getMe(): Promise<User> {
@@ -6,24 +6,26 @@ export async function getMe(): Promise<User> {
   return res.data;
 }
 
-export async function updateMe(
-  data: Partial<{
-    firstName: string;
-    lastName: string;
-    language: Language;
-    defaultPageSize: PageSize | null;
-    defaultInstrumentId: string | null;
-  }>,
-): Promise<User> {
-  const res = await apiClient.patch<User>('/users/me', data);
+export async function updateMe(data: UpdateProfileRequest): Promise<User> {
+  const res = await apiClient.put<User>('/users/me', data);
   return res.data;
+}
+
+export async function uploadAvatar(file: File): Promise<User> {
+  const formData = new FormData();
+  formData.append('File', file);
+  const res = await apiClient.put<User>('/users/me/avatar', formData);
+  return res.data;
+}
+
+export async function deleteAvatar(): Promise<void> {
+  await apiClient.delete('/users/me/avatar');
 }
 
 export async function deleteMe(): Promise<void> {
   await apiClient.delete('/users/me');
 }
 
-export async function cancelDeletion(): Promise<User> {
-  const res = await apiClient.post<User>('/users/me/cancel-deletion');
-  return res.data;
+export async function cancelDeletion(): Promise<void> {
+  await apiClient.post('/users/me/cancel-deletion');
 }

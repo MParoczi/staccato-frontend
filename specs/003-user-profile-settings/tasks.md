@@ -19,13 +19,13 @@
 
 **Purpose**: Types, API functions, and shared hooks that all user stories depend on
 
-- [ ] T001 Add `UpdateProfileRequest` interface to `src/lib/types/auth.ts` with fields: firstName (string), lastName (string), language (Language), defaultPageSize (PageSize | null), defaultInstrumentId (string | null)
-- [ ] T002 Update `src/api/users.ts`: (a) change `updateMe()` from `apiClient.patch` to `apiClient.put` and change parameter type from `Partial<{...}>` to `UpdateProfileRequest`; (b) fix `cancelDeletion()` return type from `Promise<User>` to `Promise<void>` and remove `return res.data` (API returns 204 with no body)
-- [ ] T003 [P] Add `uploadAvatar(file: File)` function to `src/api/users.ts` — construct FormData with field name `File`, call `apiClient.put<User>('/users/me/avatar', formData)`
-- [ ] T004 Add `deleteAvatar()` function to `src/api/users.ts` — call `apiClient.delete('/users/me/avatar')`
-- [ ] T005 [P] Create `useCurrentUser` hook in `src/features/profile/hooks/useCurrentUser.ts` — wraps `useQuery` with key `["user", "profile"]`, fetcher `getMe()`, staleTime 30_000ms. Export the hook and its query key constant
-- [ ] T006 [P] Create `useInstruments` hook in `src/features/profile/hooks/useInstruments.ts` — wraps `useQuery` with key `["instruments"]`, fetcher `getInstruments()`, staleTime 300_000ms
-- [ ] T006b [P] Create `useUserPresets` hook in `src/features/profile/hooks/useUserPresets.ts` — wraps `useQuery` with key `["user", "presets"]`, fetcher `getUserPresets()` from `src/api/presets.ts`, default staleTime (0)
+- [x] T001 Add `UpdateProfileRequest` interface to `src/lib/types/auth.ts` with fields: firstName (string), lastName (string), language (Language), defaultPageSize (PageSize | null), defaultInstrumentId (string | null)
+- [x] T002 Update `src/api/users.ts`: (a) change `updateMe()` from `apiClient.patch` to `apiClient.put` and change parameter type from `Partial<{...}>` to `UpdateProfileRequest`; (b) fix `cancelDeletion()` return type from `Promise<User>` to `Promise<void>` and remove `return res.data` (API returns 204 with no body)
+- [x] T003 [P] Add `uploadAvatar(file: File)` function to `src/api/users.ts` — construct FormData with field name `File`, call `apiClient.put<User>('/users/me/avatar', formData)`
+- [x] T004 Add `deleteAvatar()` function to `src/api/users.ts` — call `apiClient.delete('/users/me/avatar')`
+- [x] T005 [P] Create `useCurrentUser` hook in `src/features/profile/hooks/useCurrentUser.ts` — wraps `useQuery` with key `["user", "profile"]`, fetcher `getMe()`, staleTime 30_000ms. Export the hook and its query key constant
+- [x] T006 [P] Create `useInstruments` hook in `src/features/profile/hooks/useInstruments.ts` — wraps `useQuery` with key `["instruments"]`, fetcher `getInstruments()`, staleTime 300_000ms
+- [x] T006b [P] Create `useUserPresets` hook in `src/features/profile/hooks/useUserPresets.ts` — wraps `useQuery` with key `["user", "presets"]`, fetcher `getUserPresets()` from `src/api/presets.ts`, default staleTime (0)
 
 **Checkpoint**: Types, API layer, and shared query hooks are ready. User story implementation can begin.
 

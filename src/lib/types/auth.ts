@@ -33,6 +33,14 @@ export interface GoogleAuthRequest {
   idToken: string;
 }
 
+export interface UpdateProfileRequest {
+  firstName: string;
+  lastName: string;
+  language: Language;
+  defaultPageSize: PageSize | null;
+  defaultInstrumentId: string | null;
+}
+
 export interface ValidationErrorResponse {
   errors: Record<string, string[]>;
 }
