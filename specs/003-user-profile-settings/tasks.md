@@ -130,10 +130,10 @@
 
 **Purpose**: Final integration, consistency, and cleanup
 
-- [ ] T029 Wire all section components into `ProfilePage` in `src/features/profile/components/ProfilePage.tsx` — ensure all four sections render in correct order (ProfileInfoSection, PreferencesSection, PresetsSection, AccountDeletionSection). Verify Card styling, spacing, and responsive layout. Add page-level error boundary
-- [ ] T030 [P] Run `pnpm run lint` and fix any linting errors across all new and modified files
-- [ ] T031 [P] Run `pnpm test` to verify no existing tests are broken by the changes (PATCH→PUT in users.ts, AppLayout changes)
-- [ ] T032 Verify full feature flow end-to-end: navigate to `/app/profile`, view/edit profile info, upload/delete avatar, switch language, change preferences, trigger deletion + banner + cancel, view presets. Confirm all i18n strings render in both English and Hungarian
+- [x] T029 Wire all section components into `ProfilePage` in `src/features/profile/components/ProfilePage.tsx` — ensure all four sections render in correct order (ProfileInfoSection, PreferencesSection, PresetsSection, AccountDeletionSection). Verify Card styling, spacing, and responsive layout. Add page-level error boundary
+- [x] T030 [P] Run `pnpm run lint` and fix any linting errors across all new and modified files
+- [x] T031 [P] Run `pnpm test` to verify no existing tests are broken by the changes (PATCH→PUT in users.ts, AppLayout changes)
+- [x] T032 Verify full feature flow end-to-end: navigate to `/app/profile`, view/edit profile info, upload/delete avatar, switch language, change preferences, trigger deletion + banner + cancel, view presets. Confirm all i18n strings render in both English and Hungarian
 
 ---
 

@@ -7,7 +7,12 @@
     "error": "An error occurred",
     "success": "Success",
     "notFound": "Page not found",
-    "goBack": "Go back"
+    "goBack": "Go back",
+    "errorBoundary": {
+      "title": "Something went wrong",
+      "message": "An unexpected error occurred. Please try again.",
+      "retry": "Try again"
+    }
   },
   "auth": {
     "login": {
