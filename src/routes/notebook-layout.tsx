@@ -113,9 +113,11 @@ export function NotebookLayout() {
       </Sheet>
 
       {/* Canvas area */}
-      <div className="relative flex flex-1 items-start justify-center overflow-auto p-4">
-        <div className="w-full" style={{ zoom }}>
-          <Outlet />
+      <div className="relative flex flex-1">
+        <div className="flex flex-1 items-start justify-center overflow-auto p-4">
+          <div className="w-full" style={{ zoom }}>
+            <Outlet />
+          </div>
         </div>
         <PageNavigationArrows
           prevUrl={pageNav.prevUrl}
