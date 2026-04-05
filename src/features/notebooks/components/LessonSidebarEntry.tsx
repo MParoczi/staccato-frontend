@@ -18,7 +18,7 @@ interface LessonSidebarEntryProps {
   lesson: LessonSummary;
   notebookId: string;
   isActive: boolean;
-  onNavigate: (lessonId: string) => void;
+  onNavigate: () => void;
   onDeleted?: () => void;
 }
 
@@ -94,7 +94,7 @@ export function LessonSidebarEntry({
 
   function handleRowClick() {
     if (isEditing) return;
-    onNavigate(lesson.id);
+    onNavigate();
   }
 
   function handleDeleteClick(e: React.MouseEvent) {
