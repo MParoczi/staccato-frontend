@@ -166,6 +166,12 @@
         "emptyMessage": "No lessons yet.",
         "emptyAction": "Open the sidebar to add your first lesson.",
         "pageNumber": "{{number}}"
+      },
+      "lesson": {
+        "pageIndicator": "Page {{current}} / {{total}}",
+        "canvasPlaceholder": "Canvas and module editor coming soon.",
+        "notFound": "Page not found",
+        "backToIndex": "Back to index"
       }
     }
   },

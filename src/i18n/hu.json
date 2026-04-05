@@ -166,6 +166,12 @@
         "emptyMessage": "Még nincsenek leckék.",
         "emptyAction": "Nyisd meg az oldalsávot az első lecke létrehozásához.",
         "pageNumber": "{{number}}"
+      },
+      "lesson": {
+        "pageIndicator": "{{current}} / {{total}}. oldal",
+        "canvasPlaceholder": "A vászon és a modulszerkesztő hamarosan elérhető.",
+        "notFound": "Az oldal nem található",
+        "backToIndex": "Vissza a tartalomjegyzékhez"
       }
     }
   },
