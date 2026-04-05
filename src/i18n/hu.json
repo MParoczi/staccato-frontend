@@ -131,6 +131,15 @@
       "slateBlue": "Palakék",
       "deepTeal": "Mélyzöld",
       "warmTerracotta": "Terrakotta"
+    },
+    "shell": {
+      "toolbar": {
+        "toggleSidebar": "Oldalsáv kapcsolása",
+        "styleEditor": "Stílusszerkesztő",
+        "export": "Exportálás",
+        "delete": "Füzet törlése",
+        "comingSoon": "Hamarosan"
+      }
     }
   },
   "editor": {
