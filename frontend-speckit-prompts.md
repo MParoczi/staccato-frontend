@@ -1,6 +1,6 @@
 ---
 name: Frontend Speckit Prompt Pairs
-description: Constitution prompt + all 16 specify/plan prompt pairs for the Staccato React TypeScript frontend, ordered by dependency
+description: Constitution prompt + all 17 specify/plan prompt pairs for the Staccato React TypeScript frontend, ordered by dependency
 type: reference
 ---
 
@@ -281,7 +281,7 @@ Governance:
 ```
 
 
-16 features, ordered by dependency. Each has a `specify` prompt and a `plan` prompt
+17 features, ordered by dependency. Each has a `specify` prompt and a `plan` prompt
 for use with `/speckit.specify` and `/speckit.plan`.
 
 **Tech stack baseline (referenced by all prompts):**
@@ -1453,7 +1453,7 @@ Editor Architecture:
    - Renderer: read-only display component
    - Editor: interactive editing component
    - This feature provides the registry framework; specific block implementations
-     are Features 9-14
+     are Features 10-15
 
 6. Placeholder Blocks:
    - For block types not yet implemented (from later features), show a placeholder:
@@ -1505,7 +1505,7 @@ Key architectural decisions:
 
 1. The block registry pattern: Create a BLOCK_REGISTRY object:
    Record<BuildingBlockType, { Renderer: React.FC<{block}>, Editor: React.FC<{block, onChange}> }>
-   Features 9-14 each register their implementations. Unregistered types show placeholders.
+   Features 10-15 each register their implementations. Unregistered types show placeholders.
 
 2. The TextSpan editor is the most reusable piece. It needs to handle:
    - Rendering: map spans to <span> or <strong> elements
