@@ -1,9 +1,13 @@
 import { useParams, Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { Plus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { DottedPaper } from '@/components/common/DottedPaper';
 import { useNotebook } from '../hooks/useNotebook';
 import { useLesson } from '../hooks/useLesson';
 import { usePageNavigation } from '../hooks/usePageNavigation';
+import { useCreatePage } from '../hooks/useCreatePage';
+import { DeletePageButton } from './DeletePageButton';
 import { useUIStore } from '@/stores/uiStore';
 
 export function LessonPage() {
@@ -18,11 +22,13 @@ export function LessonPage() {
   const { data: notebook } = useNotebook(notebookId!);
   const { data: lesson } = useLesson(notebookId!, lessonId!);
   const pageNav = usePageNavigation(notebookId!);
+  const createPageMutation = useCreatePage(notebookId!, lessonId!);
 
   if (!notebook || !lesson) return null;
 
   // Find the page in the lesson's page list
   const page = lesson.pages.find((p) => p.id === pageId);
+  const isLastPage = lesson.pages.length === 1;
 
   // 404 handling — stale URL, page not found
   if (!page) {
@@ -62,14 +68,33 @@ export function LessonPage() {
           >
             {lesson.title}
           </h1>
-          <span
-            className="shrink-0 text-xs tabular-nums opacity-50"
-          >
-            {t('notebooks.shell.lesson.pageIndicator', {
-              current: pageNav.pageNumberInLesson ?? page.pageNumber,
-              total: pageNav.totalPagesInLesson ?? lesson.pages.length,
-            })}
-          </span>
+          <div className="flex shrink-0 items-center gap-1">
+            <span
+              className="text-xs tabular-nums opacity-50"
+            >
+              {t('notebooks.shell.lesson.pageIndicator', {
+                current: pageNav.pageNumberInLesson ?? page.pageNumber,
+                total: pageNav.totalPagesInLesson ?? lesson.pages.length,
+              })}
+            </span>
+            {/* Floating Add Page button */}
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => createPageMutation.mutate()}
+              disabled={createPageMutation.isPending}
+              aria-label={t('notebooks.shell.page.addPage')}
+            >
+              <Plus className="size-3.5" aria-hidden="true" />
+            </Button>
+            {/* Delete Page button */}
+            <DeletePageButton
+              notebookId={notebookId!}
+              lessonId={lessonId!}
+              pageId={pageId!}
+              isLastPage={isLastPage}
+            />
+          </div>
         </div>
 
         {/* Canvas placeholder */}

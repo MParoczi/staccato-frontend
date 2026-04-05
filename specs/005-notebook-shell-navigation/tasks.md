@@ -128,13 +128,13 @@
 
 ### Implementation for User Story 5
 
-- [ ] T034 [P] [US5] Create `useCreatePage(notebookId, lessonId)` mutation hook in `src/features/notebooks/hooks/useCreatePage.ts` — calls `createPage`, invalidates `["notebooks", nId, "lessons", lId]`, `["notebooks", nId, "lessons", lId, "pages"]`, `["notebooks", nId, "index"]`. On success: if response has `warning`, show toast. Navigate to new page.
-- [ ] T035 [P] [US5] Create `useDeletePage(notebookId, lessonId)` mutation hook in `src/features/notebooks/hooks/useDeletePage.ts` — calls `deletePage`, invalidates same keys. Handles 422 LAST_PAGE_DELETION error: show toast "Cannot delete the last page in a lesson." On success: navigate to previous page (or next if deleting page 1).
-- [ ] T036 [US5] Create `DeletePageButton` component in `src/features/notebooks/components/DeletePageButton.tsx` — if `isLastPage`, clicking shows error toast immediately (no dialog). Otherwise, opens AlertDialog: "Delete this page? This action cannot be undone." Confirm calls `useDeletePage`. Disable while pending.
-- [ ] T037 [US5] Add "Add Page" button to `NotebookToolbar` in `src/features/notebooks/components/NotebookToolbar.tsx` — visible only on lesson pages. Calls `useCreatePage`. Disable while pending.
-- [ ] T038 [US5] Add floating "Add Page" button to `LessonPage` in `src/features/notebooks/components/LessonPage.tsx` — small button near the page indicator. Same mutation as toolbar button.
-- [ ] T039 [US5] Add `DeletePageButton` to `LessonPage` in `src/features/notebooks/components/LessonPage.tsx` — positioned near the page indicator area. Passes `isLastPage` computed from lesson pages array.
-- [ ] T040 [US5] Add i18n keys for page management to `src/i18n/en.json` and `src/i18n/hu.json` — keys under `notebooks.shell.page.*`
+- [x] T034 [P] [US5] Create `useCreatePage(notebookId, lessonId)` mutation hook in `src/features/notebooks/hooks/useCreatePage.ts` — calls `createPage`, invalidates `["notebooks", nId, "lessons", lId]`, `["notebooks", nId, "lessons", lId, "pages"]`, `["notebooks", nId, "index"]`. On success: if response has `warning`, show toast. Navigate to new page.
+- [x] T035 [P] [US5] Create `useDeletePage(notebookId, lessonId)` mutation hook in `src/features/notebooks/hooks/useDeletePage.ts` — calls `deletePage`, invalidates same keys. Handles 422 LAST_PAGE_DELETION error: show toast "Cannot delete the last page in a lesson." On success: navigate to previous page (or next if deleting page 1).
+- [x] T036 [US5] Create `DeletePageButton` component in `src/features/notebooks/components/DeletePageButton.tsx` — if `isLastPage`, clicking shows error toast immediately (no dialog). Otherwise, opens AlertDialog: "Delete this page? This action cannot be undone." Confirm calls `useDeletePage`. Disable while pending.
+- [x] T037 [US5] Add "Add Page" button to `NotebookToolbar` in `src/features/notebooks/components/NotebookToolbar.tsx` — visible only on lesson pages. Calls `useCreatePage`. Disable while pending.
+- [x] T038 [US5] Add floating "Add Page" button to `LessonPage` in `src/features/notebooks/components/LessonPage.tsx` — small button near the page indicator. Same mutation as toolbar button.
+- [x] T039 [US5] Add `DeletePageButton` to `LessonPage` in `src/features/notebooks/components/LessonPage.tsx` — positioned near the page indicator area. Passes `isLastPage` computed from lesson pages array.
+- [x] T040 [US5] Add i18n keys for page management to `src/i18n/en.json` and `src/i18n/hu.json` — keys under `notebooks.shell.page.*`
 
 **Checkpoint**: Full page CRUD works — add pages (with 10+ warning), delete pages (with confirmation, last-page prevention, correct navigation after deletion).
 

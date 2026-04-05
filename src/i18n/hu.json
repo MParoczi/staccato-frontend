@@ -196,6 +196,15 @@
       "lessonTitle": {
         "required": "A cím megadása kötelező",
         "maxLength": "A cím legfeljebb 200 karakter lehet"
+      },
+      "page": {
+        "addPage": "Oldal hozzáadása",
+        "deleteConfirmTitle": "Törlöd ezt az oldalt?",
+        "deleteConfirmMessage": "Ez a művelet nem vonható vissza.",
+        "deleteConfirm": "Törlés",
+        "lastPageError": "A lecke utolsó oldala nem törölhető.",
+        "deleteError": "Az oldal törlése sikertelen. Kérjük, próbáld újra.",
+        "createError": "Az oldal hozzáadása sikertelen. Kérjük, próbáld újra."
       }
     }
   },
