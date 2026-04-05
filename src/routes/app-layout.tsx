@@ -4,7 +4,7 @@ import { LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useProactiveRefresh } from '@/features/auth/hooks/useProactiveRefresh';
 import { useAuthStore } from '@/stores/authStore';
-import { rawClient } from '@/api/raw-client';
+import { logout } from '@/api/auth';
 import { useCurrentUser } from '@/features/profile/hooks/useCurrentUser';
 import { DeletionBanner } from '@/components/common/DeletionBanner';
 
@@ -14,8 +14,13 @@ export function AppLayout() {
   const { t } = useTranslation('translation', { keyPrefix: 'auth' });
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    rawClient.delete('/auth/logout');
+  const handleLogout = async () => {
+    useAuthStore.getState().startLogout();
+    try {
+      await logout();
+    } catch {
+      // Proceed with local cleanup even if the API call fails
+    }
     useAuthStore.getState().clearAuth();
     void navigate('/login', { replace: true });
   };
