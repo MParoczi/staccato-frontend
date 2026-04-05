@@ -108,10 +108,10 @@
 
 **Purpose**: Accessibility, i18n completeness, and final quality pass
 
-- [ ] T026 [P] Verify all `notebooks.*` i18n keys are present and correct in both `src/i18n/en.json` and `src/i18n/hu.json` — check ICU pluralization for lesson count in Hungarian, verify date formatting uses `Intl.DateTimeFormat` with user locale everywhere, ensure no hardcoded user-facing strings remain in any component
-- [ ] T027 [P] Accessibility pass across all new components — verify: all color swatches in CoverColorPicker have `aria-label` with localized color name; PageSizeSelector and PresetSelector use `role="radiogroup"`/`role="radio"` with `aria-checked`; Dialog/AlertDialog focus trap works (shadcn built-in); DropdownMenu keyboard navigation works (shadcn built-in); all interactive elements meet 44px minimum touch target on mobile; `prefers-reduced-motion` disables hover translate/scale on NotebookCard
-- [ ] T028 [P] Run `pnpm run lint` and fix any linting errors across all new files in `src/features/notebooks/`, `src/lib/constants/notebook-colors.ts`, and `src/lib/types/notebooks.ts`
-- [ ] T029 Final review — verify: NotebooksDashboardPage renders correctly for all states (loading, empty, populated, error); create wizard works end-to-end with validation; delete works with optimistic update and rollback; sort resets on page visit; responsive grid works at all breakpoints; all acceptance scenarios from spec.md are met
+- [x] T026 [P] Verify all `notebooks.*` i18n keys are present and correct in both `src/i18n/en.json` and `src/i18n/hu.json` — check ICU pluralization for lesson count in Hungarian, verify date formatting uses `Intl.DateTimeFormat` with user locale everywhere, ensure no hardcoded user-facing strings remain in any component
+- [x] T027 [P] Accessibility pass across all new components — verify: all color swatches in CoverColorPicker have `aria-label` with localized color name; PageSizeSelector and PresetSelector use `role="radiogroup"`/`role="radio"` with `aria-checked`; Dialog/AlertDialog focus trap works (shadcn built-in); DropdownMenu keyboard navigation works (shadcn built-in); all interactive elements meet 44px minimum touch target on mobile; `prefers-reduced-motion` disables hover translate/scale on NotebookCard
+- [x] T028 [P] Run `pnpm run lint` and fix any linting errors across all new files in `src/features/notebooks/`, `src/lib/constants/notebook-colors.ts`, and `src/lib/types/notebooks.ts`
+- [x] T029 Final review — verify: NotebooksDashboardPage renders correctly for all states (loading, empty, populated, error); create wizard works end-to-end with validation; delete works with optimistic update and rollback; sort resets on page visit; responsive grid works at all breakpoints; all acceptance scenarios from spec.md are met
 
 ---
 

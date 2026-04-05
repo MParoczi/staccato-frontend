@@ -66,7 +66,7 @@ export function NotebookCard({ notebook, onDelete }: NotebookCardProps) {
               <Button
                 variant="ghost"
                 size="icon-xs"
-                className="opacity-0 transition-opacity group-hover/notebook-card:opacity-100 focus:opacity-100"
+                className="relative opacity-0 transition-opacity group-hover/notebook-card:opacity-100 focus:opacity-100 after:absolute after:content-[''] after:-inset-[10px]"
                 onClick={(e) => e.stopPropagation()}
               >
                 <MoreVertical className="size-4" />

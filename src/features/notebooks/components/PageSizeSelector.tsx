@@ -46,7 +46,7 @@ export function PageSizeSelector({ value, onChange }: PageSizeSelectorProps) {
               />
               <span className="text-sm font-medium">{size}</span>
               <span className="text-xs text-muted-foreground">
-                {dims.width} &times; {dims.height} grid
+                {t('notebooks.create.pageSizeDimensions', { width: dims.width, height: dims.height })}
               </span>
             </button>
           );

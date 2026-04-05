@@ -108,6 +108,7 @@
       "customHex": "Custom hex",
       "invalidHex": "Enter a valid 6-digit hex color",
       "presetLabel": "Style preset",
+      "pageSizeDimensions": "{{width}} \u00d7 {{height}} grid",
       "presetNone": "None",
       "next": "Next",
       "back": "Back",

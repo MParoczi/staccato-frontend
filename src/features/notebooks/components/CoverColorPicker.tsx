@@ -63,7 +63,7 @@ export function CoverColorPicker({ value, onChange }: CoverColorPickerProps) {
                   type="button"
                   aria-label={t(color.labelKey)}
                   className={cn(
-                    'flex size-10 items-center justify-center rounded-full transition-all',
+                    'flex size-11 items-center justify-center rounded-full transition-all',
                     isSelected
                       ? 'ring-2 ring-primary ring-offset-2 ring-offset-background'
                       : 'hover:ring-2 hover:ring-foreground/30 hover:ring-offset-1 hover:ring-offset-background',

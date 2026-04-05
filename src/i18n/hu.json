@@ -108,6 +108,7 @@
       "customHex": "Egyedi hex",
       "invalidHex": "Adj meg egy érvényes 6 jegyű hex színt",
       "presetLabel": "Stílusbeállítás",
+      "pageSizeDimensions": "{{width}} \u00d7 {{height}} r\u00e1cs",
       "presetNone": "Nincs",
       "next": "Tovább",
       "back": "Vissza",
