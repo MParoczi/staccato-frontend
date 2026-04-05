@@ -148,9 +148,9 @@
 
 ### Implementation for User Story 6
 
-- [ ] T041 [US6] Add zoom controls to `NotebookToolbar` in `src/features/notebooks/components/NotebookToolbar.tsx` — ZoomIn, ZoomOut, RotateCcw (reset) Lucide icons. Zoom in: `setZoom(zoom + 0.1)`. Zoom out: `setZoom(zoom - 0.1)`. Reset: `setZoom(1)`. Display current zoom percentage between buttons. Uses existing `useUIStore.zoom` and `useUIStore.setZoom` (already clamps 0.25–3.0).
-- [ ] T042 [US6] Wire zoom level into `DottedPaper` rendering in `src/routes/notebook-layout.tsx` — pass `useUIStore.zoom` to the canvas container's transform. Ensure `DottedPaper` in child routes receives current zoom for dot spacing calculation.
-- [ ] T043 [US6] Add i18n keys for zoom controls to `src/i18n/en.json` and `src/i18n/hu.json` — keys under `notebooks.shell.zoom.*`
+- [x] T041 [US6] Add zoom controls to `NotebookToolbar` in `src/features/notebooks/components/NotebookToolbar.tsx` — ZoomIn, ZoomOut, RotateCcw (reset) Lucide icons. Zoom in: `setZoom(zoom + 0.1)`. Zoom out: `setZoom(zoom - 0.1)`. Reset: `setZoom(1)`. Display current zoom percentage between buttons. Uses existing `useUIStore.zoom` and `useUIStore.setZoom` (already clamps 0.25–3.0).
+- [x] T042 [US6] Wire zoom level into `DottedPaper` rendering in `src/routes/notebook-layout.tsx` — pass `useUIStore.zoom` to the canvas container's transform. Ensure `DottedPaper` in child routes receives current zoom for dot spacing calculation.
+- [x] T043 [US6] Add i18n keys for zoom controls to `src/i18n/en.json` and `src/i18n/hu.json` — keys under `notebooks.shell.zoom.*`
 
 **Checkpoint**: Zoom fully functional — in/out/reset, percentage display, only canvas scales.
 

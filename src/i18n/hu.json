@@ -197,6 +197,12 @@
         "required": "A cím megadása kötelező",
         "maxLength": "A cím legfeljebb 200 karakter lehet"
       },
+      "zoom": {
+        "zoomIn": "Nagyítás",
+        "zoomOut": "Kicsinyítés",
+        "resetZoom": "Nagyítás visszaállítása",
+        "percentage": "{{value}}%"
+      },
       "page": {
         "addPage": "Oldal hozzáadása",
         "deleteConfirmTitle": "Törlöd ezt az oldalt?",

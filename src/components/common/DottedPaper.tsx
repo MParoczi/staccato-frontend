@@ -19,18 +19,18 @@ export function DottedPaper({ pageSize, zoom, className, children }: DottedPaper
   );
 
   // Dot spacing scales with the grid dimensions — 5mm grid equivalent
+  // Adjust dot size inversely with zoom to keep dots visually subtle at high zoom
   const dotSpacing = 20;
+  const dotRadius = Math.max(0.5, 1 / zoom);
 
   return (
     <div
       className={cn('relative mx-auto origin-top', className)}
       style={{
         aspectRatio,
-        transform: `scale(${zoom})`,
-        transformOrigin: 'top center',
         backgroundColor: 'var(--notebook-paper)',
         backgroundImage:
-          'radial-gradient(circle, var(--notebook-dot) 1px, transparent 1px)',
+          `radial-gradient(circle, var(--notebook-dot) ${dotRadius}px, transparent ${dotRadius}px)`,
         backgroundSize: `${dotSpacing}px ${dotSpacing}px`,
       }}
     >
