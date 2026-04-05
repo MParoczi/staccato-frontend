@@ -19,11 +19,11 @@
 
 **Purpose**: Types, API module, and validation schemas needed by multiple stories
 
-- [ ] T001 Add `LessonPageWithWarning` interface to `src/lib/types/lessons.ts` and re-export from `src/lib/types/index.ts`
-- [ ] T002 [P] Create page API module `src/api/pages.ts` with `createPage(lessonId)` and `deletePage(lessonId, pageId)` functions per contracts/api-endpoints.md
-- [ ] T003 [P] Create Zod schema `src/features/notebooks/schemas/edit-notebook-schema.ts` — title (required, 1-200 chars, trimmed, no whitespace-only) + coverColor (required, 6-digit hex)
-- [ ] T004 [P] Create Zod schema `src/features/notebooks/schemas/lesson-title-schema.ts` — title (required, 1-200 chars, trimmed, no whitespace-only). Reusable for create and inline edit.
-- [ ] T004a [P] Create unit tests for Zod schemas: `src/features/notebooks/schemas/edit-notebook-schema.test.ts` and `src/features/notebooks/schemas/lesson-title-schema.test.ts` — valid inputs, empty/whitespace-only rejection, length boundary (200 chars), hex color validation (edit-notebook only). Constitution XII: Zod schemas MUST have tests.
+- [x] T001 Add `LessonPageWithWarning` interface to `src/lib/types/lessons.ts` and re-export from `src/lib/types/index.ts`
+- [x] T002 [P] Create page API module `src/api/pages.ts` with `createPage(lessonId)` and `deletePage(lessonId, pageId)` functions per contracts/api-endpoints.md
+- [x] T003 [P] Create Zod schema `src/features/notebooks/schemas/edit-notebook-schema.ts` — title (required, 1-200 chars, trimmed, no whitespace-only) + coverColor (required, 6-digit hex)
+- [x] T004 [P] Create Zod schema `src/features/notebooks/schemas/lesson-title-schema.ts` — title (required, 1-200 chars, trimmed, no whitespace-only). Reusable for create and inline edit.
+- [x] T004a [P] Create unit tests for Zod schemas: `src/features/notebooks/schemas/edit-notebook-schema.test.ts` and `src/features/notebooks/schemas/lesson-title-schema.test.ts` — valid inputs, empty/whitespace-only rejection, length boundary (200 chars), hex color validation (edit-notebook only). Constitution XII: Zod schemas MUST have tests.
 
 ---
 

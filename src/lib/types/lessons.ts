@@ -19,3 +19,8 @@ export interface LessonPage {
   pageNumber: number;
   moduleCount: number;
 }
+
+export interface LessonPageWithWarning {
+  page: LessonPage;
+  warning?: string;
+}
