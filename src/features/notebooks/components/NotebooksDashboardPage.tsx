@@ -9,6 +9,7 @@ import { NotebookCardSkeleton } from './NotebookCardSkeleton';
 import { EmptyState } from './EmptyState';
 import { SortControl, type SortOption } from './SortControl';
 import { CreateNotebookDialog } from './CreateNotebookDialog';
+import { DeleteNotebookDialog } from './DeleteNotebookDialog';
 import type { NotebookSummary } from '@/lib/types';
 
 function sortNotebooks(
@@ -39,6 +40,7 @@ export function NotebooksDashboardPage() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(
     () => location.pathname === '/app/notebooks/new',
   );
+  const [notebookToDelete, setNotebookToDelete] = useState<NotebookSummary | null>(null);
 
   const sortedNotebooks = useMemo(
     () => (notebooks ? sortNotebooks(notebooks, sortBy) : []),
@@ -59,9 +61,14 @@ export function NotebooksDashboardPage() {
     }
   }
 
-  function handleDeleteRequest(_notebook: NotebookSummary) {
-    // Delete dialog integration completed in Phase 5
-    void _notebook;
+  function handleDeleteRequest(notebook: NotebookSummary) {
+    setNotebookToDelete(notebook);
+  }
+
+  function handleDeleteDialogOpenChange(open: boolean) {
+    if (!open) {
+      setNotebookToDelete(null);
+    }
   }
 
   if (isLoading) {
@@ -78,6 +85,7 @@ export function NotebooksDashboardPage() {
           ))}
         </div>
         <CreateNotebookDialog open={dialogOpen} onOpenChange={handleDialogOpenChange} />
+        <DeleteNotebookDialog notebook={notebookToDelete} open={notebookToDelete !== null} onOpenChange={handleDeleteDialogOpenChange} />
       </div>
     );
   }
@@ -93,6 +101,7 @@ export function NotebooksDashboardPage() {
           {t('common.errorBoundary.retry')}
         </Button>
         <CreateNotebookDialog open={dialogOpen} onOpenChange={handleDialogOpenChange} />
+        <DeleteNotebookDialog notebook={notebookToDelete} open={notebookToDelete !== null} onOpenChange={handleDeleteDialogOpenChange} />
       </div>
     );
   }
@@ -107,6 +116,7 @@ export function NotebooksDashboardPage() {
         </div>
         <EmptyState onCreate={handleCreateClick} />
         <CreateNotebookDialog open={dialogOpen} onOpenChange={handleDialogOpenChange} />
+        <DeleteNotebookDialog notebook={notebookToDelete} open={notebookToDelete !== null} onOpenChange={handleDeleteDialogOpenChange} />
       </div>
     );
   }
@@ -148,6 +158,7 @@ export function NotebooksDashboardPage() {
       </div>
 
       <CreateNotebookDialog open={dialogOpen} onOpenChange={handleDialogOpenChange} />
+      <DeleteNotebookDialog notebook={notebookToDelete} open={notebookToDelete !== null} onOpenChange={handleDeleteDialogOpenChange} />
     </div>
   );
 }
