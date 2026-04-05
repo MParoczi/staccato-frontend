@@ -1,11 +1,3 @@
-export function NotebooksDashboard() {
-  return <div>Notebooks Dashboard</div>;
-}
-
-export function NewNotebook() {
-  return <div>New Notebook</div>;
-}
-
 export function NotebookView() {
   return <div>Notebook View</div>;
 }
