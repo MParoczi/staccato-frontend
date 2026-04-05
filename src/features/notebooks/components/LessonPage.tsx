@@ -8,7 +8,6 @@ import { useLesson } from '../hooks/useLesson';
 import { usePageNavigation } from '../hooks/usePageNavigation';
 import { useCreatePage } from '../hooks/useCreatePage';
 import { DeletePageButton } from './DeletePageButton';
-import { useUIStore } from '@/stores/uiStore';
 
 export function LessonPage() {
   const { notebookId, lessonId, pageId } = useParams<{
@@ -17,7 +16,6 @@ export function LessonPage() {
     pageId: string;
   }>();
   const { t } = useTranslation();
-  const zoom = useUIStore((s) => s.zoom);
 
   const { data: notebook } = useNotebook(notebookId!);
   const { data: lesson } = useLesson(notebookId!, lessonId!);
@@ -35,7 +33,6 @@ export function LessonPage() {
     return (
       <DottedPaper
         pageSize={notebook.pageSize}
-        zoom={zoom}
         className="w-full max-w-lg rounded-sm shadow-lg"
       >
         <div className="flex h-full flex-col items-center justify-center gap-4 px-8 py-10">
@@ -56,7 +53,6 @@ export function LessonPage() {
   return (
     <DottedPaper
       pageSize={notebook.pageSize}
-      zoom={zoom}
       className="w-full max-w-lg rounded-sm shadow-lg"
     >
       <div className="flex h-full flex-col px-8 py-10">

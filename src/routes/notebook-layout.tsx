@@ -114,12 +114,7 @@ export function NotebookLayout() {
 
       {/* Canvas area */}
       <div className="relative flex flex-1 items-start justify-center overflow-auto p-4">
-        <div
-          style={{
-            transform: `scale(${zoom})`,
-            transformOrigin: 'top center',
-          }}
-        >
+        <div className="w-full" style={{ zoom }}>
           <Outlet />
         </div>
         <PageNavigationArrows
