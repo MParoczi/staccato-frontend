@@ -41,4 +41,35 @@ describe('authStore', () => {
     const state = useAuthStore.getState();
     expect(state.accessToken).toBe('second');
   });
+
+  it('has isLoggingOut false initially', () => {
+    expect(useAuthStore.getState().isLoggingOut).toBe(false);
+  });
+
+  it('startLogout sets isLoggingOut to true', () => {
+    useAuthStore.getState().startLogout();
+    expect(useAuthStore.getState().isLoggingOut).toBe(true);
+  });
+
+  it('clearAuth resets isLoggingOut to false', () => {
+    useAuthStore.getState().startLogout();
+    expect(useAuthStore.getState().isLoggingOut).toBe(true);
+
+    useAuthStore.getState().clearAuth();
+    expect(useAuthStore.getState().isLoggingOut).toBe(false);
+  });
+
+  it('startLogout followed by clearAuth fully resets logout state', () => {
+    useAuthStore.getState().setAuth('tok-xyz', 300);
+    useAuthStore.getState().startLogout();
+
+    expect(useAuthStore.getState().isLoggingOut).toBe(true);
+    expect(useAuthStore.getState().accessToken).toBe('tok-xyz');
+
+    useAuthStore.getState().clearAuth();
+
+    expect(useAuthStore.getState().isLoggingOut).toBe(false);
+    expect(useAuthStore.getState().accessToken).toBeNull();
+    expect(useAuthStore.getState().expiresAt).toBeNull();
+  });
 });
