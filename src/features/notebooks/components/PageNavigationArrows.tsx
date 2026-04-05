@@ -13,7 +13,7 @@ export function PageNavigationArrows({ prevUrl, nextUrl }: PageNavigationArrowsP
   const { t } = useTranslation();
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-4 z-10 flex items-center justify-between px-4">
+    <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-between px-4">
       <Button
         variant="ghost"
         size="icon"
