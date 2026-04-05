@@ -80,7 +80,7 @@ export function NotebookToolbar({
           >
             <ZoomOut className="size-4" aria-hidden="true" />
           </Button>
-          <span className="min-w-[3.5ch] text-center text-xs tabular-nums text-muted-foreground">
+          <span className="min-w-[4ch] text-center text-xs tabular-nums text-muted-foreground">
             {t('notebooks.shell.zoom.percentage', { value: Math.round(zoom * 100) })}
           </span>
           <Button
