@@ -105,7 +105,7 @@ export function NotebookToolbar({
 
         {/* Page indicator */}
         {globalPageNumber !== null && (
-          <Badge variant="secondary" className="tabular-nums">
+          <Badge variant="secondary" className="tabular-nums" aria-live="polite">
             {globalPageNumber}
           </Badge>
         )}

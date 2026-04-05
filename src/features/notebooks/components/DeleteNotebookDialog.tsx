@@ -29,7 +29,7 @@ export function DeleteNotebookDialog({
   function handleConfirm() {
     if (!notebook) return;
     deleteMutation.mutate(notebook.id, {
-      onSettled: () => {
+      onSuccess: () => {
         onOpenChange(false);
       },
     });

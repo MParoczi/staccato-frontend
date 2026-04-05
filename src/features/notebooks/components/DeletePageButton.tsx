@@ -48,6 +48,9 @@ export function DeletePageButton({
         setOpen(false);
         onDeleted?.();
       },
+      onError: () => {
+        toast.error(t('notebooks.shell.page.deleteError'));
+      },
     });
   }
 

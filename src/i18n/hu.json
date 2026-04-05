@@ -197,6 +197,10 @@
         "required": "A cím megadása kötelező",
         "maxLength": "A cím legfeljebb 200 karakter lehet"
       },
+      "nav": {
+        "previousPage": "Előző oldal",
+        "nextPage": "Következő oldal"
+      },
       "zoom": {
         "zoomIn": "Nagyítás",
         "zoomOut": "Kicsinyítés",

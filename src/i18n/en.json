@@ -197,6 +197,10 @@
         "required": "Title is required",
         "maxLength": "Title must be 200 characters or fewer"
       },
+      "nav": {
+        "previousPage": "Previous page",
+        "nextPage": "Next page"
+      },
       "zoom": {
         "zoomIn": "Zoom in",
         "zoomOut": "Zoom out",
