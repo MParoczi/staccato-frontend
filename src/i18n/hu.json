@@ -131,6 +131,91 @@
       "slateBlue": "Palakék",
       "deepTeal": "Mélyzöld",
       "warmTerracotta": "Terrakotta"
+    },
+    "shell": {
+      "toolbar": {
+        "toggleSidebar": "Oldalsáv kapcsolása",
+        "styleEditor": "Stílusszerkesztő",
+        "export": "Exportálás",
+        "delete": "Füzet törlése",
+        "comingSoon": "Hamarosan"
+      },
+      "cover": {
+        "openNotebook": "Füzet megnyitása",
+        "instrument": "Hangszer",
+        "owner": "Tulajdonos",
+        "createdAt": "Létrehozva",
+        "edit": "Füzet szerkesztése"
+      },
+      "edit": {
+        "title": "Füzet szerkesztése",
+        "titleLabel": "Cím",
+        "titleRequired": "A cím megadása kötelező",
+        "titleMaxLength": "A cím legfeljebb 200 karakter lehet",
+        "invalidHex": "Adj meg egy érvényes 6 jegyű hex színt",
+        "coverColorLabel": "Borítószín",
+        "instrumentLabel": "Hangszer",
+        "pageSizeLabel": "Oldalméret",
+        "immutabilityNotice": "Ez a létrehozás után nem módosítható",
+        "submit": "Változtatások mentése",
+        "submitting": "Mentés...",
+        "error": "A füzet frissítése sikertelen. Kérjük, próbáld újra."
+      },
+      "index": {
+        "heading": "TARTALOMJEGYZÉK",
+        "emptyMessage": "Még nincsenek leckék.",
+        "emptyAction": "Nyisd meg az oldalsávot az első lecke létrehozásához.",
+        "pageNumber": "{{number}}"
+      },
+      "lesson": {
+        "pageIndicator": "{{current}} / {{total}}. oldal",
+        "canvasPlaceholder": "A vászon és a modulszerkesztő hamarosan elérhető.",
+        "notFound": "Az oldal nem található",
+        "backToIndex": "Vissza a tartalomjegyzékhez"
+      },
+      "sidebar": {
+        "empty": "Még nincsenek leckék",
+        "addLesson": "Lecke hozzáadása",
+        "editTitle": "Lecke címének szerkesztése",
+        "deleteLesson": "Lecke törlése",
+        "editError": "A lecke címének frissítése sikertelen. Kérjük, próbáld újra."
+      },
+      "createLesson": {
+        "title": "Új lecke",
+        "titleLabel": "Cím",
+        "submit": "Létrehozás",
+        "submitting": "Létrehozás...",
+        "error": "A lecke létrehozása sikertelen. Kérjük, próbáld újra."
+      },
+      "deleteLesson": {
+        "title": "Törlöd: {{title}}?",
+        "message": "Ezzel véglegesen törlöd az összes oldalt. Ez a művelet nem vonható vissza.",
+        "confirm": "Törlés",
+        "error": "A lecke törlése sikertelen. Kérjük, próbáld újra."
+      },
+      "lessonTitle": {
+        "required": "A cím megadása kötelező",
+        "maxLength": "A cím legfeljebb 200 karakter lehet"
+      },
+      "nav": {
+        "previousPage": "Előző oldal",
+        "nextPage": "Következő oldal"
+      },
+      "zoom": {
+        "zoomIn": "Nagyítás",
+        "zoomOut": "Kicsinyítés",
+        "resetZoom": "Nagyítás visszaállítása",
+        "percentage": "{{value}}%"
+      },
+      "page": {
+        "addPage": "Oldal hozzáadása",
+        "deleteConfirmTitle": "Törlöd ezt az oldalt?",
+        "deleteConfirmMessage": "Ez a művelet nem vonható vissza.",
+        "deleteConfirm": "Törlés",
+        "lastPageError": "A lecke utolsó oldala nem törölhető.",
+        "deleteError": "Az oldal törlése sikertelen. Kérjük, próbáld újra.",
+        "createError": "Az oldal hozzáadása sikertelen. Kérjük, próbáld újra."
+      }
     }
   },
   "editor": {

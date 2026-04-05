@@ -131,6 +131,91 @@
       "slateBlue": "Slate Blue",
       "deepTeal": "Deep Teal",
       "warmTerracotta": "Warm Terracotta"
+    },
+    "shell": {
+      "toolbar": {
+        "toggleSidebar": "Toggle sidebar",
+        "styleEditor": "Style Editor",
+        "export": "Export",
+        "delete": "Delete notebook",
+        "comingSoon": "Coming soon"
+      },
+      "cover": {
+        "openNotebook": "Open Notebook",
+        "instrument": "Instrument",
+        "owner": "Owner",
+        "createdAt": "Created",
+        "edit": "Edit notebook"
+      },
+      "edit": {
+        "title": "Edit Notebook",
+        "titleLabel": "Title",
+        "titleRequired": "Title is required",
+        "titleMaxLength": "Title must be 200 characters or fewer",
+        "invalidHex": "Enter a valid 6-digit hex color",
+        "coverColorLabel": "Cover color",
+        "instrumentLabel": "Instrument",
+        "pageSizeLabel": "Page size",
+        "immutabilityNotice": "This cannot be changed after creation",
+        "submit": "Save changes",
+        "submitting": "Saving...",
+        "error": "Failed to update notebook. Please try again."
+      },
+      "index": {
+        "heading": "INDEX",
+        "emptyMessage": "No lessons yet.",
+        "emptyAction": "Open the sidebar to add your first lesson.",
+        "pageNumber": "{{number}}"
+      },
+      "lesson": {
+        "pageIndicator": "Page {{current}} / {{total}}",
+        "canvasPlaceholder": "Canvas and module editor coming soon.",
+        "notFound": "Page not found",
+        "backToIndex": "Back to index"
+      },
+      "sidebar": {
+        "empty": "No lessons yet",
+        "addLesson": "Add Lesson",
+        "editTitle": "Edit lesson title",
+        "deleteLesson": "Delete lesson",
+        "editError": "Failed to update lesson title. Please try again."
+      },
+      "createLesson": {
+        "title": "New Lesson",
+        "titleLabel": "Title",
+        "submit": "Create",
+        "submitting": "Creating...",
+        "error": "Failed to create lesson. Please try again."
+      },
+      "deleteLesson": {
+        "title": "Delete {{title}}?",
+        "message": "This will permanently delete all pages. This action cannot be undone.",
+        "confirm": "Delete",
+        "error": "Failed to delete lesson. Please try again."
+      },
+      "lessonTitle": {
+        "required": "Title is required",
+        "maxLength": "Title must be 200 characters or fewer"
+      },
+      "nav": {
+        "previousPage": "Previous page",
+        "nextPage": "Next page"
+      },
+      "zoom": {
+        "zoomIn": "Zoom in",
+        "zoomOut": "Zoom out",
+        "resetZoom": "Reset zoom",
+        "percentage": "{{value}}%"
+      },
+      "page": {
+        "addPage": "Add Page",
+        "deleteConfirmTitle": "Delete this page?",
+        "deleteConfirmMessage": "This action cannot be undone.",
+        "deleteConfirm": "Delete",
+        "lastPageError": "Cannot delete the last page in a lesson.",
+        "deleteError": "Failed to delete page. Please try again.",
+        "createError": "Failed to add page. Please try again."
+      }
     }
   },
   "editor": {

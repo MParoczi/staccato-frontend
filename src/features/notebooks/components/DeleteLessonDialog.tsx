@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,28 +10,35 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { useDeleteNotebook } from '../hooks/useDeleteNotebook';
-import type { NotebookSummary } from '@/lib/types';
+import { useDeleteLesson } from '../hooks/useDeleteLesson';
+import type { LessonSummary } from '@/lib/types';
 
-interface DeleteNotebookDialogProps {
-  notebook: NotebookSummary | null;
+interface DeleteLessonDialogProps {
+  lesson: LessonSummary;
+  notebookId: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onDeleted?: () => void;
 }
 
-export function DeleteNotebookDialog({
-  notebook,
+export function DeleteLessonDialog({
+  lesson,
+  notebookId,
   open,
   onOpenChange,
-}: DeleteNotebookDialogProps) {
+  onDeleted,
+}: DeleteLessonDialogProps) {
   const { t } = useTranslation();
-  const deleteMutation = useDeleteNotebook();
+  const deleteMutation = useDeleteLesson(notebookId);
 
   function handleConfirm() {
-    if (!notebook) return;
-    deleteMutation.mutate(notebook.id, {
+    deleteMutation.mutate(lesson.id, {
       onSuccess: () => {
         onOpenChange(false);
+        onDeleted?.();
+      },
+      onError: () => {
+        toast.error(t('notebooks.shell.deleteLesson.error'));
       },
     });
   }
@@ -40,10 +48,10 @@ export function DeleteNotebookDialog({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            {t('notebooks.delete.title', { title: notebook?.title ?? '' })}
+            {t('notebooks.shell.deleteLesson.title', { title: lesson.title })}
           </AlertDialogTitle>
           <AlertDialogDescription>
-            {t('notebooks.delete.message')}
+            {t('notebooks.shell.deleteLesson.message')}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -55,7 +63,7 @@ export function DeleteNotebookDialog({
             disabled={deleteMutation.isPending}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            {t('notebooks.delete.confirm')}
+            {t('notebooks.shell.deleteLesson.confirm')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

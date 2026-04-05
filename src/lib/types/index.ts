@@ -33,6 +33,7 @@ export type {
   LessonSummary,
   LessonDetail,
   LessonPage,
+  LessonPageWithWarning,
 } from './lessons';
 
 export type { BuildingBlock, Module } from './modules';
