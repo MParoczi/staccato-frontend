@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { Bookmark, Palette, Download, Trash2, Plus, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
+import { BookOpen, Palette, Download, Trash2, Plus, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -49,12 +49,13 @@ export function NotebookToolbar({
 
         {/* Sidebar toggle */}
         <Button
-          variant="ghost"
-          size="icon-sm"
+          variant="outline"
+          size="sm"
           onClick={() => setSidebarOpen(!sidebarOpen)}
           aria-label={t('notebooks.shell.toolbar.toggleSidebar')}
         >
-          <Bookmark className="size-4" aria-hidden="true" />
+          <BookOpen className="size-4" aria-hidden="true" />
+          {t('notebooks.shell.toolbar.lessons')}
         </Button>
 
         {/* Add Page button — visible only on lesson pages */}
