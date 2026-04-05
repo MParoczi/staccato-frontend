@@ -31,10 +31,10 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T005 [P] Create `useNotebooks` hook in `src/features/notebooks/hooks/useNotebooks.ts` — wrap `useQuery` with key `["notebooks"]`, fetcher `getNotebooks()` from `src/api/notebooks.ts`, `staleTime: 0` (refetch on window focus per constitution XI); return the query result
-- [ ] T006 [P] Create Zod schema in `src/features/notebooks/schemas/create-notebook-schema.ts` — fields: `title` (string, min 1, max 200, trimmed, refine to reject whitespace-only), `instrumentId` (string, min 1), `pageSize` (z.enum for A4/A5/A6/B5/B6), `coverColor` (string, regex for valid 6-digit hex with or without #, transform to always include `#` prefix for API consistency); export schema and inferred type
+- [x] T005 [P] Create `useNotebooks` hook in `src/features/notebooks/hooks/useNotebooks.ts` — wrap `useQuery` with key `["notebooks"]`, fetcher `getNotebooks()` from `src/api/notebooks.ts`, `staleTime: 0` (refetch on window focus per constitution XI); return the query result
+- [x] T006 [P] Create Zod schema in `src/features/notebooks/schemas/create-notebook-schema.ts` — fields: `title` (string, min 1, max 200, trimmed, refine to reject whitespace-only), `instrumentId` (string, min 1), `pageSize` (z.enum for A4/A5/A6/B5/B6), `coverColor` (string, regex for valid 6-digit hex with or without #, transform to always include `#` prefix for API consistency); export schema and inferred type
 
-- [ ] T006b [P] Write unit tests for Zod schema in `src/features/notebooks/schemas/create-notebook-schema.test.ts` — 100% branch coverage per constitution XII; test cases: valid input passes, empty title rejected, whitespace-only title rejected, title exceeding 200 chars rejected, missing instrumentId rejected, invalid pageSize rejected, valid 6-digit hex with `#` accepted, valid 6-digit hex without `#` accepted, 3-digit hex shorthand rejected, non-hex string rejected, empty coverColor rejected
+- [x] T006b [P] Write unit tests for Zod schema in `src/features/notebooks/schemas/create-notebook-schema.test.ts` — 100% branch coverage per constitution XII; test cases: valid input passes, empty title rejected, whitespace-only title rejected, title exceeding 200 chars rejected, missing instrumentId rejected, invalid pageSize rejected, valid 6-digit hex with `#` accepted, valid 6-digit hex without `#` accepted, 3-digit hex shorthand rejected, non-hex string rejected, empty coverColor rejected
 
 **Checkpoint**: Foundation ready — user story implementation can now begin
 
