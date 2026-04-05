@@ -139,6 +139,27 @@
         "export": "Exportálás",
         "delete": "Füzet törlése",
         "comingSoon": "Hamarosan"
+      },
+      "cover": {
+        "openNotebook": "Füzet megnyitása",
+        "instrument": "Hangszer",
+        "owner": "Tulajdonos",
+        "createdAt": "Létrehozva",
+        "edit": "Füzet szerkesztése"
+      },
+      "edit": {
+        "title": "Füzet szerkesztése",
+        "titleLabel": "Cím",
+        "titleRequired": "A cím megadása kötelező",
+        "titleMaxLength": "A cím legfeljebb 200 karakter lehet",
+        "invalidHex": "Adj meg egy érvényes 6 jegyű hex színt",
+        "coverColorLabel": "Borítószín",
+        "instrumentLabel": "Hangszer",
+        "pageSizeLabel": "Oldalméret",
+        "immutabilityNotice": "Ez a létrehozás után nem módosítható",
+        "submit": "Változtatások mentése",
+        "submitting": "Mentés...",
+        "error": "A füzet frissítése sikertelen. Kérjük, próbáld újra."
       }
     }
   },
