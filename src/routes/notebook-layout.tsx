@@ -17,6 +17,7 @@ import { usePageNavigation } from '@/features/notebooks/hooks/usePageNavigation'
 import { useKeyboardNavigation } from '@/features/notebooks/hooks/useKeyboardNavigation';
 import { NotebookToolbar } from '@/features/notebooks/components/NotebookToolbar';
 import { PageNavigationArrows } from '@/features/notebooks/components/PageNavigationArrows';
+import { NotebookSidebar } from '@/features/notebooks/components/NotebookSidebar';
 
 export function NotebookLayout() {
   const { t } = useTranslation();
@@ -99,7 +100,11 @@ export function NotebookLayout() {
               {t('notebooks.shell.toolbar.toggleSidebar')}
             </SheetDescription>
           </SheetHeader>
-          {/* Sidebar content added in Phase 6 */}
+          <NotebookSidebar
+            notebook={notebook}
+            lessons={lessonsQuery.data ?? []}
+            isLoading={lessonsQuery.isPending}
+          />
         </SheetContent>
       </Sheet>
 

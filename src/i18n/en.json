@@ -172,6 +172,30 @@
         "canvasPlaceholder": "Canvas and module editor coming soon.",
         "notFound": "Page not found",
         "backToIndex": "Back to index"
+      },
+      "sidebar": {
+        "empty": "No lessons yet",
+        "addLesson": "Add Lesson",
+        "editTitle": "Edit lesson title",
+        "deleteLesson": "Delete lesson",
+        "editError": "Failed to update lesson title. Please try again."
+      },
+      "createLesson": {
+        "title": "New Lesson",
+        "titleLabel": "Title",
+        "submit": "Create",
+        "submitting": "Creating...",
+        "error": "Failed to create lesson. Please try again."
+      },
+      "deleteLesson": {
+        "title": "Delete {{title}}?",
+        "message": "This will permanently delete all pages. This action cannot be undone.",
+        "confirm": "Delete",
+        "error": "Failed to delete lesson. Please try again."
+      },
+      "lessonTitle": {
+        "required": "Title is required",
+        "maxLength": "Title must be 200 characters or fewer"
       }
     }
   },
