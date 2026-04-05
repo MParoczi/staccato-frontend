@@ -25,6 +25,8 @@ export type {
   NotebookModuleStyle,
   NotebookIndex,
   NotebookIndexEntry,
+  CreateNotebookRequest,
+  CreateNotebookStyleInput,
 } from './notebooks';
 
 export type {

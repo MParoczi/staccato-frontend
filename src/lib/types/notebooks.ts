@@ -49,3 +49,13 @@ export interface NotebookIndexEntry {
   createdAt: string;
   startPageNumber: number;
 }
+
+export type CreateNotebookStyleInput = Omit<NotebookModuleStyle, 'id' | 'notebookId'>;
+
+export interface CreateNotebookRequest {
+  title: string;
+  instrumentId: string;
+  pageSize: PageSize;
+  coverColor: string;
+  styles?: CreateNotebookStyleInput[];
+}

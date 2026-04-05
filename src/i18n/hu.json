@@ -78,10 +78,59 @@
   },
   "notebooks": {
     "dashboard": {
-      "title": "Füzeteim"
+      "title": "Füzeteim",
+      "sortLastUpdated": "Utolsó frissítés",
+      "sortCreatedDate": "Létrehozás dátuma",
+      "sortTitle": "Cím (A\u2013Z)",
+      "createButton": "Új füzet létrehozása",
+      "emptyTitle": "Még nincsenek füzeteid",
+      "emptyMessage": "Hozd létre az első füzetedet!",
+      "emptyAction": "Füzet létrehozása",
+      "addCard": "Új füzet"
+    },
+    "card": {
+      "lessons": "{count, plural, one {# lecke} other {# lecke}}",
+      "updated": "Frissítve"
     },
     "create": {
-      "title": "Új füzet"
+      "title": "Új füzet",
+      "stepBasics": "Alapok",
+      "stepAppearance": "Megjelenés",
+      "titleLabel": "Cím",
+      "titleRequired": "A cím megadása kötelező",
+      "titleMaxLength": "A cím legfeljebb 200 karakter lehet",
+      "instrumentLabel": "Hangszer",
+      "instrumentRequired": "Kérjük, válassz hangszert",
+      "pageSizeLabel": "Oldalméret",
+      "pageSizeRequired": "Kérjük, válassz oldalméretet",
+      "immutabilityWarning": "Ezek később nem módosíthatók",
+      "coverColorLabel": "Borítószín",
+      "customHex": "Egyedi hex",
+      "invalidHex": "Adj meg egy érvényes 6 jegyű hex színt",
+      "presetLabel": "Stílusbeállítás",
+      "pageSizeDimensions": "{{width}} \u00d7 {{height}} r\u00e1cs",
+      "presetNone": "Nincs",
+      "next": "Tovább",
+      "back": "Vissza",
+      "submit": "Létrehozás",
+      "submitting": "Létrehozás...",
+      "error": "A füzet létrehozása sikertelen. Kérjük, próbáld újra."
+    },
+    "delete": {
+      "title": "Törlöd: {{title}}?",
+      "message": "Ezzel véglegesen törlöd az összes leckét és tartalmat. Ez a művelet nem vonható vissza.",
+      "confirm": "Törlés",
+      "error": "A füzet törlése sikertelen. Kérjük, próbáld újra."
+    },
+    "colors": {
+      "leatherBrown": "Bőrbarna",
+      "darkNavy": "Sötétkék",
+      "forestGreen": "Erdőzöld",
+      "burgundy": "Bordó",
+      "charcoal": "Szénszürke",
+      "slateBlue": "Palakék",
+      "deepTeal": "Mélyzöld",
+      "warmTerracotta": "Terrakotta"
     }
   },
   "editor": {

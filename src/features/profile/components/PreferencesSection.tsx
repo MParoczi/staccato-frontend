@@ -20,7 +20,7 @@ import { Button } from '@/components/ui/button';
 import type { User, Language, PageSize } from '@/lib/types';
 import { useLanguageSwitch } from '../hooks/useLanguageSwitch';
 import { useUpdatePreferences } from '../hooks/useUpdatePreferences';
-import { useInstruments } from '../hooks/useInstruments';
+import { useInstruments } from '@/hooks/useInstruments';
 
 const PAGE_SIZE_OPTIONS: PageSize[] = ['A4', 'A5', 'A6', 'B5', 'B6'];
 

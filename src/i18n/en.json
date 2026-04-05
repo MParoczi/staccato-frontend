@@ -78,10 +78,59 @@
   },
   "notebooks": {
     "dashboard": {
-      "title": "My Notebooks"
+      "title": "My Notebooks",
+      "sortLastUpdated": "Last updated",
+      "sortCreatedDate": "Created date",
+      "sortTitle": "Title (A\u2013Z)",
+      "createButton": "Create Notebook",
+      "emptyTitle": "No notebooks yet",
+      "emptyMessage": "Create your first notebook!",
+      "emptyAction": "Create Notebook",
+      "addCard": "New notebook"
+    },
+    "card": {
+      "lessons": "{count, plural, one {# lesson} other {# lessons}}",
+      "updated": "Updated"
     },
     "create": {
-      "title": "New Notebook"
+      "title": "New Notebook",
+      "stepBasics": "Basics",
+      "stepAppearance": "Appearance",
+      "titleLabel": "Title",
+      "titleRequired": "Title is required",
+      "titleMaxLength": "Title must be 200 characters or fewer",
+      "instrumentLabel": "Instrument",
+      "instrumentRequired": "Please select an instrument",
+      "pageSizeLabel": "Page size",
+      "pageSizeRequired": "Please select a page size",
+      "immutabilityWarning": "These cannot be changed later",
+      "coverColorLabel": "Cover color",
+      "customHex": "Custom hex",
+      "invalidHex": "Enter a valid 6-digit hex color",
+      "presetLabel": "Style preset",
+      "pageSizeDimensions": "{{width}} \u00d7 {{height}} grid",
+      "presetNone": "None",
+      "next": "Next",
+      "back": "Back",
+      "submit": "Create",
+      "submitting": "Creating...",
+      "error": "Failed to create notebook. Please try again."
+    },
+    "delete": {
+      "title": "Delete {{title}}?",
+      "message": "This will permanently delete all lessons and content. This action cannot be undone.",
+      "confirm": "Delete",
+      "error": "Failed to delete notebook. Please try again."
+    },
+    "colors": {
+      "leatherBrown": "Leather Brown",
+      "darkNavy": "Dark Navy",
+      "forestGreen": "Forest Green",
+      "burgundy": "Burgundy",
+      "charcoal": "Charcoal",
+      "slateBlue": "Slate Blue",
+      "deepTeal": "Deep Teal",
+      "warmTerracotta": "Warm Terracotta"
     }
   },
   "editor": {
