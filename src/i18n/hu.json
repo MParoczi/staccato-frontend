@@ -172,6 +172,30 @@
         "canvasPlaceholder": "A vászon és a modulszerkesztő hamarosan elérhető.",
         "notFound": "Az oldal nem található",
         "backToIndex": "Vissza a tartalomjegyzékhez"
+      },
+      "sidebar": {
+        "empty": "Még nincsenek leckék",
+        "addLesson": "Lecke hozzáadása",
+        "editTitle": "Lecke címének szerkesztése",
+        "deleteLesson": "Lecke törlése",
+        "editError": "A lecke címének frissítése sikertelen. Kérjük, próbáld újra."
+      },
+      "createLesson": {
+        "title": "Új lecke",
+        "titleLabel": "Cím",
+        "submit": "Létrehozás",
+        "submitting": "Létrehozás...",
+        "error": "A lecke létrehozása sikertelen. Kérjük, próbáld újra."
+      },
+      "deleteLesson": {
+        "title": "Törlöd: {{title}}?",
+        "message": "Ezzel véglegesen törlöd az összes oldalt. Ez a művelet nem vonható vissza.",
+        "confirm": "Törlés",
+        "error": "A lecke törlése sikertelen. Kérjük, próbáld újra."
+      },
+      "lessonTitle": {
+        "required": "A cím megadása kötelező",
+        "maxLength": "A cím legfeljebb 200 karakter lehet"
       }
     }
   },
