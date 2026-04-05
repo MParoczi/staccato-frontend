@@ -135,6 +135,7 @@
     "shell": {
       "toolbar": {
         "toggleSidebar": "Toggle sidebar",
+        "lessons": "Lessons",
         "styleEditor": "Style Editor",
         "export": "Export",
         "delete": "Delete notebook",

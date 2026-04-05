@@ -135,6 +135,7 @@
     "shell": {
       "toolbar": {
         "toggleSidebar": "Oldalsáv kapcsolása",
+        "lessons": "Leckék",
         "styleEditor": "Stílusszerkesztő",
         "export": "Exportálás",
         "delete": "Füzet törlése",
