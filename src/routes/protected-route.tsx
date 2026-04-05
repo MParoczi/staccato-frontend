@@ -6,13 +6,14 @@ import { silentRefresh } from '@/api/auth';
 
 export function ProtectedRoute() {
   const accessToken = useAuthStore((s) => s.accessToken);
+  const isLoggingOut = useAuthStore((s) => s.isLoggingOut);
   const location = useLocation();
   const [status, setStatus] = useState<'idle' | 'refreshing' | 'failed'>(
     accessToken ? 'idle' : 'refreshing',
   );
 
   useEffect(() => {
-    if (accessToken) return;
+    if (accessToken || isLoggingOut) return;
 
     let cancelled = false;
     silentRefresh()
@@ -26,10 +27,14 @@ export function ProtectedRoute() {
     return () => {
       cancelled = true;
     };
-  }, [accessToken]);
+  }, [accessToken, isLoggingOut]);
 
   if (accessToken) {
     return <Outlet />;
+  }
+
+  if (isLoggingOut) {
+    return <Navigate to="/login" replace />;
   }
 
   if (status === 'refreshing') {

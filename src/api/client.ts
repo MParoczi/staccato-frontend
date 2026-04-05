@@ -36,6 +36,9 @@ let isRefreshing = false;
 let refreshPromise: Promise<string> | null = null;
 
 export function silentRefresh(): Promise<string> {
+  if (useAuthStore.getState().isLoggingOut) {
+    return Promise.reject(new Error('Logout in progress'));
+  }
   if (!isRefreshing) {
     isRefreshing = true;
     refreshPromise = rawClient
