@@ -160,11 +160,11 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T044 [P] Review and complete Hungarian translations in `src/i18n/hu.json` for all `notebooks.shell.*` keys added in phases 3–8
-- [ ] T045 [P] Add aria-labels to all interactive elements: navigation arrows ("Previous page"/"Next page"), sidebar toggle ("Toggle lesson sidebar"), zoom buttons, page indicators (aria-live="polite")
-- [ ] T046 Verify all dialogs (EditNotebook, CreateLesson, DeleteLesson, DeletePage, DeleteNotebook) have consistent earthy theming — no default cold gray. Confirm button disabled states and toast error patterns are uniform.
-- [ ] T047 Verify page sequence navigation end-to-end: cover → index → all lesson pages → last page (next disabled). Verify global page numbers are correct. Verify cross-lesson boundary navigation works.
-- [ ] T048 Run `pnpm run lint` and `pnpm test` — fix any TypeScript, ESLint, or test failures introduced by new code.
+- [x] T044 [P] Review and complete Hungarian translations in `src/i18n/hu.json` for all `notebooks.shell.*` keys added in phases 3–8
+- [x] T045 [P] Add aria-labels to all interactive elements: navigation arrows ("Previous page"/"Next page"), sidebar toggle ("Toggle lesson sidebar"), zoom buttons, page indicators (aria-live="polite")
+- [x] T046 Verify all dialogs (EditNotebook, CreateLesson, DeleteLesson, DeletePage, DeleteNotebook) have consistent earthy theming — no default cold gray. Confirm button disabled states and toast error patterns are uniform.
+- [x] T047 Verify page sequence navigation end-to-end: cover → index → all lesson pages → last page (next disabled). Verify global page numbers are correct. Verify cross-lesson boundary navigation works.
+- [x] T048 Run `pnpm run lint` and `pnpm test` — fix any TypeScript, ESLint, or test failures introduced by new code.
 
 ---
 

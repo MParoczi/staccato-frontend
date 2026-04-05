@@ -71,6 +71,7 @@ export function LessonPage() {
           <div className="flex shrink-0 items-center gap-1">
             <span
               className="text-xs tabular-nums opacity-50"
+              aria-live="polite"
             >
               {t('notebooks.shell.lesson.pageIndicator', {
                 current: pageNav.pageNumberInLesson ?? page.pageNumber,
