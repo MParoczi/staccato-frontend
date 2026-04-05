@@ -25,6 +25,7 @@ export function NotebookLayout() {
   const { lessonId } = useParams<{ lessonId: string }>();
   const sidebarOpen = useUIStore((s) => s.sidebarOpen);
   const setSidebarOpen = useUIStore((s) => s.setSidebarOpen);
+  const zoom = useUIStore((s) => s.zoom);
   const setZoom = useUIStore((s) => s.setZoom);
 
   // Reset zoom and sidebar on notebookId change (FR-013)
@@ -113,7 +114,14 @@ export function NotebookLayout() {
 
       {/* Canvas area */}
       <div className="relative flex flex-1 items-start justify-center overflow-auto p-4">
-        <Outlet />
+        <div
+          style={{
+            transform: `scale(${zoom})`,
+            transformOrigin: 'top center',
+          }}
+        >
+          <Outlet />
+        </div>
         <PageNavigationArrows
           prevUrl={pageNav.prevUrl}
           nextUrl={pageNav.nextUrl}

@@ -197,6 +197,12 @@
         "required": "Title is required",
         "maxLength": "Title must be 200 characters or fewer"
       },
+      "zoom": {
+        "zoomIn": "Zoom in",
+        "zoomOut": "Zoom out",
+        "resetZoom": "Reset zoom",
+        "percentage": "{{value}}%"
+      },
       "page": {
         "addPage": "Add Page",
         "deleteConfirmTitle": "Delete this page?",

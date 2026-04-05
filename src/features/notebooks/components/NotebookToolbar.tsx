@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { Bookmark, Palette, Download, Trash2, Plus } from 'lucide-react';
+import { Bookmark, Palette, Download, Trash2, Plus, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -26,6 +26,8 @@ export function NotebookToolbar({
   const { t } = useTranslation();
   const sidebarOpen = useUIStore((s) => s.sidebarOpen);
   const setSidebarOpen = useUIStore((s) => s.setSidebarOpen);
+  const zoom = useUIStore((s) => s.zoom);
+  const setZoom = useUIStore((s) => s.setZoom);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
   const createPageMutation = useCreatePage(notebook.id, lessonId ?? '');
@@ -68,9 +70,35 @@ export function NotebookToolbar({
           </Button>
         )}
 
-        {/* Zoom controls placeholder */}
+        {/* Zoom controls */}
         <div className="flex items-center gap-1">
-          {/* Zoom buttons added in Phase 8 */}
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={() => setZoom(zoom - 0.1)}
+            aria-label={t('notebooks.shell.zoom.zoomOut')}
+          >
+            <ZoomOut className="size-4" aria-hidden="true" />
+          </Button>
+          <span className="min-w-[4ch] text-center text-xs tabular-nums text-muted-foreground">
+            {t('notebooks.shell.zoom.percentage', { value: Math.round(zoom * 100) })}
+          </span>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={() => setZoom(zoom + 0.1)}
+            aria-label={t('notebooks.shell.zoom.zoomIn')}
+          >
+            <ZoomIn className="size-4" aria-hidden="true" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={() => setZoom(1)}
+            aria-label={t('notebooks.shell.zoom.resetZoom')}
+          >
+            <RotateCcw className="size-3.5" aria-hidden="true" />
+          </Button>
         </div>
 
         <div className="flex-1" />
