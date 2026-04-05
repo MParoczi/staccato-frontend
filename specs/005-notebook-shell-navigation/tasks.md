@@ -91,8 +91,8 @@
 
 ### Implementation for User Story 3
 
-- [ ] T023 [US3] Create `LessonPage` component in `src/features/notebooks/components/LessonPage.tsx` — reads notebookId, lessonId, pageId from route params. Uses `useLesson(notebookId, lessonId)` for lesson data. Renders `DottedPaper` with lesson title at top, in-lesson page indicator ("Page X / Y") at top-right, global page number in bottom-right corner. Centered placeholder message for future canvas/module editor. Handles 404 (stale URL) with "Page not found" message and link to index.
-- [ ] T024 [US3] Add i18n keys for lesson page to `src/i18n/en.json` and `src/i18n/hu.json` — keys under `notebooks.shell.lesson.*`
+- [x] T023 [US3] Create `LessonPage` component in `src/features/notebooks/components/LessonPage.tsx` — reads notebookId, lessonId, pageId from route params. Uses `useLesson(notebookId, lessonId)` for lesson data. Renders `DottedPaper` with lesson title at top, in-lesson page indicator ("Page X / Y") at top-right, global page number in bottom-right corner. Centered placeholder message for future canvas/module editor. Handles 404 (stale URL) with "Page not found" message and link to index.
+- [x] T024 [US3] Add i18n keys for lesson page to `src/i18n/en.json` and `src/i18n/hu.json` — keys under `notebooks.shell.lesson.*`
 
 **Checkpoint**: All three page types fully render. Complete linear navigation works end-to-end. Core reading experience is functional.
 
