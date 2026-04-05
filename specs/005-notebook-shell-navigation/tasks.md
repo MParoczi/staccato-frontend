@@ -76,8 +76,8 @@
 
 ### Implementation for User Story 2
 
-- [ ] T021 [US2] Create `IndexPage` component in `src/features/notebooks/components/IndexPage.tsx` — reads notebookId from route params, uses `useNotebook` + `useNotebookIndex`. Renders `DottedPaper` with "INDEX" heading (serif font). Maps index entries to TOC rows: sequential number, lesson title (truncated with ellipsis), dotted leader line (CSS), right-aligned starting page number. Each entry navigates to that lesson's first page by lazily fetching lesson detail via `useLesson(lessonId)` to resolve the first page ID (per Research R-003 two-tier approach). Empty state: encouraging message with link to open sidebar to add a lesson. Global page number "1" in bottom-right corner.
-- [ ] T022 [US2] Add i18n keys for index page to `src/i18n/en.json` and `src/i18n/hu.json` — keys under `notebooks.shell.index.*`
+- [x] T021 [US2] Create `IndexPage` component in `src/features/notebooks/components/IndexPage.tsx` — reads notebookId from route params, uses `useNotebook` + `useNotebookIndex`. Renders `DottedPaper` with "INDEX" heading (serif font). Maps index entries to TOC rows: sequential number, lesson title (truncated with ellipsis), dotted leader line (CSS), right-aligned starting page number. Each entry navigates to that lesson's first page by lazily fetching lesson detail via `useLesson(lessonId)` to resolve the first page ID (per Research R-003 two-tier approach). Empty state: encouraging message with link to open sidebar to add a lesson. Global page number "1" in bottom-right corner.
+- [x] T022 [US2] Add i18n keys for index page to `src/i18n/en.json` and `src/i18n/hu.json` — keys under `notebooks.shell.index.*`
 
 **Checkpoint**: Index page renders TOC correctly. Full linear navigation works across cover, index, and lesson pages (lesson pages still stubs but arrows work).
 

@@ -160,6 +160,12 @@
         "submit": "Változtatások mentése",
         "submitting": "Mentés...",
         "error": "A füzet frissítése sikertelen. Kérjük, próbáld újra."
+      },
+      "index": {
+        "heading": "TARTALOMJEGYZÉK",
+        "emptyMessage": "Még nincsenek leckék.",
+        "emptyAction": "Nyisd meg az oldalsávot az első lecke létrehozásához.",
+        "pageNumber": "{{number}}"
       }
     }
   },

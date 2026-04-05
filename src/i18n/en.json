@@ -160,6 +160,12 @@
         "submit": "Save changes",
         "submitting": "Saving...",
         "error": "Failed to update notebook. Please try again."
+      },
+      "index": {
+        "heading": "INDEX",
+        "emptyMessage": "No lessons yet.",
+        "emptyAction": "Open the sidebar to add your first lesson.",
+        "pageNumber": "{{number}}"
       }
     }
   },
