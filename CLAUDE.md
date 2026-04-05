@@ -27,10 +27,10 @@ pnpm test; pnpm run lint
 TypeScript 5.9+ with strict mode enabled: Follow standard conventions
 
 ## Recent Changes
+- 004-notebook-dashboard: Added TypeScript 5.9+ with strict mode enabled + React 19, Vite 8, Tailwind CSS v4, shadcn/ui (Radix), Zustand 5, TanStack Query v5, React Router v7, Axios, React Hook Form, Zod, react-i18next, Lucide React
 - 003-user-profile-settings: Added TypeScript 5.9+ with strict mode enabled + React 19, Vite 8, Tailwind CSS v4, shadcn/ui (Radix), Zustand 5, TanStack Query v5, React Router v7, Axios, React Hook Form, Zod, react-i18next, Lucide React
 - 002-auth-token-management: Added TypeScript 5.9+ with strict mode enabled + React 19, Vite 8, Tailwind CSS v4, shadcn/ui (Radix), Zustand 5, TanStack Query v5, React Router v7, Axios, React Hook Form, Zod 4, react-i18next, @react-oauth/google, Lucide React
 
-- 001-project-infra-setup: Added TypeScript 5.9+ with strict mode enabled + React 19, Vite 8, Tailwind CSS v4, shadcn/ui (Radix), Zustand, TanStack Query v5, React Router v7, Axios, React Hook Form, Zod, react-i18next, @microsoft/signalr, Lucide React
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
