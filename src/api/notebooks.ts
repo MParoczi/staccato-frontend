@@ -1,7 +1,7 @@
 import type {
   NotebookSummary,
   NotebookDetail,
-  PageSize,
+  CreateNotebookRequest,
   NotebookIndex,
   NotebookModuleStyle,
 } from '@/lib/types';
@@ -17,12 +17,7 @@ export async function getNotebook(id: string): Promise<NotebookDetail> {
   return res.data;
 }
 
-export async function createNotebook(data: {
-  title: string;
-  instrumentId: string;
-  pageSize: PageSize;
-  coverColor: string;
-}): Promise<NotebookDetail> {
+export async function createNotebook(data: CreateNotebookRequest): Promise<NotebookDetail> {
   const res = await apiClient.post<NotebookDetail>('/notebooks', data);
   return res.data;
 }
