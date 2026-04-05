@@ -5,12 +5,11 @@ import { cn } from '@/lib/utils';
 
 interface DottedPaperProps {
   pageSize: PageSize;
-  zoom: number;
   className?: string;
   children?: React.ReactNode;
 }
 
-export function DottedPaper({ pageSize, zoom, className, children }: DottedPaperProps) {
+export function DottedPaper({ pageSize, className, children }: DottedPaperProps) {
   const dimensions = PAGE_SIZE_DIMENSIONS[pageSize];
 
   const aspectRatio = useMemo(
@@ -19,9 +18,8 @@ export function DottedPaper({ pageSize, zoom, className, children }: DottedPaper
   );
 
   // Dot spacing scales with the grid dimensions — 5mm grid equivalent
-  // Adjust dot size inversely with zoom to keep dots visually subtle at high zoom
   const dotSpacing = 20;
-  const dotRadius = Math.max(0.5, 1 / zoom);
+  const dotRadius = 1;
 
   return (
     <div

@@ -14,7 +14,6 @@ export function IndexPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const zoom = useUIStore((s) => s.zoom);
   const setSidebarOpen = useUIStore((s) => s.setSidebarOpen);
 
   const { data: notebook } = useNotebook(notebookId!);
@@ -52,7 +51,6 @@ export function IndexPage() {
   return (
     <DottedPaper
       pageSize={notebook.pageSize}
-      zoom={zoom}
       className="w-full max-w-lg rounded-sm shadow-lg"
     >
       <div className="flex h-full flex-col px-8 py-10">

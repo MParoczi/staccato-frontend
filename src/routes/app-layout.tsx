@@ -36,7 +36,7 @@ export function AppLayout() {
       <DeletionBanner />
       <div className="flex flex-1">
         <aside>{/* Sidebar slot — implemented in a future feature */}</aside>
-        <main className="flex-1">
+        <main className="flex flex-1 flex-col">
           <Outlet />
         </main>
       </div>
