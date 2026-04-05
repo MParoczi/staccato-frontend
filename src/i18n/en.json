@@ -131,6 +131,15 @@
       "slateBlue": "Slate Blue",
       "deepTeal": "Deep Teal",
       "warmTerracotta": "Warm Terracotta"
+    },
+    "shell": {
+      "toolbar": {
+        "toggleSidebar": "Toggle sidebar",
+        "styleEditor": "Style Editor",
+        "export": "Export",
+        "delete": "Delete notebook",
+        "comingSoon": "Coming soon"
+      }
     }
   },
   "editor": {
