@@ -8,6 +8,7 @@ import { NotebookCard } from './NotebookCard';
 import { NotebookCardSkeleton } from './NotebookCardSkeleton';
 import { EmptyState } from './EmptyState';
 import { SortControl, type SortOption } from './SortControl';
+import { CreateNotebookDialog } from './CreateNotebookDialog';
 import type { NotebookSummary } from '@/lib/types';
 
 function sortNotebooks(
@@ -35,7 +36,7 @@ export function NotebooksDashboardPage() {
   const { data: notebooks, isLoading, isError, refetch } = useNotebooks();
 
   const [sortBy, setSortBy] = useState<SortOption>('updatedAt');
-  const [, setIsCreateDialogOpen] = useState(
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(
     () => location.pathname === '/app/notebooks/new',
   );
 
@@ -44,9 +45,18 @@ export function NotebooksDashboardPage() {
     [notebooks, sortBy],
   );
 
+  const dialogOpen = isCreateDialogOpen || location.pathname === '/app/notebooks/new';
+
   function handleCreateClick() {
     setIsCreateDialogOpen(true);
     navigate('/app/notebooks/new');
+  }
+
+  function handleDialogOpenChange(open: boolean) {
+    setIsCreateDialogOpen(open);
+    if (!open && location.pathname === '/app/notebooks/new') {
+      navigate('/app/notebooks');
+    }
   }
 
   function handleDeleteRequest(_notebook: NotebookSummary) {
@@ -67,6 +77,7 @@ export function NotebooksDashboardPage() {
             <NotebookCardSkeleton key={i} />
           ))}
         </div>
+        <CreateNotebookDialog open={dialogOpen} onOpenChange={handleDialogOpenChange} />
       </div>
     );
   }
@@ -81,6 +92,7 @@ export function NotebooksDashboardPage() {
         <Button variant="outline" onClick={() => refetch()}>
           {t('common.errorBoundary.retry')}
         </Button>
+        <CreateNotebookDialog open={dialogOpen} onOpenChange={handleDialogOpenChange} />
       </div>
     );
   }
@@ -94,6 +106,7 @@ export function NotebooksDashboardPage() {
           </h1>
         </div>
         <EmptyState onCreate={handleCreateClick} />
+        <CreateNotebookDialog open={dialogOpen} onOpenChange={handleDialogOpenChange} />
       </div>
     );
   }
@@ -133,6 +146,8 @@ export function NotebooksDashboardPage() {
           </span>
         </button>
       </div>
+
+      <CreateNotebookDialog open={dialogOpen} onOpenChange={handleDialogOpenChange} />
     </div>
   );
 }
