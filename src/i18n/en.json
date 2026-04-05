@@ -196,6 +196,15 @@
       "lessonTitle": {
         "required": "Title is required",
         "maxLength": "Title must be 200 characters or fewer"
+      },
+      "page": {
+        "addPage": "Add Page",
+        "deleteConfirmTitle": "Delete this page?",
+        "deleteConfirmMessage": "This action cannot be undone.",
+        "deleteConfirm": "Delete",
+        "lastPageError": "Cannot delete the last page in a lesson.",
+        "deleteError": "Failed to delete page. Please try again.",
+        "createError": "Failed to add page. Please try again."
       }
     }
   },

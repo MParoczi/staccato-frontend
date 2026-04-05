@@ -22,6 +22,7 @@ import { NotebookSidebar } from '@/features/notebooks/components/NotebookSidebar
 export function NotebookLayout() {
   const { t } = useTranslation();
   const { notebookId } = useParams<{ notebookId: string }>();
+  const { lessonId } = useParams<{ lessonId: string }>();
   const sidebarOpen = useUIStore((s) => s.sidebarOpen);
   const setSidebarOpen = useUIStore((s) => s.setSidebarOpen);
   const setZoom = useUIStore((s) => s.setZoom);
@@ -89,6 +90,8 @@ export function NotebookLayout() {
       <NotebookToolbar
         notebook={notebook}
         globalPageNumber={pageNav.globalPageNumber}
+        currentPageType={pageNav.currentPageType}
+        lessonId={lessonId}
       />
 
       {/* Sidebar */}

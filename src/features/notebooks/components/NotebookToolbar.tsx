@@ -1,24 +1,34 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { Bookmark, Palette, Download, Trash2 } from 'lucide-react';
+import { Bookmark, Palette, Download, Trash2, Plus } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useUIStore } from '@/stores/uiStore';
 import { DeleteNotebookDialog } from './DeleteNotebookDialog';
+import { useCreatePage } from '../hooks/useCreatePage';
 import type { NotebookDetail } from '@/lib/types';
 
 interface NotebookToolbarProps {
   notebook: NotebookDetail;
   globalPageNumber: number | null;
+  currentPageType: 'cover' | 'index' | 'lesson';
+  lessonId?: string;
 }
 
-export function NotebookToolbar({ notebook, globalPageNumber }: NotebookToolbarProps) {
+export function NotebookToolbar({
+  notebook,
+  globalPageNumber,
+  currentPageType,
+  lessonId,
+}: NotebookToolbarProps) {
   const { t } = useTranslation();
   const sidebarOpen = useUIStore((s) => s.sidebarOpen);
   const setSidebarOpen = useUIStore((s) => s.setSidebarOpen);
   const [deleteOpen, setDeleteOpen] = useState(false);
+
+  const createPageMutation = useCreatePage(notebook.id, lessonId ?? '');
 
   return (
     <>
@@ -44,6 +54,19 @@ export function NotebookToolbar({ notebook, globalPageNumber }: NotebookToolbarP
         >
           <Bookmark className="size-4" aria-hidden="true" />
         </Button>
+
+        {/* Add Page button — visible only on lesson pages */}
+        {currentPageType === 'lesson' && lessonId && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => createPageMutation.mutate()}
+            disabled={createPageMutation.isPending}
+          >
+            <Plus className="mr-1 size-4" aria-hidden="true" />
+            {t('notebooks.shell.page.addPage')}
+          </Button>
+        )}
 
         {/* Zoom controls placeholder */}
         <div className="flex items-center gap-1">
