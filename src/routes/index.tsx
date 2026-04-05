@@ -7,8 +7,6 @@ import { NotFoundPage } from './not-found';
 import { LoginPage } from '@/features/auth/LoginPage';
 import { RegisterPage } from '@/features/auth/RegisterPage';
 import {
-  NotebooksDashboard,
-  NewNotebook,
   NotebookView,
   NotebookIndex,
   PageEditor,
@@ -16,6 +14,7 @@ import {
   ChordsPage,
 } from './placeholders';
 import { ProfilePage } from '@/features/profile/components/ProfilePage';
+import { NotebooksDashboardPage } from '@/features/notebooks/components/NotebooksDashboardPage';
 
 export const router = createBrowserRouter([
   {
@@ -35,8 +34,8 @@ export const router = createBrowserRouter([
       {
         element: <AppLayout />,
         children: [
-          { path: '/app/notebooks', element: <NotebooksDashboard /> },
-          { path: '/app/notebooks/new', element: <NewNotebook /> },
+          { path: '/app/notebooks', element: <NotebooksDashboardPage /> },
+          { path: '/app/notebooks/new', element: <NotebooksDashboardPage /> },
           { path: '/app/notebooks/:notebookId', element: <NotebookView /> },
           {
             path: '/app/notebooks/:notebookId/index',
