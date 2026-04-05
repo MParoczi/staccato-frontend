@@ -9,7 +9,6 @@ import { useUIStore } from '@/stores/uiStore';
 import { getLesson } from '@/api/lessons';
 import type { NotebookIndexEntry } from '@/lib/types';
 
-
 export function IndexPage() {
   const { notebookId } = useParams<{ notebookId: string }>();
   const { t } = useTranslation();
