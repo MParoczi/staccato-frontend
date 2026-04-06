@@ -26,7 +26,7 @@ export async function updateNotebook(
   id: string,
   data: Partial<{ title: string; coverColor: string }>,
 ): Promise<NotebookDetail> {
-  const res = await apiClient.patch<NotebookDetail>(`/notebooks/${id}`, data);
+  const res = await apiClient.put<NotebookDetail>(`/notebooks/${id}`, data);
   return res.data;
 }
 
