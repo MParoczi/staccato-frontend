@@ -80,8 +80,8 @@
 
 ### Implementation for User Story 3
 
-- [ ] T012a [US3] Read `src/routes/notebook-layout.tsx` and verify: (1) the lesson sheet is NOT portaled to `document.body` — it mounts inside `NotebookLayout`'s own DOM subtree (LC-8); (2) the Radix Sheet component's `modal` / focus-trap scope is bounded to the sheet subtree, not the viewport, so it cannot intercept sidebar clicks (FR-023). Record findings — no code output if everything is already correct.
-- [ ] T012b [US3] (Conditional — skip if T012a finds no issues) Fix any portaling or focus-trap violation discovered in T012a inside `src/routes/notebook-layout.tsx`. Specific changes depend on T012a findings.
+- [x] T012a [US3] Read `src/routes/notebook-layout.tsx` and verify: (1) the lesson sheet is NOT portaled to `document.body` — it mounts inside `NotebookLayout`'s own DOM subtree (LC-8); (2) the Radix Sheet component's `modal` / focus-trap scope is bounded to the sheet subtree, not the viewport, so it cannot intercept sidebar clicks (FR-023). Record findings — no code output if everything is already correct.
+- [x] T012b [US3] (Conditional — skip if T012a finds no issues) Fix any portaling or focus-trap violation discovered in T012a inside `src/routes/notebook-layout.tsx`. Specific changes depend on T012a findings.
 
 **Checkpoint**: All 3 user stories are functional. The sidebar coexists with every layout variant (dashboard, notebook, profile, chord library, exports, 404).
 

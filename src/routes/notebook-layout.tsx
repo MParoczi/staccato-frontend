@@ -95,25 +95,27 @@ export function NotebookLayout() {
         lessonId={lessonId}
       />
 
-      {/* Sidebar */}
-      <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-        <SheetContent side="left" showCloseButton>
-          <SheetHeader>
-            <SheetTitle>{notebook.title}</SheetTitle>
-            <SheetDescription className="sr-only">
-              {t('notebooks.shell.toolbar.toggleSidebar')}
-            </SheetDescription>
-          </SheetHeader>
-          <NotebookSidebar
-            notebook={notebook}
-            lessons={lessonsQuery.data ?? []}
-            isLoading={lessonsQuery.isPending}
-          />
-        </SheetContent>
-      </Sheet>
-
       {/* Canvas area */}
       <div className="relative flex min-h-0 flex-1 flex-col overflow-clip">
+        {/* Notebook sidebar sheet — non-modal + non-portaled so it stays inside
+            NotebookLayout's DOM subtree (LC-8) and cannot trap focus away from
+            the app sidebar (FR-023). Uses absolute positioning so the sheet
+            aligns to the left edge of <main>, not the viewport. */}
+        <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen} modal={false}>
+          <SheetContent side="left" showCloseButton portal={false} className="absolute">
+            <SheetHeader>
+              <SheetTitle>{notebook.title}</SheetTitle>
+              <SheetDescription className="sr-only">
+                {t('notebooks.shell.toolbar.toggleSidebar')}
+              </SheetDescription>
+            </SheetHeader>
+            <NotebookSidebar
+              notebook={notebook}
+              lessons={lessonsQuery.data ?? []}
+              isLoading={lessonsQuery.isPending}
+            />
+          </SheetContent>
+        </Sheet>
         <div className="flex flex-1 items-start justify-center overflow-auto p-4">
           <div className="w-full" style={{ zoom }}>
             <Outlet />
