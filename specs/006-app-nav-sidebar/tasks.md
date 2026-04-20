@@ -108,12 +108,12 @@
 
 **Purpose**: Final verification of edge cases, accessibility, and contrast that span multiple stories.
 
-- [ ] T014 [P] Verify WCAG AA color contrast for all `--sidebar*` token pairs using a contrast checker (DevTools or WebAIM): `--sidebar-foreground` on `--sidebar` ≥ 4.5:1; `--sidebar-primary-foreground` on `--sidebar-primary` ≥ 4.5:1; `--sidebar-accent-foreground` on `--sidebar-accent` ≥ 4.5:1; Lucide icons ≥ 3:1 against their backgrounds (FR-030). Adjust token values in `src/index.css` if any pair fails.
-- [ ] T015 [P] Verify `prefers-reduced-motion` behavior (FR-031): enable reduced motion in OS/DevTools → hover transitions instant, active-state swap instant, menu open/close instant. Confirm all `transition-*` classes are paired with `motion-reduce:transition-none` in `AppSidebar.tsx` and `UserMenu.tsx`.
-- [ ] T016 [P] Verify translated label truncation (FR-033): switch language to Hungarian → confirm "Jegyzetfüzetek", "Akkordkönyvtár", "Exportálások" fit or truncate with ellipsis → hover shows full label in native tooltip → labels don't wrap or shrink font size.
-- [ ] T017 [P] Verify refresh interceptor guard (FR-013a): confirm `silentRefresh()` in `src/api/client.ts:39` already returns `Promise.reject` when `isLoggingOut === true`. Already present — no code change needed, just verify.
-- [ ] T018 Run `pnpm test` and `pnpm run lint` to confirm all tests pass and no lint errors.
-- [ ] T019 Run quickstart.md end-to-end verification (all sections: Story 1, Story 2, Story 3, deletion banner, header removal, sidebar scroll, banner+notebook, notebook sheet, label overflow, reduced motion, logout failure, accessibility).
+- [x] T014 [P] Verify WCAG AA color contrast for all `--sidebar*` token pairs using a contrast checker (DevTools or WebAIM): `--sidebar-foreground` on `--sidebar` ≥ 4.5:1; `--sidebar-primary-foreground` on `--sidebar-primary` ≥ 4.5:1; `--sidebar-accent-foreground` on `--sidebar-accent` ≥ 4.5:1; Lucide icons ≥ 3:1 against their backgrounds (FR-030). Adjust token values in `src/index.css` if any pair fails.
+- [x] T015 [P] Verify `prefers-reduced-motion` behavior (FR-031): enable reduced motion in OS/DevTools → hover transitions instant, active-state swap instant, menu open/close instant. Confirm all `transition-*` classes are paired with `motion-reduce:transition-none` in `AppSidebar.tsx` and `UserMenu.tsx`.
+- [x] T016 [P] Verify translated label truncation (FR-033): switch language to Hungarian → confirm "Jegyzetfüzetek", "Akkordkönyvtár", "Exportálások" fit or truncate with ellipsis → hover shows full label in native tooltip → labels don't wrap or shrink font size.
+- [x] T017 [P] Verify refresh interceptor guard (FR-013a): confirm `silentRefresh()` in `src/api/client.ts:39` already returns `Promise.reject` when `isLoggingOut === true`. Already present — no code change needed, just verify.
+- [x] T018 Run `pnpm test` and `pnpm run lint` to confirm all tests pass and no lint errors.
+- [x] T019 Run quickstart.md end-to-end verification (all sections: Story 1, Story 2, Story 3, deletion banner, header removal, sidebar scroll, banner+notebook, notebook sheet, label overflow, reduced motion, logout failure, accessibility).
 
 ---
 
