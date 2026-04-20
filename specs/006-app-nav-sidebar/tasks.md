@@ -19,10 +19,10 @@
 
 **Purpose**: Project initialization — new primitives, CSS tokens, and i18n keys that all stories depend on.
 
-- [ ] T001 [P] Add shadcn/ui Avatar primitive at `src/components/ui/avatar.tsx` (AvatarRoot, AvatarImage, AvatarFallback wrappers over `radix-ui` Avatar — follow the pattern of existing shadcn primitives in `src/components/ui/`)
-- [ ] T002 [P] Update `--sidebar*` CSS variable values in `src/index.css` to the dark earthy oklch palette (`:root` light mode: `--sidebar` background L ≤ 0.30 hue 50–70; adjust `--sidebar-foreground`, `--sidebar-primary`, `--sidebar-primary-foreground`, `--sidebar-accent`, `--sidebar-accent-foreground`, `--sidebar-border`, `--sidebar-ring` for both light and dark themes — color-contrast compliance is verified separately in T014)
-- [ ] T003 [P] Add the 10 `app.sidebar.*` i18n keys to `src/i18n/en.json` per FR-032 and the contracts i18n table (brand, nav.label, nav.notebooks, nav.chords, nav.exports, userMenu.openLabel, userMenu.profile, userMenu.logout, userMenu.fallbackName, userMenu.logoutLocalOnly)
-- [ ] T004 [P] Add the 10 `app.sidebar.*` i18n keys to `src/i18n/hu.json` with Hungarian translations per the contracts i18n table
+- [x] T001 [P] Add shadcn/ui Avatar primitive at `src/components/ui/avatar.tsx` (AvatarRoot, AvatarImage, AvatarFallback wrappers over `radix-ui` Avatar — follow the pattern of existing shadcn primitives in `src/components/ui/`)
+- [x] T002 [P] Update `--sidebar*` CSS variable values in `src/index.css` to the dark earthy oklch palette (`:root` light mode: `--sidebar` background L ≤ 0.30 hue 50–70; adjust `--sidebar-foreground`, `--sidebar-primary`, `--sidebar-primary-foreground`, `--sidebar-accent`, `--sidebar-accent-foreground`, `--sidebar-border`, `--sidebar-ring` for both light and dark themes — color-contrast compliance is verified separately in T014)
+- [x] T003 [P] Add the 10 `app.sidebar.*` i18n keys to `src/i18n/en.json` per FR-032 and the contracts i18n table (brand, nav.label, nav.notebooks, nav.chords, nav.exports, userMenu.openLabel, userMenu.profile, userMenu.logout, userMenu.fallbackName, userMenu.logoutLocalOnly)
+- [x] T004 [P] Add the 10 `app.sidebar.*` i18n keys to `src/i18n/hu.json` with Hungarian translations per the contracts i18n table
 
 **Checkpoint**: Primitives, tokens, and i18n keys are ready. No visible UI change yet.
 

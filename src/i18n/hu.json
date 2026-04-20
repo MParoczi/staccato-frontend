@@ -224,6 +224,24 @@
       "addBlock": "Blokk hozzáadása"
     }
   },
+  "app": {
+    "sidebar": {
+      "brand": "Staccato",
+      "nav": {
+        "label": "Főnavigáció",
+        "notebooks": "Jegyzetfüzetek",
+        "chords": "Akkordkönyvtár",
+        "exports": "Exportálások"
+      },
+      "userMenu": {
+        "openLabel": "Felhasználói menü megnyitása",
+        "profile": "Profil és beállítások",
+        "logout": "Kijelentkezés",
+        "fallbackName": "Fiók",
+        "logoutLocalOnly": "Helyi kijelentkezés sikeres; a kiszolgáló még a lejáratig őrizheti a munkamenetet."
+      }
+    }
+  },
   "chords": {
     "library": {
       "title": "Akkordkönyvtár"
