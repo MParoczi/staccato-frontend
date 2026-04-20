@@ -1,9 +1,40 @@
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
+import { useCurrentUser } from '@/features/profile/hooks/useCurrentUser';
+import { useAuthStore } from '@/stores/authStore';
+import { logout } from '@/api/auth';
+import { computeUserDisplayProjection } from '@/lib/utils/user-display';
 import { NAV_ITEMS } from './nav-items';
+import { UserMenu } from './UserMenu';
 
 export function AppSidebar() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { data: user, isPending, isError } = useCurrentUser();
+
+  const isLoading = isPending && !user;
+  const isErrorWithoutData = isError && !user;
+
+  const projection = computeUserDisplayProjection({
+    user: user ?? null,
+    isLoading,
+    isError: isErrorWithoutData,
+    fallbackLabel: t('app.sidebar.userMenu.fallbackName'),
+  });
+
+  const handleLogout = async () => {
+    if (useAuthStore.getState().isLoggingOut) return;
+    useAuthStore.getState().startLogout();
+    try {
+      await logout();
+    } catch {
+      toast.error(t('app.sidebar.userMenu.logoutLocalOnly'));
+    } finally {
+      useAuthStore.getState().clearAuth();
+      void navigate('/login', { replace: true });
+    }
+  };
 
   return (
     <aside className="flex h-screen w-60 shrink-0 flex-col bg-sidebar text-sidebar-foreground sticky top-0">
@@ -46,8 +77,14 @@ export function AppSidebar() {
         </ul>
       </nav>
 
-      {/* Divider + user section placeholder (US2 fills this) */}
-      <div className="border-t border-sidebar-border p-2" />
+      {/* Divider + user section */}
+      <div className="border-t border-sidebar-border p-2">
+        <UserMenu
+          projection={projection}
+          avatarUrl={user?.avatarUrl ?? null}
+          onLogout={handleLogout}
+        />
+      </div>
     </aside>
   );
 }
