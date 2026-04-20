@@ -224,6 +224,24 @@
       "addBlock": "Add block"
     }
   },
+  "app": {
+    "sidebar": {
+      "brand": "Staccato",
+      "nav": {
+        "label": "Primary navigation",
+        "notebooks": "Notebooks",
+        "chords": "Chord Library",
+        "exports": "Exports"
+      },
+      "userMenu": {
+        "openLabel": "Open user menu",
+        "profile": "Profile & Settings",
+        "logout": "Log out",
+        "fallbackName": "Account",
+        "logoutLocalOnly": "Signed out locally; the server may still hold a session until it expires."
+      }
+    }
+  },
   "chords": {
     "library": {
       "title": "Chord Library"
