@@ -91,7 +91,7 @@
 
 **Purpose**: Component tests for the sidebar covering active state, cascade tiers, refetch stability, logout paths, and accessibility.
 
-- [ ] T013 [US1] [US2] Create component tests in `src/components/layout/AppSidebar.test.tsx` covering:
+- [x] T013 [US1] [US2] Create component tests in `src/components/layout/AppSidebar.test.tsx` covering:
   - (a) Active-state highlighting on each SC-002 route: `/app/notebooks` → Notebooks active; `/app/notebooks/abc` → Notebooks active; `/app/notebooks/abc/lessons/def/pages/ghi` → Notebooks active; `/app/chords` → Chord Library active; `/app/exports` → Exports active; `/app/profile` → none active; `/app/unknown` → none active
   - (b) All four cascade tiers via mocked `useCurrentUser` (tier 1: both names; tier 2: one name; tier 3: email only; tier 4: loading/error with no cached data)
   - (c) FR-018 refetch stability: mock `useCurrentUser` returning cached user + `isFetching: true` → trigger displays cached tier, NOT tier 4
