@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, useParams, Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
@@ -18,6 +18,7 @@ import { useKeyboardNavigation } from '@/features/notebooks/hooks/useKeyboardNav
 import { NotebookToolbar } from '@/features/notebooks/components/NotebookToolbar';
 import { PageNavigationArrows } from '@/features/notebooks/components/PageNavigationArrows';
 import { NotebookSidebar } from '@/features/notebooks/components/NotebookSidebar';
+import { StyleEditorDrawer } from '@/features/styling/components/StyleEditorDrawer';
 
 export function NotebookLayout() {
   const { t } = useTranslation();
@@ -27,6 +28,7 @@ export function NotebookLayout() {
   const setSidebarOpen = useUIStore((s) => s.setSidebarOpen);
   const zoom = useUIStore((s) => s.zoom);
   const setZoom = useUIStore((s) => s.setZoom);
+  const [stylesOpen, setStylesOpen] = useState(false);
 
   // Reset zoom and sidebar on notebookId change (FR-013)
   useEffect(() => {
@@ -93,6 +95,7 @@ export function NotebookLayout() {
         globalPageNumber={pageNav.globalPageNumber}
         currentPageType={pageNav.currentPageType}
         lessonId={lessonId}
+        onOpenStyles={() => setStylesOpen(true)}
       />
 
       {/* Canvas area */}
@@ -126,6 +129,12 @@ export function NotebookLayout() {
           nextUrl={pageNav.nextUrl}
         />
       </div>
+
+      <StyleEditorDrawer
+        notebookId={notebook.id}
+        open={stylesOpen}
+        onOpenChange={setStylesOpen}
+      />
     </div>
   );
 }

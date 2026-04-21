@@ -55,23 +55,23 @@
 
 ### Tests for User Story 1
 
-- [ ] T012 [P] \[US1] Add 100% branch-coverage hex and numeric schema tests in `src/features/styling/utils/style-schema.test.ts`
-- [ ] T013 [P] \[US1] Add color picker popover interaction tests for swatches, valid hex, invalid hex, Escape handling, and Tab/Shift+Tab keyboard traversal in `src/features/styling/components/ColorPickerPopover.test.tsx`
-- [ ] T014 [P] \[US1] Add optimistic save and rollback coverage for notebook style mutations in `src/features/styling/hooks/useStyleMutations.test.tsx`
-- [ ] T015 [P] \[US1] Add callback-based Styles trigger coverage for `NotebookToolbar` in `src/features/notebooks/components/NotebookToolbar.test.tsx`
-- [ ] T016 [P] \[US1] Add drawer integration coverage for loading skeletons, rapid tab switching (last-tab-wins), dirty state, close-discard reset behavior, Tab/Shift+Tab traversal, and bulk save in `src/features/styling/components/StyleEditorDrawer.test.tsx`
-- [ ] T053 [P] \[US1] Add route-level drawer composition coverage in `src/routes/notebook-layout.test.tsx`
+- [x] T012 [P] \[US1] Add 100% branch-coverage hex and numeric schema tests in `src/features/styling/utils/style-schema.test.ts`
+- [x] T013 [P] \[US1] Add color picker popover interaction tests for swatches, valid hex, invalid hex, Escape handling, and Tab/Shift+Tab keyboard traversal in `src/features/styling/components/ColorPickerPopover.test.tsx`
+- [x] T014 [P] \[US1] Add optimistic save and rollback coverage for notebook style mutations in `src/features/styling/hooks/useStyleMutations.test.tsx`
+- [x] T015 [P] \[US1] Add callback-based Styles trigger coverage for `NotebookToolbar` in `src/features/notebooks/components/NotebookToolbar.test.tsx`
+- [x] T016 [P] \[US1] Add drawer integration coverage for loading skeletons, rapid tab switching (last-tab-wins), dirty state, close-discard reset behavior, Tab/Shift+Tab traversal, and bulk save in `src/features/styling/components/StyleEditorDrawer.test.tsx`
+- [x] T053 [P] \[US1] Add route-level drawer composition coverage in `src/routes/notebook-layout.test.tsx`
 
 ### Implementation for User Story 1
 
-- [ ] T017 [P] \[US1] Implement the font sample renderer for Default, Monospace, and Serif in `src/features/styling/components/FontFamilyPreview.tsx`
-- [ ] T018 [P] \[US1] Implement the hex-input and 6×4 swatch color picker popover with viewport-aware flip/shift behavior in `src/features/styling/components/ColorPickerPopover.tsx`
-- [ ] T019 [P] \[US1] Implement the dotted-paper live preview card for active module styles with last-tab-wins rendering behavior in `src/features/styling/components/StylePreview.tsx`
-- [ ] T020 \[US1] Implement module-type form controls, disabled border behavior, and hidden Title/Subtitle field preservation in `src/features/styling/components/StyleEditorTab.tsx`
-- [ ] T021 \[US1] Implement the bulk save mutation flow with optimistic notebook-style cache updates plus success/destructive toast behavior in `src/features/styling/hooks/useStyleMutations.ts`
-- [ ] T022 \[US1] Implement the desktop drawer, horizontal tab row, loading skeletons, dirty indicator, backdrop/Escape close behavior, close-discard form reset, and save-all form in `src/features/styling/components/StyleEditorDrawer.tsx`
-- [ ] T023 \[US1] Wire the icon-only Paintbrush trigger and `onOpenStyles` callback prop into `src/features/notebooks/components/NotebookToolbar.tsx`
-- [ ] T054 \[US1] Compose the style drawer open state in `src/routes/notebook-layout.tsx` and pass the open callback into `NotebookToolbar`
+- [x] T017 [P] \[US1] Implement the font sample renderer for Default, Monospace, and Serif in `src/features/styling/components/FontFamilyPreview.tsx`
+- [x] T018 [P] \[US1] Implement the hex-input and 6×4 swatch color picker popover with viewport-aware flip/shift behavior in `src/features/styling/components/ColorPickerPopover.tsx`
+- [x] T019 [P] \[US1] Implement the dotted-paper live preview card for active module styles with last-tab-wins rendering behavior in `src/features/styling/components/StylePreview.tsx`
+- [x] T020 \[US1] Implement module-type form controls, disabled border behavior, and hidden Title/Subtitle field preservation in `src/features/styling/components/StyleEditorTab.tsx`
+- [x] T021 \[US1] Implement the bulk save mutation flow with optimistic notebook-style cache updates plus success/destructive toast behavior in `src/features/styling/hooks/useStyleMutations.ts`
+- [x] T022 \[US1] Implement the desktop drawer, horizontal tab row, loading skeletons, dirty indicator, backdrop/Escape close behavior, close-discard form reset, and save-all form in `src/features/styling/components/StyleEditorDrawer.tsx`
+- [x] T023 \[US1] Wire the icon-only Paintbrush trigger and `onOpenStyles` callback prop into `src/features/notebooks/components/NotebookToolbar.tsx`
+- [x] T054 \[US1] Compose the style drawer open state in `src/routes/notebook-layout.tsx` and pass the open callback into `NotebookToolbar`
 
 **Checkpoint**: User Story 1 is fully functional and independently testable.
 
