@@ -2,7 +2,7 @@ import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { describe, it, expect, vi, beforeAll, afterEach, afterAll } from 'vitest';
+import { describe, it, expect, vi, beforeAll, beforeEach, afterEach, afterAll } from 'vitest';
 import { StyleEditorDrawer } from './StyleEditorDrawer';
 import type { NotebookModuleStyle } from '@/lib/types';
 import { MODULE_STYLE_TAB_ORDER } from '../utils/style-defaults';
@@ -36,6 +36,20 @@ function makeStyles(): NotebookModuleStyle[] {
 
 const server = setupServer();
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+beforeEach(() => {
+  // Default handlers for preset endpoints so the drawer can open without
+  // having to explicitly mock them in every test. Individual tests that
+  // need different preset responses should call `server.use(...)` AFTER
+  // `renderDrawer` OR override these handlers explicitly.
+  server.use(
+    http.get('http://localhost:5000/presets', () =>
+      HttpResponse.json([], { status: 200 }),
+    ),
+    http.get('http://localhost:5000/users/me/presets', () =>
+      HttpResponse.json([], { status: 200 }),
+    ),
+  );
+});
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
@@ -293,5 +307,211 @@ describe('StyleEditorDrawer', () => {
     expect(bodyColor).not.toHaveAttribute('tabindex', '-1');
     bodyColor.focus();
     expect(document.activeElement).toBe(bodyColor);
+  });
+
+  it('applies a preset immediately when the form is not dirty and refreshes styles', async () => {
+    const applied = makeStyles().map((s) =>
+      s.moduleType === 'Theory' ? { ...s, backgroundColor: '#ABCDEF' } : s,
+    );
+    server.use(
+      http.get(
+        `http://localhost:5000/notebooks/${notebookId}/styles`,
+        () => HttpResponse.json(makeStyles(), { status: 200 }),
+      ),
+      http.get('http://localhost:5000/presets', () =>
+        HttpResponse.json(
+          [
+            {
+              id: 'sys-1',
+              name: 'Classic',
+              displayOrder: 1,
+              isDefault: false,
+              styles: makeStyles(),
+            },
+          ],
+          { status: 200 },
+        ),
+      ),
+      http.get('http://localhost:5000/users/me/presets', () =>
+        HttpResponse.json([], { status: 200 }),
+      ),
+      http.post(
+        `http://localhost:5000/notebooks/${notebookId}/styles/apply-preset/sys-1`,
+        () => HttpResponse.json(applied, { status: 200 }),
+      ),
+    );
+
+    renderDrawer();
+
+    const applyButton = await screen.findByRole('button', {
+      name: 'styling.presets.apply',
+    });
+    expect(applyButton).toBeEnabled();
+
+    await act(async () => {
+      fireEvent.click(applyButton);
+    });
+
+    // No confirmation dialog on clean form
+    expect(
+      screen.queryByRole('alertdialog', {
+        name: 'styling.presets.confirmApplyTitle',
+      }),
+    ).not.toBeInTheDocument();
+
+    // Preview should eventually reflect the applied preset's active-tab color.
+    await waitFor(() => {
+      const preview = document.querySelector<HTMLElement>(
+        '[data-slot="style-preview"]',
+      );
+      expect(preview).not.toBeNull();
+    });
+  });
+
+  it('prompts for confirmation when applying a preset while the form is dirty and resets after confirm', async () => {
+    const applied = makeStyles().map((s) =>
+      s.moduleType === 'Theory' ? { ...s, backgroundColor: '#ABCDEF' } : s,
+    );
+    server.use(
+      http.get(
+        `http://localhost:5000/notebooks/${notebookId}/styles`,
+        () => HttpResponse.json(makeStyles(), { status: 200 }),
+      ),
+      http.get('http://localhost:5000/presets', () =>
+        HttpResponse.json(
+          [
+            {
+              id: 'sys-1',
+              name: 'Classic',
+              displayOrder: 1,
+              isDefault: false,
+              styles: makeStyles(),
+            },
+          ],
+          { status: 200 },
+        ),
+      ),
+      http.get('http://localhost:5000/users/me/presets', () =>
+        HttpResponse.json([], { status: 200 }),
+      ),
+      http.post(
+        `http://localhost:5000/notebooks/${notebookId}/styles/apply-preset/sys-1`,
+        () => HttpResponse.json(applied, { status: 200 }),
+      ),
+    );
+
+    renderDrawer();
+
+    // Dirty the form first by changing a color.
+    await waitFor(() =>
+      expect(
+        screen.getByRole('tab', { name: 'styling.moduleTypes.theory' }),
+      ).toBeInTheDocument(),
+    );
+    const bodyColorButton = screen.getAllByRole('button', {
+      name: 'styling.controls.bodyTextColor',
+    })[0];
+    fireEvent.click(bodyColorButton);
+    const swatch = await screen.findByRole('option', { name: '#2F2A26' });
+    fireEvent.click(swatch);
+    await waitFor(() =>
+      expect(screen.getByText('styling.drawer.unsaved')).toBeInTheDocument(),
+    );
+
+    // Clicking apply must open the confirmation dialog first.
+    const applyButton = await screen.findByRole('button', {
+      name: 'styling.presets.apply',
+    });
+    fireEvent.click(applyButton);
+
+    const confirmAction = await screen.findByRole('button', {
+      name: 'styling.presets.apply',
+      hidden: false,
+    });
+    // Radix AlertDialog renders its action as role=button with the same name
+    // as our apply buttons, so pick the one inside the dialog.
+    const dialog = await screen.findByRole('alertdialog');
+    expect(dialog).toHaveTextContent('styling.presets.confirmApplyMessage');
+
+    // Confirm
+    const dialogAction = dialog.querySelector<HTMLButtonElement>(
+      '[data-slot="preset-apply-confirm-action"]',
+    );
+    expect(dialogAction).not.toBeNull();
+    await act(async () => {
+      dialogAction?.click();
+    });
+
+    // After confirm, the dirty indicator is cleared because the form is
+    // reset to the applied preset values.
+    await waitFor(() =>
+      expect(
+        screen.queryByText('styling.drawer.unsaved'),
+      ).not.toBeInTheDocument(),
+    );
+    expect(confirmAction).toBeTruthy();
+  });
+
+  it('cancels preset apply and keeps dirty form when confirmation is dismissed', async () => {
+    server.use(
+      http.get(
+        `http://localhost:5000/notebooks/${notebookId}/styles`,
+        () => HttpResponse.json(makeStyles(), { status: 200 }),
+      ),
+      http.get('http://localhost:5000/presets', () =>
+        HttpResponse.json(
+          [
+            {
+              id: 'sys-1',
+              name: 'Classic',
+              displayOrder: 1,
+              isDefault: false,
+              styles: makeStyles(),
+            },
+          ],
+          { status: 200 },
+        ),
+      ),
+      http.get('http://localhost:5000/users/me/presets', () =>
+        HttpResponse.json([], { status: 200 }),
+      ),
+    );
+
+    renderDrawer();
+    await waitFor(() =>
+      expect(
+        screen.getByRole('tab', { name: 'styling.moduleTypes.theory' }),
+      ).toBeInTheDocument(),
+    );
+
+    const bodyColorButton = screen.getAllByRole('button', {
+      name: 'styling.controls.bodyTextColor',
+    })[0];
+    fireEvent.click(bodyColorButton);
+    const swatch = await screen.findByRole('option', { name: '#2F2A26' });
+    fireEvent.click(swatch);
+    await waitFor(() =>
+      expect(screen.getByText('styling.drawer.unsaved')).toBeInTheDocument(),
+    );
+
+    const applyButton = await screen.findByRole('button', {
+      name: 'styling.presets.apply',
+    });
+    fireEvent.click(applyButton);
+
+    const dialog = await screen.findByRole('alertdialog');
+    const cancel = dialog.querySelector<HTMLButtonElement>(
+      '[data-slot="preset-apply-cancel"]',
+    );
+    expect(cancel).not.toBeNull();
+    await act(async () => {
+      cancel?.click();
+    });
+
+    // Dialog closes, dirty indicator still visible.
+    await waitFor(() =>
+      expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument(),
+    );
+    expect(screen.getByText('styling.drawer.unsaved')).toBeInTheDocument();
   });
 });

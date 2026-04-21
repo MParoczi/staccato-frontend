@@ -1,10 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { FormProvider, useForm, useFormState, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { Loader2 } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import type {
   ModuleType,
   NotebookModuleStyle,
@@ -16,8 +26,12 @@ import {
   type ModuleStyleFormValues,
   type StyleEditorFormValues,
 } from '../utils/style-schema';
-import { useSaveNotebookStyles } from '../hooks/useStyleMutations';
+import {
+  useApplyPresetToNotebook,
+  useSaveNotebookStyles,
+} from '../hooks/useStyleMutations';
 import { StyleEditorTab } from './StyleEditorTab';
+import { PresetBrowser } from './PresetBrowser';
 import { StylePreview } from './StylePreview';
 
 interface StyleEditorFormProps {
@@ -99,9 +113,12 @@ export function StyleEditorForm({
 }: StyleEditorFormProps) {
   const { t } = useTranslation();
   const saveMutation = useSaveNotebookStyles(notebookId);
+  const applyMutation = useApplyPresetToNotebook(notebookId);
   const [activeTab, setActiveTab] = useState<ModuleType>(
     MODULE_STYLE_TAB_ORDER[0],
   );
+  const [pendingPresetId, setPendingPresetId] = useState<string | null>(null);
+  const [confirmPresetId, setConfirmPresetId] = useState<string | null>(null);
 
   const form = useForm<StyleEditorFormValues>({
     resolver: zodResolver(styleEditorSchema),
@@ -128,6 +145,7 @@ export function StyleEditorForm({
   });
 
   const isSaving = saveMutation.isPending;
+  const isApplying = applyMutation.isPending;
   const { dirtyFields } = useFormState({ control: form.control });
   // Use dirtyFields to derive dirty state. form.formState.isDirty can be
   // unreliable with deeply nested object forms, so we check whether any
@@ -144,6 +162,45 @@ export function StyleEditorForm({
       },
     });
   });
+
+  const runApplyPreset = useCallback(
+    (presetId: string) => {
+      setPendingPresetId(presetId);
+      applyMutation.mutate(presetId, {
+        onSuccess: (applied) => {
+          // Hydrate the form from the returned styles so unsaved edits are
+          // replaced by the preset's values. The cache-driven reset above
+          // will also run once the query updates, but resetting here keeps
+          // dirty state cleared immediately.
+          form.reset(stylesArrayToFormValues(applied));
+        },
+        onSettled: () => {
+          setPendingPresetId(null);
+        },
+      });
+    },
+    [applyMutation, form],
+  );
+
+  const handleApplyPreset = useCallback(
+    (presetId: string) => {
+      if (isApplying) return;
+      if (isDirty) {
+        setConfirmPresetId(presetId);
+        return;
+      }
+      runApplyPreset(presetId);
+    },
+    [isApplying, isDirty, runApplyPreset],
+  );
+
+  const handleConfirmApply = useCallback(() => {
+    const presetId = confirmPresetId;
+    setConfirmPresetId(null);
+    if (presetId) {
+      runApplyPreset(presetId);
+    }
+  }, [confirmPresetId, runApplyPreset]);
 
   return (
     <FormProvider {...form}>
@@ -204,6 +261,14 @@ export function StyleEditorForm({
                 <StylePreview moduleType={activeTab} style={activeStyle} />
               </div>
             )}
+
+            <div data-slot="style-editor-presets" className="mt-6">
+              <PresetBrowser
+                onApplyPreset={handleApplyPreset}
+                applyingPresetId={pendingPresetId}
+                isApplying={isApplying}
+              />
+            </div>
           </div>
         </Tabs>
 
@@ -220,6 +285,34 @@ export function StyleEditorForm({
           </Button>
         </div>
       </form>
+      <AlertDialog
+        open={confirmPresetId !== null}
+        onOpenChange={(next) => {
+          if (!next) setConfirmPresetId(null);
+        }}
+      >
+        <AlertDialogContent data-slot="preset-apply-confirm">
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {t('styling.presets.confirmApplyTitle')}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {t('styling.presets.confirmApplyMessage')}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel data-slot="preset-apply-cancel">
+              {t('common.cancel')}
+            </AlertDialogCancel>
+            <AlertDialogAction
+              data-slot="preset-apply-confirm-action"
+              onClick={handleConfirmApply}
+            >
+              {t('styling.presets.apply')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </FormProvider>
   );
 }

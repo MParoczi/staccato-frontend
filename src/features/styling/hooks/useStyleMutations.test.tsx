@@ -235,4 +235,82 @@ describe('useApplyPresetToNotebook', () => {
     expect(cached).toEqual(initialStyles);
     expect(toastError).toHaveBeenCalledWith('styling.drawer.applyError');
   });
+
+  it('cancels in-flight style queries and snapshots cache before applying', async () => {
+    const applied: NotebookModuleStyle[] = [
+      makeStyle('Theory', { backgroundColor: '#112233' }),
+    ];
+    server.use(
+      http.post(
+        `http://localhost:5000/notebooks/${notebookId}/styles/apply-preset/preset-1`,
+        () => HttpResponse.json(applied, { status: 200 }),
+      ),
+    );
+
+    const { Wrapper, queryClient } = createWrapper();
+    const cancelSpy = vi.spyOn(queryClient, 'cancelQueries');
+    const { result } = renderHook(() => useApplyPresetToNotebook(notebookId), {
+      wrapper: Wrapper,
+    });
+
+    act(() => {
+      result.current.mutate('preset-1');
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(cancelSpy).toHaveBeenCalledWith({
+      queryKey: ['notebooks', notebookId, 'styles'],
+    });
+
+    const cached = queryClient.getQueryData<NotebookModuleStyle[]>([
+      'notebooks',
+      notebookId,
+      'styles',
+    ]);
+    expect(cached?.[0]?.backgroundColor).toBe('#112233');
+  });
+
+  it('ignores concurrent apply attempts while a mutation is already in flight', async () => {
+    let hits = 0;
+    let resolveFirst: (value: Response) => void = () => {};
+    const pending = new Promise<Response>((res) => {
+      resolveFirst = res;
+    });
+    server.use(
+      http.post(
+        `http://localhost:5000/notebooks/${notebookId}/styles/apply-preset/preset-1`,
+        async () => {
+          hits += 1;
+          return pending;
+        },
+      ),
+    );
+
+    const { Wrapper } = createWrapper();
+    const { result } = renderHook(() => useApplyPresetToNotebook(notebookId), {
+      wrapper: Wrapper,
+    });
+
+    act(() => {
+      result.current.mutate('preset-1');
+    });
+
+    await waitFor(() => expect(result.current.isPending).toBe(true));
+
+    // A second mutate while pending must be a no-op.
+    act(() => {
+      result.current.mutate('preset-1');
+    });
+
+    // mutateAsync should reject synchronously.
+    await expect(result.current.mutateAsync('preset-1')).rejects.toThrow(
+      /already in progress/i,
+    );
+
+    // Flush the first request so the mutation resolves cleanly.
+    resolveFirst(HttpResponse.json([makeStyle('Theory')], { status: 200 }));
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(hits).toBe(1);
+  });
 });

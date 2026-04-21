@@ -81,13 +81,21 @@ interface ApplyPresetContext {
 /**
  * Applies a system or user preset to the current notebook with optimistic
  * cache updates and rollback on error.
+ *
+ * - `mutate(presetId)` is a no-op while an apply is already in flight, which
+ *   prevents double-clicks on different preset cards from racing.
+ * - On error the previous `["notebooks", notebookId, "styles"]` cache entry
+ *   is restored and a destructive toast is shown.
+ * - On success the returned styles are written into the cache and a success
+ *   toast is shown. The query is then invalidated to ensure the drawer form
+ *   resets against fresh server values.
  */
 export function useApplyPresetToNotebook(notebookId: string | undefined) {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
   const queryKey = ['notebooks', notebookId, 'styles'] as const;
 
-  return useMutation<
+  const mutation = useMutation<
     NotebookModuleStyle[],
     unknown,
     string,
@@ -115,4 +123,21 @@ export function useApplyPresetToNotebook(notebookId: string | undefined) {
       void queryClient.invalidateQueries({ queryKey });
     },
   });
+
+  const { isPending, mutate: baseMutate, mutateAsync: baseMutateAsync } =
+    mutation;
+
+  const guardedMutate: typeof baseMutate = (presetId, options) => {
+    if (isPending) return;
+    return baseMutate(presetId, options);
+  };
+
+  const guardedMutateAsync: typeof baseMutateAsync = (presetId, options) => {
+    if (isPending) {
+      return Promise.reject(new Error('An apply is already in progress'));
+    }
+    return baseMutateAsync(presetId, options);
+  };
+
+  return { ...mutation, mutate: guardedMutate, mutateAsync: guardedMutateAsync };
 }
