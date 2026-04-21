@@ -29,19 +29,19 @@
 
 **Critical**: Complete this phase before implementing any user story.
 
-- [ ] T004 Add the `UpdateNotebookStyleInput` bulk-update type in `src/lib/types/notebooks.ts`
-- [ ] T005 Update notebook style API helpers for bulk save and preset apply in `src/api/notebooks.ts`
-- [ ] T006 Update preset API helpers to match `/presets` and `/users/me/presets` contracts in `src/api/presets.ts`
-- [ ] T007 [P] Implement Zod editor schemas and inferred form types in `src/features/styling/utils/style-schema.ts`
-- [ ] T008 [P] Implement per-module control visibility and border-disable rules in `src/features/styling/utils/module-type-config.ts`
-- [ ] T009 Implement the notebook-styles query hook with `['notebooks', notebookId, 'styles']`, `staleTime: 0`, and refetch-on-focus behavior in `src/features/styling/hooks/useNotebookStyles.ts`
-- [ ] T010 Implement the system-presets query hook with 5-minute caching in `src/features/styling/hooks/useSystemPresets.ts`
-- [ ] T011 Implement the user-presets query hook preserving the newest-first order returned by `GET /users/me/presets` in `src/features/styling/hooks/useUserPresets.ts`
-- [ ] T048 [P] Add MSW-backed request-shaping tests for bulk save and preset apply helpers in `src/api/notebooks.test.ts`
-- [ ] T049 [P] Add MSW-backed request-shaping tests for system/user preset API helpers in `src/api/presets.test.ts`
-- [ ] T050 [P] Add 100% branch-coverage tests for module control visibility and border-disable rules in `src/features/styling/utils/module-type-config.test.ts`
-- [ ] T051 [P] Implement shared style serialization/deserialization helpers in `src/features/styling/utils/style-serialization.ts`
-- [ ] T052 [P] Add 100% branch-coverage tests for style serialization helpers in `src/features/styling/utils/style-serialization.test.ts`
+- [x] T004 Add the `UpdateNotebookStyleInput` bulk-update type in `src/lib/types/notebooks.ts`
+- [x] T005 Update notebook style API helpers for bulk save and preset apply in `src/api/notebooks.ts`
+- [x] T006 Update preset API helpers to match `/presets` and `/users/me/presets` contracts in `src/api/presets.ts`
+- [x] T007 [P] Implement Zod editor schemas and inferred form types in `src/features/styling/utils/style-schema.ts`
+- [x] T008 [P] Implement per-module control visibility and border-disable rules in `src/features/styling/utils/module-type-config.ts`
+- [x] T009 Implement the notebook-styles query hook with `['notebooks', notebookId, 'styles']`, `staleTime: 0`, and refetch-on-focus behavior in `src/features/styling/hooks/useNotebookStyles.ts`
+- [x] T010 Implement the system-presets query hook with 5-minute caching in `src/features/styling/hooks/useSystemPresets.ts`
+- [x] T011 Implement the user-presets query hook preserving the newest-first order returned by `GET /users/me/presets` in `src/features/styling/hooks/useUserPresets.ts`
+- [x] T048 [P] Add MSW-backed request-shaping tests for bulk save and preset apply helpers in `src/api/notebooks.test.ts`
+- [x] T049 [P] Add MSW-backed request-shaping tests for system/user preset API helpers in `src/api/presets.test.ts`
+- [x] T050 [P] Add 100% branch-coverage tests for module control visibility and border-disable rules in `src/features/styling/utils/module-type-config.test.ts`
+- [x] T051 [P] Implement shared style serialization/deserialization helpers in `src/features/styling/utils/style-serialization.ts`
+- [x] T052 [P] Add 100% branch-coverage tests for style serialization helpers in `src/features/styling/utils/style-serialization.test.ts`
 
 **Checkpoint**: Shared styling infrastructure is ready for story work.
 
