@@ -27,6 +27,7 @@ export type {
   NotebookIndexEntry,
   CreateNotebookRequest,
   CreateNotebookStyleInput,
+  UpdateNotebookStyleInput,
 } from './notebooks';
 
 export type {

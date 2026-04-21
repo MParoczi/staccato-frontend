@@ -4,6 +4,7 @@ import type {
   CreateNotebookRequest,
   NotebookIndex,
   NotebookModuleStyle,
+  UpdateNotebookStyleInput,
 } from '@/lib/types';
 import { apiClient } from './client';
 
@@ -52,6 +53,27 @@ export async function updateNotebookStyle(
   const res = await apiClient.patch<NotebookModuleStyle>(
     `/notebooks/${notebookId}/styles/${styleId}`,
     data,
+  );
+  return res.data;
+}
+
+export async function updateNotebookStyles(
+  notebookId: string,
+  styles: UpdateNotebookStyleInput[],
+): Promise<NotebookModuleStyle[]> {
+  const res = await apiClient.put<NotebookModuleStyle[]>(
+    `/notebooks/${notebookId}/styles`,
+    styles,
+  );
+  return res.data;
+}
+
+export async function applyPresetToNotebook(
+  notebookId: string,
+  presetId: string,
+): Promise<NotebookModuleStyle[]> {
+  const res = await apiClient.post<NotebookModuleStyle[]>(
+    `/notebooks/${notebookId}/styles/apply-preset/${presetId}`,
   );
   return res.data;
 }
