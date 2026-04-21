@@ -341,7 +341,11 @@
       "unsaved": "Mentetlen változtatások",
       "moduleTabs": "Modultípusok",
       "preview": "Élő előnézet",
-      "presets": "Stílusbeállítások"
+      "presets": "Stílusbeállítások",
+      "saveSuccess": "Stílusok elmentve",
+      "saveError": "Nem sikerült menteni a stílusokat. Próbáld újra.",
+      "applySuccess": "Stílusbeállítás alkalmazva",
+      "applyError": "Nem sikerült alkalmazni a stílusbeállítást. Próbáld újra."
     },
     "controls": {
       "backgroundColor": "Háttérszín",

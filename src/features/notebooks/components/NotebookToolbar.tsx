@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { BookOpen, Palette, Download, Trash2, Plus, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
+import { BookOpen, Paintbrush, Download, Trash2, Plus, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -15,6 +15,7 @@ interface NotebookToolbarProps {
   globalPageNumber: number | null;
   currentPageType: 'cover' | 'index' | 'lesson';
   lessonId?: string;
+  onOpenStyles?: () => void;
 }
 
 export function NotebookToolbar({
@@ -22,6 +23,7 @@ export function NotebookToolbar({
   globalPageNumber,
   currentPageType,
   lessonId,
+  onOpenStyles,
 }: NotebookToolbarProps) {
   const { t } = useTranslation();
   const sidebarOpen = useUIStore((s) => s.sidebarOpen);
@@ -115,10 +117,17 @@ export function NotebookToolbar({
         <Button
           variant="ghost"
           size="icon-sm"
-          onClick={() => toast.info(t('notebooks.shell.toolbar.comingSoon'))}
-          aria-label={t('notebooks.shell.toolbar.styleEditor')}
+          onClick={() => {
+            if (onOpenStyles) {
+              onOpenStyles();
+            } else {
+              toast.info(t('notebooks.shell.toolbar.comingSoon'));
+            }
+          }}
+          aria-label={t('styling.toolbar.open')}
+          title={t('styling.toolbar.open')}
         >
-          <Palette className="size-4" aria-hidden="true" />
+          <Paintbrush className="size-4" aria-hidden="true" />
         </Button>
 
         {/* Export button */}

@@ -50,6 +50,28 @@ function renderToolbar(props?: Partial<Parameters<typeof NotebookToolbar>[0]>) {
   );
 }
 
+describe('NotebookToolbar styles trigger', () => {
+  beforeEach(() => {
+    useUIStore.setState({ sidebarOpen: false, zoom: 1 });
+  });
+
+  it('renders the styles button with accessible name', () => {
+    renderToolbar();
+    expect(
+      screen.getByRole('button', { name: 'styling.toolbar.open' }),
+    ).toBeInTheDocument();
+  });
+
+  it('invokes onOpenStyles when clicked', () => {
+    const onOpenStyles = vi.fn();
+    renderToolbar({ onOpenStyles });
+    fireEvent.click(
+      screen.getByRole('button', { name: 'styling.toolbar.open' }),
+    );
+    expect(onOpenStyles).toHaveBeenCalledTimes(1);
+  });
+});
+
 describe('NotebookToolbar sidebar toggle button', () => {
   beforeEach(() => {
     useUIStore.setState({ sidebarOpen: false, zoom: 1 });
