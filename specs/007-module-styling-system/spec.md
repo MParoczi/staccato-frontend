@@ -2,7 +2,7 @@
 
 **Feature Branch**: `007-module-styling-system`  
 **Created**: 2026-04-20  
-**Status**: Draft  
+**Status**: Ready for implementation  
 **Input**: User description: "Build the module styling system — the style editor, preset browser, preset application, and user-saved preset management."
 
 ## User Scenarios & Testing *(mandatory)*
@@ -132,7 +132,7 @@ A notebook owner manages their collection of saved presets by renaming presets t
 - **FR-017**: System MUST save all 12 module styles in a single operation when the user clicks "Save".
 - **FR-018**: System MUST apply optimistic updates so that style changes feel immediate in the notebook after saving.
 - **FR-019**: System MUST display 5 system presets as visual thumbnail cards with color swatches rendered client-side from the preset's 12 style entries (no pre-generated images).
-- **FR-020**: System MUST display user-saved presets (scoped globally per-user, across all notebooks) in a separate section below system presets, sorted newest first.
+- **FR-020**: System MUST display user-saved presets (scoped globally per-user, across all notebooks) in a separate section below system presets, preserving the newest-first order returned by `GET /users/me/presets`.
 - **FR-021**: System MUST allow applying any preset to the current notebook, which overwrites all 12 styles at once, immediately auto-persists the changes to the server with an optimistic update to the notebook, and refreshes all editor tabs. No separate "Save" click is required after applying a preset.
 - **FR-022**: System MUST require a confirmation step before applying a preset when the editor contains unsaved changes because the preset application replaces the local edits and auto-persists immediately.
 - **FR-023**: System MUST allow saving the current notebook's 12 styles as a new globally-scoped user preset with a user-provided name, even when the styles are identical to an existing preset, as long as the name is unique.

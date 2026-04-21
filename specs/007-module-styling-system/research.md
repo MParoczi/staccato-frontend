@@ -1,7 +1,7 @@
 # Research: Module Styling System
 
 **Feature**: 007-module-styling-system  
-**Date**: 2025-07-17
+**Date**: 2026-04-21
 
 ## R1: Color Picker Approach
 
@@ -32,7 +32,7 @@
 **Implementation details**:
 - Form shape: `{ styles: Record<ModuleType, ModuleStyleFormValues> }`
 - `ModuleStyleFormValues`: all 9 style properties (backgroundColor, borderColor, borderStyle, borderWidth, borderRadius, headerBgColor, headerTextColor, bodyTextColor, fontFamily)
-- Title and Subtitle tabs: same form fields exist but only bodyTextColor and fontFamily controls are rendered. Other fields retain defaults silently.
+- Title and Subtitle tabs: same form fields exist but only bodyTextColor and fontFamily controls are rendered. Other fields preserve the server-loaded values unchanged.
 - `useForm` with `defaultValues` populated from the TanStack Query cache on editor open
 - `reset()` called when applying a preset to replace all form values
 
@@ -40,7 +40,7 @@
 
 **Decision**: Add a `PUT /notebooks/{id}/styles` function to `src/api/notebooks.ts` that sends all 12 styles in one request.
 
-**Rationale**: The spec requires saving all 12 module styles in a single operation (FR-012). The existing `updateNotebookStyle` patches one style at a time, which would require 12 sequential requests. A bulk PUT is more efficient and atomic.
+**Rationale**: The spec requires saving all 12 module styles in a single operation (FR-017). The existing `updateNotebookStyle` patches one style at a time, which would require 12 sequential requests. A bulk PUT is more efficient and atomic.
 
 **Alternatives considered**:
 - **12 individual PATCH calls**: Slow, non-atomic, poor UX on partial failure.
@@ -55,7 +55,7 @@
 
 **Decision**: Applying a preset auto-persists immediately. The flow: (1) optimistically update `["notebooks", id, "styles"]` cache, (2) reset the form with preset values, (3) call `POST /notebooks/{id}/styles/apply-preset/{presetId}` in background, (4) rollback on error.
 
-**Rationale**: The spec explicitly requires auto-persist on preset apply (FR-016). Optimistic update ensures the notebook canvas updates instantly (SC-008).
+**Rationale**: The spec explicitly requires auto-persist on preset apply (FR-021). Optimistic update ensures the notebook canvas updates instantly (SC-008).
 
 **Alternatives considered**:
 - **Stage in form, require manual Save**: Spec explicitly rejects this — "No separate 'Save' click is required after applying a preset."
@@ -105,4 +105,14 @@
 - `renameUserPreset(id: string, name: string): Promise<UserSavedPreset>` → `PUT /users/me/presets/{id}` with `{ name }`
 - `updateNotebookStyles(notebookId: string, styles: UpdateNotebookStyleInput[]): Promise<NotebookModuleStyle[]>` → `PUT /notebooks/{notebookId}/styles`
 - `applyPresetToNotebook(notebookId: string, presetId: string): Promise<NotebookModuleStyle[]>` → `POST /notebooks/{notebookId}/styles/apply-preset/{presetId}`
+
+## R8: User Preset Ordering
+
+**Decision**: `GET /users/me/presets` is treated as a newest-first contract, so the frontend preserves server order rather than inventing a local sort key.
+
+**Rationale**: The documented client model does not expose `createdAt`, and preserving backend order avoids hidden sorting heuristics.
+
+**Implementation details**:
+- `useUserPresets()` should preserve response order from the API
+- No client-side re-sorting is required unless the backend contract changes to expose an explicit sortable field
 

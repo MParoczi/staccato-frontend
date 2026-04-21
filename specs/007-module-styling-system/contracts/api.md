@@ -1,7 +1,7 @@
 # API Contracts: Module Styling System
 
 **Feature**: 007-module-styling-system  
-**Date**: 2025-07-17
+**Date**: 2026-04-21
 
 These contracts document the REST API endpoints consumed by this feature. All endpoints use the centralized Axios client (`src/api/client.ts`) with `Authorization: Bearer {token}` and `Accept-Language` headers injected automatically.
 
@@ -136,6 +136,8 @@ Fetch all system-provided style presets.
 Fetch all user-saved presets for the authenticated user.
 
 **Frontend function**: `getUserPresets()` in `src/api/presets.ts`
+
+**Contract note**: The response order is newest first. The frontend preserves this server-provided order and does not derive a local sort key.
 
 **Response**: `200 OK`
 ```text

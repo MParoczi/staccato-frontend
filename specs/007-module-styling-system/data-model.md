@@ -1,7 +1,7 @@
 # Data Model: Module Styling System
 
 **Feature**: 007-module-styling-system  
-**Date**: 2025-07-17
+**Date**: 2026-04-21
 
 ## Entities
 
@@ -67,7 +67,7 @@ A user-created preset containing a name and 12 style entries. Globally scoped pe
 - name: required, 1–50 chars, unique per user (server-enforced, client shows inline error)
 - Maximum 20 presets per user (server-enforced, client disables "Save as Preset" at limit)
 - Duplicate style payloads are allowed across presets; uniqueness is enforced on `name`, not on serialized style content
-- Preset browser display order: newest first
+- Preset browser display order: newest first, preserving the response order from `GET /users/me/presets`
 
 ### StyleEntry (existing — `src/lib/types/styles.ts`)
 

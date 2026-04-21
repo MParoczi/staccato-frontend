@@ -19,7 +19,7 @@
 
 - [ ] T001 Add the English `styling.*` translation namespace and baseline toolbar/drawer/preset copy in `src/i18n/en.json`
 - [ ] T002 [P] Add the Hungarian `styling.*` translation namespace and baseline toolbar/drawer/preset copy in `src/i18n/hu.json`
-- [ ] T003 [P] Create curated swatches, module tab order, and font preview defaults in `src/features/styling/utils/style-defaults.ts`
+- [ ] T003 [P] Create curated swatches, module tab order, and font preview UI constants in `src/features/styling/utils/style-defaults.ts`
 
 ---
 
@@ -34,9 +34,14 @@
 - [ ] T006 Update preset API helpers to match `/presets` and `/users/me/presets` contracts in `src/api/presets.ts`
 - [ ] T007 [P] Implement Zod editor schemas and inferred form types in `src/features/styling/utils/style-schema.ts`
 - [ ] T008 [P] Implement per-module control visibility and border-disable rules in `src/features/styling/utils/module-type-config.ts`
-- [ ] T009 Implement the notebook-styles query hook with `['notebooks', notebookId, 'styles']` behavior in `src/features/styling/hooks/useNotebookStyles.ts`
+- [ ] T009 Implement the notebook-styles query hook with `['notebooks', notebookId, 'styles']`, `staleTime: 0`, and refetch-on-focus behavior in `src/features/styling/hooks/useNotebookStyles.ts`
 - [ ] T010 Implement the system-presets query hook with 5-minute caching in `src/features/styling/hooks/useSystemPresets.ts`
-- [ ] T011 Implement the user-presets query hook with newest-first sorting in `src/features/styling/hooks/useUserPresets.ts`
+- [ ] T011 Implement the user-presets query hook preserving the newest-first order returned by `GET /users/me/presets` in `src/features/styling/hooks/useUserPresets.ts`
+- [ ] T048 [P] Add MSW-backed request-shaping tests for bulk save and preset apply helpers in `src/api/notebooks.test.ts`
+- [ ] T049 [P] Add MSW-backed request-shaping tests for system/user preset API helpers in `src/api/presets.test.ts`
+- [ ] T050 [P] Add 100% branch-coverage tests for module control visibility and border-disable rules in `src/features/styling/utils/module-type-config.test.ts`
+- [ ] T051 [P] Implement shared style serialization/deserialization helpers in `src/features/styling/utils/style-serialization.ts`
+- [ ] T052 [P] Add 100% branch-coverage tests for style serialization helpers in `src/features/styling/utils/style-serialization.test.ts`
 
 **Checkpoint**: Shared styling infrastructure is ready for story work.
 
@@ -50,21 +55,23 @@
 
 ### Tests for User Story 1
 
-- [ ] T012 [P] \[US1] Add hex and numeric schema coverage in `src/features/styling/utils/style-schema.test.ts`
-- [ ] T013 [P] \[US1] Add color picker popover interaction tests for swatches, valid hex, invalid hex, and Escape handling in `src/features/styling/components/ColorPickerPopover.test.tsx`
+- [ ] T012 [P] \[US1] Add 100% branch-coverage hex and numeric schema tests in `src/features/styling/utils/style-schema.test.ts`
+- [ ] T013 [P] \[US1] Add color picker popover interaction tests for swatches, valid hex, invalid hex, Escape handling, and Tab/Shift+Tab keyboard traversal in `src/features/styling/components/ColorPickerPopover.test.tsx`
 - [ ] T014 [P] \[US1] Add optimistic save and rollback coverage for notebook style mutations in `src/features/styling/hooks/useStyleMutations.test.tsx`
-- [ ] T015 [P] \[US1] Add Styles trigger coverage for the notebook toolbar entry point in `src/features/notebooks/components/NotebookToolbar.test.tsx`
-- [ ] T016 [P] \[US1] Add drawer integration coverage for loading skeletons, tab switching, dirty state, and bulk save in `src/features/styling/components/StyleEditorDrawer.test.tsx`
+- [ ] T015 [P] \[US1] Add callback-based Styles trigger coverage for `NotebookToolbar` in `src/features/notebooks/components/NotebookToolbar.test.tsx`
+- [ ] T016 [P] \[US1] Add drawer integration coverage for loading skeletons, rapid tab switching (last-tab-wins), dirty state, close-discard reset behavior, Tab/Shift+Tab traversal, and bulk save in `src/features/styling/components/StyleEditorDrawer.test.tsx`
+- [ ] T053 [P] \[US1] Add route-level drawer composition coverage in `src/routes/notebook-layout.test.tsx`
 
 ### Implementation for User Story 1
 
 - [ ] T017 [P] \[US1] Implement the font sample renderer for Default, Monospace, and Serif in `src/features/styling/components/FontFamilyPreview.tsx`
-- [ ] T018 [P] \[US1] Implement the hex-input and 6×4 swatch color picker popover in `src/features/styling/components/ColorPickerPopover.tsx`
-- [ ] T019 [P] \[US1] Implement the dotted-paper live preview card for active module styles in `src/features/styling/components/StylePreview.tsx`
+- [ ] T018 [P] \[US1] Implement the hex-input and 6×4 swatch color picker popover with viewport-aware flip/shift behavior in `src/features/styling/components/ColorPickerPopover.tsx`
+- [ ] T019 [P] \[US1] Implement the dotted-paper live preview card for active module styles with last-tab-wins rendering behavior in `src/features/styling/components/StylePreview.tsx`
 - [ ] T020 \[US1] Implement module-type form controls, disabled border behavior, and hidden Title/Subtitle field preservation in `src/features/styling/components/StyleEditorTab.tsx`
-- [ ] T021 \[US1] Implement the bulk save mutation flow with optimistic notebook-style cache updates in `src/features/styling/hooks/useStyleMutations.ts`
-- [ ] T022 \[US1] Implement the desktop drawer, horizontal tab row, loading skeletons, dirty indicator, and save-all form in `src/features/styling/components/StyleEditorDrawer.tsx`
-- [ ] T023 \[US1] Wire the icon-only Paintbrush trigger, tooltip, and drawer mount into `src/features/notebooks/components/NotebookToolbar.tsx`
+- [ ] T021 \[US1] Implement the bulk save mutation flow with optimistic notebook-style cache updates plus success/destructive toast behavior in `src/features/styling/hooks/useStyleMutations.ts`
+- [ ] T022 \[US1] Implement the desktop drawer, horizontal tab row, loading skeletons, dirty indicator, backdrop/Escape close behavior, close-discard form reset, and save-all form in `src/features/styling/components/StyleEditorDrawer.tsx`
+- [ ] T023 \[US1] Wire the icon-only Paintbrush trigger and `onOpenStyles` callback prop into `src/features/notebooks/components/NotebookToolbar.tsx`
+- [ ] T054 \[US1] Compose the style drawer open state in `src/routes/notebook-layout.tsx` and pass the open callback into `NotebookToolbar`
 
 **Checkpoint**: User Story 1 is fully functional and independently testable.
 
@@ -86,7 +93,7 @@
 
 - [ ] T027 [P] \[US2] Implement memoized preset thumbnail cards with 4×3 two-tone swatches in `src/features/styling/components/PresetCard.tsx`
 - [ ] T028 \[US2] Implement system/user preset sections, empty state messaging, and apply actions in `src/features/styling/components/PresetBrowser.tsx`
-- [ ] T029 \[US2] Extend apply-preset mutation orchestration, rollback handling, and concurrent-action guards in `src/features/styling/hooks/useStyleMutations.ts`
+- [ ] T029 \[US2] Extend apply-preset mutation orchestration, rollback handling, concurrent-action guards, and apply success/error toast behavior in `src/features/styling/hooks/useStyleMutations.ts`
 - [ ] T030 \[US2] Integrate the preset browser, dirty-state confirmation flow, and form reset-after-apply behavior in `src/features/styling/components/StyleEditorDrawer.tsx`
 
 **Checkpoint**: User Stories 1 and 2 both work independently.
@@ -108,9 +115,9 @@
 ### Implementation for User Story 3
 
 - [ ] T034 [P] \[US3] Implement the Save as Preset dialog with inline duplicate-name messaging in `src/features/styling/components/SavePresetDialog.tsx`
-- [ ] T035 \[US3] Extend user preset creation, optimistic insert, and limit handling in `src/features/styling/hooks/useUserPresets.ts`
+- [ ] T035 \[US3] Extend user preset creation, optimistic insert, server-order preservation, limit handling, and create success/error toast behavior in `src/features/styling/hooks/useUserPresets.ts`
 - [ ] T036 \[US3] Add the Save as Preset CTA, limit-reached messaging, and dialog launch flow in `src/features/styling/components/PresetBrowser.tsx`
-- [ ] T037 \[US3] Connect drawer form serialization to preset creation in `src/features/styling/components/StyleEditorDrawer.tsx`
+- [ ] T037 \[US3] Connect drawer form serialization helpers to preset creation in `src/features/styling/components/StyleEditorDrawer.tsx`
 
 **Checkpoint**: User Stories 1, 2, and 3 are independently testable.
 
@@ -125,13 +132,13 @@
 ### Tests for User Story 4
 
 - [ ] T038 [P] \[US4] Extend user preset mutation coverage for rename/delete optimistic rollback in `src/features/styling/hooks/useUserPresets.test.tsx`
-- [ ] T039 [P] \[US4] Add preset-card interaction coverage for inline rename, truncation, and delete actions in `src/features/styling/components/PresetCard.test.tsx`
+- [ ] T039 [P] \[US4] Add preset-card interaction coverage for inline rename, truncation, focus-accessible full-name reveal, and delete actions in `src/features/styling/components/PresetCard.test.tsx`
 - [ ] T040 [P] \[US4] Extend drawer integration coverage for rename commit, Escape cancel, duplicate-name errors, and delete confirmation in `src/features/styling/components/StyleEditorDrawer.test.tsx`
 
 ### Implementation for User Story 4
 
-- [ ] T041 \[US4] Extend rename and delete mutations plus duplicate-name error mapping in `src/features/styling/hooks/useUserPresets.ts`
-- [ ] T042 \[US4] Implement inline rename, ellipsis truncation, hover title, and delete affordances in `src/features/styling/components/PresetCard.tsx`
+- [ ] T041 \[US4] Extend rename and delete mutations plus duplicate-name error mapping and rename/delete success/error toast behavior in `src/features/styling/hooks/useUserPresets.ts`
+- [ ] T042 \[US4] Implement inline rename, ellipsis truncation, hover/focus full-name reveal, and delete affordances in `src/features/styling/components/PresetCard.tsx`
 - [ ] T043 \[US4] Integrate preset management callbacks and confirmation dialogs in `src/features/styling/components/PresetBrowser.tsx`
 
 **Checkpoint**: All four user stories are independently functional.
@@ -146,6 +153,9 @@
 - [ ] T045 [P] Finalize Hungarian styling success/error copy in `src/i18n/hu.json`
 - [ ] T046 [P] Add render-performance polish for memoized preset thumbnails and live preview in `src/features/styling/components/PresetCard.tsx`
 - [ ] T047 Run the toolbar-to-drawer validation scenarios documented in `specs/007-module-styling-system/quickstart.md`
+- [ ] T055 Run the performance and interaction validation checklist for `SC-001`, `SC-002`, `SC-003`, `FR-038`, `FR-047`, and `FR-048` documented in `specs/007-module-styling-system/quickstart.md`
+- [ ] T056 Run the desktop browser compatibility checklist for Chrome, Firefox, Safari, and Edge documented in `specs/007-module-styling-system/quickstart.md`
+- [ ] T057 Validate success/destructive toast timing and manual-dismiss behavior documented in `specs/007-module-styling-system/quickstart.md`
 
 ---
 
@@ -155,7 +165,7 @@
 
 - **Phase 1: Setup** — no dependencies
 - **Phase 2: Foundational** — depends on Phase 1 and blocks all user stories
-- **Phase 3: User Story 1** — depends on Phase 2
+- **Phase 3: User Story 1** — depends on Phase 2, including the new API/pure-logic test coverage and route-level composition seam
 - **Phase 4: User Story 2** — depends on Phase 3 because preset browsing lives inside the style editor drawer
 - **Phase 5: User Story 3** — depends on Phase 4 because saving presets extends the preset browser surface
 - **Phase 6: User Story 4** — depends on Phase 4; it can proceed independently of User Story 3 if seeded user presets are available
@@ -178,12 +188,12 @@ Setup -> Foundational -> US1 -> US2 -> US3
 ### Parallel Opportunities
 
 - `T002` and `T003` can run in parallel after `T001`
-- `T007` and `T008` can run in parallel after `T006`
+- `T007`, `T008`, `T048`, `T049`, `T050`, and `T051` can run in parallel after `T006`
 - US1 component work `T017`-`T019` can run in parallel after the foundational phase
 - US2 test tasks `T024`-`T026` can run in parallel
 - US3 test tasks `T031`-`T033` can run in parallel
 - US4 test tasks `T038`-`T040` can run in parallel
-- Polish tasks `T044`-`T046` can run in parallel before `T047`
+- Polish tasks `T044`-`T046` can run in parallel before `T047`, `T055`, `T056`, and `T057`
 
 ---
 
@@ -193,6 +203,7 @@ Setup -> Foundational -> US1 -> US2 -> US3
 T012 \[US1] Add hex and numeric schema coverage in src/features/styling/utils/style-schema.test.ts
 T013 \[US1] Add color picker popover interaction tests in src/features/styling/components/ColorPickerPopover.test.tsx
 T015 \[US1] Add Styles trigger coverage in src/features/notebooks/components/NotebookToolbar.test.tsx
+T053 \[US1] Add route-level drawer composition coverage in src/routes/notebook-layout.test.tsx
 
 T017 \[US1] Implement the font sample renderer in src/features/styling/components/FontFamilyPreview.tsx
 T018 \[US1] Implement the color picker popover in src/features/styling/components/ColorPickerPopover.tsx
@@ -237,6 +248,7 @@ T040 \[US4] Extend drawer integration coverage in src/features/styling/component
 2. Complete Phase 2: Foundational
 3. Complete Phase 3: User Story 1
 4. Validate the User Story 1 independent test before proceeding
+5. Keep route-level composition in `src/routes/notebook-layout.tsx` so feature boundaries remain constitution-compliant
 
 ### Incremental Delivery
 
