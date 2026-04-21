@@ -1,22 +1,10 @@
 import { z } from 'zod';
 import type { ModuleType } from '@/lib/types';
+import { MODULE_STYLE_TAB_ORDER } from './style-defaults';
 
 const HEX_COLOR_REGEX = /^#[0-9A-Fa-f]{6}$/;
 
-export const MODULE_TYPES: readonly ModuleType[] = [
-  'Title',
-  'Breadcrumb',
-  'Subtitle',
-  'Theory',
-  'Practice',
-  'Example',
-  'Important',
-  'Tip',
-  'Homework',
-  'Question',
-  'ChordTablature',
-  'FreeText',
-] as const;
+export const MODULE_TYPES: readonly ModuleType[] = MODULE_STYLE_TAB_ORDER;
 
 export const hexColorSchema = z
   .string()

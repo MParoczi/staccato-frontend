@@ -17,9 +17,9 @@
 
 **Purpose**: Prepare shared feature copy and baseline constants for the styling feature.
 
-- [ ] T001 Add the English `styling.*` translation namespace and baseline toolbar/drawer/preset copy in `src/i18n/en.json`
-- [ ] T002 [P] Add the Hungarian `styling.*` translation namespace and baseline toolbar/drawer/preset copy in `src/i18n/hu.json`
-- [ ] T003 [P] Create curated swatches, module tab order, and font preview UI constants in `src/features/styling/utils/style-defaults.ts`
+- [x] T001 Add the English `styling.*` translation namespace and baseline toolbar/drawer/preset copy in `src/i18n/en.json`
+- [x] T002 [P] Add the Hungarian `styling.*` translation namespace and baseline toolbar/drawer/preset copy in `src/i18n/hu.json`
+- [x] T003 [P] Create curated swatches, module tab order, and font preview UI constants in `src/features/styling/utils/style-defaults.ts`
 
 ---
 
