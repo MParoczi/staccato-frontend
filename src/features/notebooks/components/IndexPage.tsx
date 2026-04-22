@@ -5,6 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { DottedPaper } from '@/components/common/DottedPaper';
 import { useNotebook } from '../hooks/useNotebook';
 import { useNotebookIndex } from '../hooks/useNotebookIndex';
+import { usePageNavigation } from '../hooks/usePageNavigation';
 import { useUIStore } from '@/stores/uiStore';
 import { getLesson } from '@/api/lessons';
 import type { NotebookIndexEntry } from '@/lib/types';
@@ -18,6 +19,7 @@ export function IndexPage() {
 
   const { data: notebook } = useNotebook(notebookId!);
   const { data: index } = useNotebookIndex(notebookId!);
+  const pageNav = usePageNavigation(notebookId!);
 
   const [navigatingLessonId, setNavigatingLessonId] = useState<string | null>(null);
 
@@ -113,9 +115,13 @@ export function IndexPage() {
         <div className="flex-1" />
 
         {/* Global page number */}
-        <div className="mt-4 text-right text-xs opacity-50">
-          {t('notebooks.shell.index.pageNumber', { number: 1 })}
-        </div>
+        {pageNav.globalPageNumber != null && (
+          <div className="mt-4 text-right text-xs opacity-50">
+            {t('notebooks.shell.index.pageNumber', {
+              number: pageNav.globalPageNumber,
+            })}
+          </div>
+        )}
       </div>
     </DottedPaper>
   );
