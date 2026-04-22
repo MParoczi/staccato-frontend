@@ -1,4 +1,4 @@
-import type { NotebookIndex, LessonSummary } from '@/lib/types';
+import type { NotebookIndex, LessonPage } from '@/lib/types';
 
 export type PageType = 'cover' | 'index' | 'lesson';
 
@@ -16,13 +16,20 @@ export interface PageSequenceEntry {
 /**
  * Builds a linear page sequence for a notebook.
  * Order: cover (0), index (1), then all lesson pages in order (2+).
- * Uses NotebookIndex for lesson ordering and LessonSummary[] for page counts.
- * Page IDs are not resolved here (resolved lazily via lesson detail).
+ * Uses `NotebookIndex` for lesson ordering and a per-lesson page map for
+ * the real page ids. Lesson pages are sorted by `pageNumber` ascending and
+ * emit `/pages/${pageId}` URLs using the real page id (not the 1-based
+ * in-lesson index), so the sequence matches the routes resolved by
+ * `LessonPage` and produced by `NotebookSidebar`.
+ *
+ * Lessons whose pages are not present in `lessonPages` are skipped: callers
+ * (e.g. `usePageNavigation`) are expected to wait until every lesson's pages
+ * have been hydrated before relying on the sequence for prev/next.
  */
 export function buildPageSequence(
   notebookId: string,
   index: NotebookIndex,
-  lessons: LessonSummary[],
+  lessonPages: ReadonlyMap<string, readonly LessonPage[]>,
 ): PageSequenceEntry[] {
   const basePath = `/app/notebooks/${notebookId}`;
   const sequence: PageSequenceEntry[] = [];
@@ -43,26 +50,25 @@ export function buildPageSequence(
 
   let globalPage = 2;
 
-  // Build a lookup map from lessonId to LessonSummary for page counts
-  const lessonMap = new Map<string, LessonSummary>();
-  for (const lesson of lessons) {
-    lessonMap.set(lesson.id, lesson);
-  }
-
   // Iterate index entries in order (server returns lessons in creation order)
   for (const entry of index.entries) {
-    const lesson = lessonMap.get(entry.lessonId);
-    const pageCount = lesson?.pageCount ?? 0;
+    const pages = lessonPages.get(entry.lessonId);
+    if (!pages || pages.length === 0) continue;
 
-    for (let page = 1; page <= pageCount; page++) {
+    const sortedPages = [...pages].sort((a, b) => a.pageNumber - b.pageNumber);
+    const total = sortedPages.length;
+
+    for (let i = 0; i < sortedPages.length; i++) {
+      const page = sortedPages[i];
       sequence.push({
         globalPageNumber: globalPage,
-        url: `${basePath}/lessons/${entry.lessonId}/pages/${page}`,
+        url: `${basePath}/lessons/${entry.lessonId}/pages/${page.id}`,
         type: 'lesson',
         lessonId: entry.lessonId,
+        pageId: page.id,
         lessonTitle: entry.title,
-        pageNumberInLesson: page,
-        totalPagesInLesson: pageCount,
+        pageNumberInLesson: i + 1,
+        totalPagesInLesson: total,
       });
       globalPage++;
     }
