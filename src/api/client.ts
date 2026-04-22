@@ -50,7 +50,6 @@ export function silentRefresh(): Promise<string> {
       })
       .catch((err) => {
         useAuthStore.getState().clearAuth();
-        window.location.href = '/login';
         return Promise.reject(err);
       })
       .finally(() => {
