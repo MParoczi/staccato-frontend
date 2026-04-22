@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Outlet, useParams, Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
@@ -30,10 +30,15 @@ export function NotebookLayout() {
   const setZoom = useUIStore((s) => s.setZoom);
   const [stylesOpen, setStylesOpen] = useState(false);
 
-  // Reset zoom and sidebar on notebookId change (FR-013)
+  // Reset zoom and sidebar only when the notebookId actually changes
+  // (skip initial mount so a persisted zoom / direct visit isn't clobbered). FR-013
+  const prevNotebookIdRef = useRef<string | undefined>(notebookId);
   useEffect(() => {
-    setZoom(1.0);
-    setSidebarOpen(false);
+    if (prevNotebookIdRef.current !== notebookId) {
+      prevNotebookIdRef.current = notebookId;
+      setZoom(1.0);
+      setSidebarOpen(false);
+    }
   }, [notebookId, setZoom, setSidebarOpen]);
 
   const notebookQuery = useNotebook(notebookId!);
@@ -120,7 +125,14 @@ export function NotebookLayout() {
           </SheetContent>
         </Sheet>
         <div className="flex flex-1 items-start justify-center overflow-auto p-4">
-          <div className="w-full" style={{ zoom }}>
+          <div
+            className="w-full"
+            style={{
+              transform: `scale(${zoom})`,
+              transformOrigin: 'top center',
+              width: `${100 / zoom}%`,
+            }}
+          >
             <Outlet />
           </div>
         </div>
