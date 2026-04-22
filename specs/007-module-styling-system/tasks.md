@@ -85,16 +85,16 @@
 
 ### Tests for User Story 2
 
-- [ ] T024 [P] \[US2] Add preset browser coverage for loading states, empty states, and disabled apply actions in `src/features/styling/components/PresetBrowser.test.tsx`
-- [ ] T025 [P] \[US2] Extend preset-apply optimistic update and rollback coverage in `src/features/styling/hooks/useStyleMutations.test.tsx`
-- [ ] T026 [P] \[US2] Extend drawer integration coverage for dirty-form apply confirmation and post-apply tab refresh in `src/features/styling/components/StyleEditorDrawer.test.tsx`
+- [x] T024 [P] \[US2] Add preset browser coverage for loading states, empty states, and disabled apply actions in `src/features/styling/components/PresetBrowser.test.tsx`
+- [x] T025 [P] \[US2] Extend preset-apply optimistic update and rollback coverage in `src/features/styling/hooks/useStyleMutations.test.tsx`
+- [x] T026 [P] \[US2] Extend drawer integration coverage for dirty-form apply confirmation and post-apply tab refresh in `src/features/styling/components/StyleEditorDrawer.test.tsx`
 
 ### Implementation for User Story 2
 
-- [ ] T027 [P] \[US2] Implement memoized preset thumbnail cards with 4×3 two-tone swatches in `src/features/styling/components/PresetCard.tsx`
-- [ ] T028 \[US2] Implement system/user preset sections, empty state messaging, and apply actions in `src/features/styling/components/PresetBrowser.tsx`
-- [ ] T029 \[US2] Extend apply-preset mutation orchestration, rollback handling, concurrent-action guards, and apply success/error toast behavior in `src/features/styling/hooks/useStyleMutations.ts`
-- [ ] T030 \[US2] Integrate the preset browser, dirty-state confirmation flow, and form reset-after-apply behavior in `src/features/styling/components/StyleEditorDrawer.tsx`
+- [x] T027 [P] \[US2] Implement memoized preset thumbnail cards with 4×3 two-tone swatches in `src/features/styling/components/PresetCard.tsx`
+- [x] T028 \[US2] Implement system/user preset sections, empty state messaging, and apply actions in `src/features/styling/components/PresetBrowser.tsx`
+- [x] T029 \[US2] Extend apply-preset mutation orchestration, rollback handling, concurrent-action guards, and apply success/error toast behavior in `src/features/styling/hooks/useStyleMutations.ts`
+- [x] T030 \[US2] Integrate the preset browser, dirty-state confirmation flow, and form reset-after-apply behavior in `src/features/styling/components/StyleEditorDrawer.tsx`
 
 **Checkpoint**: User Stories 1 and 2 both work independently.
 

@@ -1,0 +1,163 @@
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Skeleton } from '@/components/ui/skeleton';
+import {
+  systemPresetSwatches,
+  userPresetSwatches,
+  type PresetThumbnailSwatch,
+} from '../utils/preset-thumbnails';
+import { useSystemPresets } from '../hooks/useSystemPresets';
+import { useUserPresets } from '../hooks/useUserPresets';
+import { PresetCard } from './PresetCard';
+
+interface PresetBrowserProps {
+  /** Whether the parent drawer is open (gates query fetching). */
+  enabled?: boolean;
+  /** Invoked when the user clicks apply on a preset card. */
+  onApplyPreset: (presetId: string) => void;
+  /** The preset id currently being applied (to show the pending spinner). */
+  applyingPresetId?: string | null;
+  /** When true, all apply controls are disabled (e.g., during apply). */
+  isApplying?: boolean;
+}
+
+/**
+ * Browses system presets and the current user's saved presets inside the
+ * style editor drawer.
+ *
+ * - System presets: 5 read-only, cached for 5 minutes.
+ * - User presets: newest-first ordering is preserved exactly as returned by
+ *   `GET /users/me/presets`; no client-side sort is applied.
+ * - Each section has independent loading skeletons and empty-state copy.
+ */
+export function PresetBrowser({
+  enabled = true,
+  onApplyPreset,
+  applyingPresetId = null,
+  isApplying = false,
+}: PresetBrowserProps) {
+  const { t } = useTranslation();
+  const systemPresetsQuery = useSystemPresets({ enabled });
+  const userPresetsQuery = useUserPresets({ enabled });
+
+  const systemPresets = useMemo(
+    () =>
+      (systemPresetsQuery.data ?? []).map((preset) => ({
+        id: preset.id,
+        name: preset.name,
+        swatches: systemPresetSwatches(preset.styles),
+      })),
+    [systemPresetsQuery.data],
+  );
+
+  const userPresets = useMemo(
+    () =>
+      (userPresetsQuery.data ?? []).map((preset) => ({
+        id: preset.id,
+        name: preset.name,
+        swatches: userPresetSwatches(preset.styles),
+      })),
+    [userPresetsQuery.data],
+  );
+
+  return (
+    <section
+      data-slot="preset-browser"
+      aria-label={t('styling.presets.title')}
+      className="flex flex-col gap-4"
+    >
+      <PresetSection
+        heading={t('styling.presets.system')}
+        slot="preset-section-system"
+        isLoading={systemPresetsQuery.isPending}
+        isEmpty={systemPresets.length === 0}
+        emptyText={t('styling.presets.empty')}
+        presets={systemPresets}
+        onApplyPreset={onApplyPreset}
+        applyingPresetId={applyingPresetId}
+        isApplying={isApplying}
+      />
+      <PresetSection
+        heading={t('styling.presets.user')}
+        slot="preset-section-user"
+        isLoading={userPresetsQuery.isPending}
+        isEmpty={userPresets.length === 0}
+        emptyText={t('styling.presets.empty')}
+        presets={userPresets}
+        onApplyPreset={onApplyPreset}
+        applyingPresetId={applyingPresetId}
+        isApplying={isApplying}
+      />
+    </section>
+  );
+}
+
+interface PresetSectionProps {
+  heading: string;
+  slot: string;
+  isLoading: boolean;
+  isEmpty: boolean;
+  emptyText: string;
+  presets: readonly {
+    id: string;
+    name: string;
+    swatches: PresetThumbnailSwatch[];
+  }[];
+  onApplyPreset: (presetId: string) => void;
+  applyingPresetId: string | null;
+  isApplying: boolean;
+}
+
+function PresetSection({
+  heading,
+  slot,
+  isLoading,
+  isEmpty,
+  emptyText,
+  presets,
+  onApplyPreset,
+  applyingPresetId,
+  isApplying,
+}: PresetSectionProps) {
+  return (
+    <div data-slot={slot} className="flex flex-col gap-2">
+      <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+        {heading}
+      </h4>
+      {isLoading ? (
+        <div
+          data-slot={`${slot}-loading`}
+          className="grid grid-cols-2 gap-2"
+          aria-hidden="true"
+        >
+          <Skeleton className="h-24 w-full" />
+          <Skeleton className="h-24 w-full" />
+        </div>
+      ) : isEmpty ? (
+        <p
+          data-slot={`${slot}-empty`}
+          className="text-sm text-muted-foreground"
+        >
+          {emptyText}
+        </p>
+      ) : (
+        <div
+          data-slot={`${slot}-list`}
+          className="grid grid-cols-2 gap-2"
+        >
+          {presets.map((preset) => (
+            <PresetCard
+              key={preset.id}
+              presetId={preset.id}
+              name={preset.name}
+              swatches={preset.swatches}
+              onApply={onApplyPreset}
+              isApplying={applyingPresetId === preset.id}
+              disabled={isApplying && applyingPresetId !== preset.id}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

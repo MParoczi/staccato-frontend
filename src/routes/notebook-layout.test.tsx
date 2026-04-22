@@ -69,6 +69,12 @@ const server = setupServer(
   http.get('http://localhost:5000/notebooks/:id/styles', () =>
     HttpResponse.json(makeStyles(), { status: 200 }),
   ),
+  http.get('http://localhost:5000/presets', () =>
+    HttpResponse.json([], { status: 200 }),
+  ),
+  http.get('http://localhost:5000/users/me/presets', () =>
+    HttpResponse.json([], { status: 200 }),
+  ),
 );
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'bypass' }));
