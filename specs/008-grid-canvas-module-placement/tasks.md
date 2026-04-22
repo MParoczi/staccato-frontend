@@ -17,9 +17,9 @@
 
 **Purpose**: Prepare the frontend workspace for the canvas feature and shared copy/token setup.
 
-- [ ] T001 Add the drag dependency for canvas interactions in `package.json` and `pnpm-lock.yaml`
-- [ ] T002 [P] Add localized canvas labels, menu text, and toast-only feedback strings in `src/i18n/en.json` and `src/i18n/hu.json`
-- [ ] T003 [P] Add shared grid, zoom, and representative style token constants in `src/lib/constants/grid.ts`
+- [X] T001 Add the drag dependency for canvas interactions in `package.json` and `pnpm-lock.yaml`
+- [X] T002 [P] Add localized canvas labels, menu text, and toast-only feedback strings in `src/i18n/en.json` and `src/i18n/hu.json`
+- [X] T003 [P] Add shared grid, zoom, and representative style token constants in `src/lib/constants/grid.ts`
 
 ---
 

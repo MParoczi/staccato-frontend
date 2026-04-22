@@ -217,6 +217,36 @@
         "deleteError": "Az oldal törlése sikertelen. Kérjük, próbáld újra.",
         "createError": "Az oldal hozzáadása sikertelen. Kérjük, próbáld újra."
       }
+    },
+    "canvas": {
+      "surfaceLabel": "Leckeoldal-vászon",
+      "emptyState": "Ezen az oldalon még nincsenek modulok.",
+      "moduleLabel": "{{moduleType}} modul",
+      "addModule": {
+        "trigger": "Modul hozzáadása",
+        "title": "Modul hozzáadása",
+        "description": "Válassz modultípust az oldalra helyezéshez."
+      },
+      "menu": {
+        "open": "Modulműveletek megnyitása",
+        "bringToFront": "Előrehozás",
+        "sendToBack": "Hátraküldés",
+        "delete": "Modul törlése",
+        "confirmDeleteTitle": "Törlöd ezt a modult?",
+        "confirmDeleteDescription": "Ez a modul már tartalmaz tartalmat. Biztosan törlöd?"
+      },
+      "toasts": {
+        "added": "A modul hozzáadva az oldalhoz.",
+        "deleted": "A modul törölve.",
+        "layoutSaved": "A modul elrendezése elmentve.",
+        "layerUpdated": "A modul sorrendje frissítve.",
+        "layoutInvalid": "Ez az elhelyezés nem érvényes ezen az oldalon.",
+        "noSpace": "Nincs szabad hely ennek a modulnak az oldalon.",
+        "addFailed": "A modul hozzáadása nem sikerült.",
+        "deleteFailed": "A modul törlése nem sikerült.",
+        "layoutSaveFailed": "A modul elrendezését nem sikerült menteni.",
+        "layerUpdateFailed": "A modul sorrendjét nem sikerült frissíteni."
+      }
     }
   },
   "editor": {

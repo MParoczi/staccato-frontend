@@ -217,6 +217,36 @@
         "deleteError": "Failed to delete page. Please try again.",
         "createError": "Failed to add page. Please try again."
       }
+    },
+    "canvas": {
+      "surfaceLabel": "Lesson page canvas",
+      "emptyState": "No modules on this page yet.",
+      "moduleLabel": "{{moduleType}} module",
+      "addModule": {
+        "trigger": "Add module",
+        "title": "Add module",
+        "description": "Select a module type to place it on the page."
+      },
+      "menu": {
+        "open": "Open module actions",
+        "bringToFront": "Bring to front",
+        "sendToBack": "Send to back",
+        "delete": "Delete module",
+        "confirmDeleteTitle": "Delete this module?",
+        "confirmDeleteDescription": "This module already contains content. Delete it anyway?"
+      },
+      "toasts": {
+        "added": "Module added to the page.",
+        "deleted": "Module deleted.",
+        "layoutSaved": "Module layout saved.",
+        "layerUpdated": "Module order updated.",
+        "layoutInvalid": "This placement is not valid on the page.",
+        "noSpace": "No space is available for this module on the page.",
+        "addFailed": "The module could not be added.",
+        "deleteFailed": "The module could not be deleted.",
+        "layoutSaveFailed": "The module layout could not be saved.",
+        "layerUpdateFailed": "The module order could not be updated."
+      }
     }
   },
   "editor": {
