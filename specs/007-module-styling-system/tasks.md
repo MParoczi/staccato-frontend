@@ -149,13 +149,13 @@
 
 **Purpose**: Finalize cross-story copy, rendering polish, and quickstart verification.
 
-- [ ] T044 [P] Finalize English styling success/error copy in `src/i18n/en.json`
-- [ ] T045 [P] Finalize Hungarian styling success/error copy in `src/i18n/hu.json`
-- [ ] T046 [P] Add render-performance polish for memoized preset thumbnails and live preview in `src/features/styling/components/PresetCard.tsx`
-- [ ] T047 Run the toolbar-to-drawer validation scenarios documented in `specs/007-module-styling-system/quickstart.md`
-- [ ] T055 Run the performance and interaction validation checklist for `SC-001`, `SC-002`, `SC-003`, `FR-038`, `FR-047`, and `FR-048` documented in `specs/007-module-styling-system/quickstart.md`
-- [ ] T056 Run the desktop browser compatibility checklist for Chrome, Firefox, Safari, and Edge documented in `specs/007-module-styling-system/quickstart.md`
-- [ ] T057 Validate success/destructive toast timing and manual-dismiss behavior documented in `specs/007-module-styling-system/quickstart.md`
+- [x] T044 [P] Finalize English styling success/error copy in `src/i18n/en.json`
+- [x] T045 [P] Finalize Hungarian styling success/error copy in `src/i18n/hu.json`
+- [x] T046 [P] Add render-performance polish for memoized preset thumbnails and live preview in `src/features/styling/components/PresetCard.tsx`
+- [x] T047 Run the toolbar-to-drawer validation scenarios documented in `specs/007-module-styling-system/quickstart.md`
+- [x] T055 Run the performance and interaction validation checklist for `SC-001`, `SC-002`, `SC-003`, `FR-038`, `FR-047`, and `FR-048` documented in `specs/007-module-styling-system/quickstart.md`
+- [x] T056 Run the desktop browser compatibility checklist for Chrome, Firefox, Safari, and Edge documented in `specs/007-module-styling-system/quickstart.md`
+- [x] T057 Validate success/destructive toast timing and manual-dismiss behavior documented in `specs/007-module-styling-system/quickstart.md`
 
 ---
 
