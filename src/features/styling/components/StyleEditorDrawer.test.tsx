@@ -283,6 +283,46 @@ describe('StyleEditorDrawer', () => {
     );
   });
 
+  it('does not throw when closing the drawer while styles are still loading', async () => {
+    let resolveReq: (styles: NotebookModuleStyle[]) => void = () => {};
+    const pending = new Promise<NotebookModuleStyle[]>((res) => {
+      resolveReq = res;
+    });
+    server.use(
+      http.get(
+        `http://localhost:5000/notebooks/${notebookId}/styles`,
+        async () => {
+          const s = await pending;
+          return HttpResponse.json(s, { status: 200 });
+        },
+      ),
+    );
+
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    const onOpenChange = vi.fn();
+    renderDrawer({ onOpenChange });
+
+    // Form hasn't mounted yet; skeleton is visible.
+    expect(
+      await screen.findByLabelText('styling.drawer.loading'),
+    ).toBeInTheDocument();
+
+    // Close the drawer (via Escape -> Radix fires onOpenChange(false)) while
+    // the styles query is still pending. This must not throw or log errors
+    // even though no close-reset handler has been registered yet.
+    expect(() => {
+      fireEvent.keyDown(document.body, { key: 'Escape', code: 'Escape' });
+    }).not.toThrow();
+
+    await waitFor(() => expect(onOpenChange).toHaveBeenCalledWith(false));
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
+
+    // Resolve the pending request to avoid leaking into other tests.
+    resolveReq(makeStyles());
+  });
+
   it('allows Tab/Shift+Tab keyboard traversal between focusable elements', async () => {
     server.use(
       http.get(

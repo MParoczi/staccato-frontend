@@ -31,21 +31,25 @@ export function StyleEditorDrawer({
 }: StyleEditorDrawerProps) {
   const { t } = useTranslation();
   const stylesQuery = useNotebookStyles(notebookId, { enabled: open });
-  const closeResetRef = useRef<() => void>(() => {});
+  const closeResetRef = useRef<(() => void) | null>(null);
   const registerCloseReset = useCallback((handler: () => void) => {
     closeResetRef.current = handler;
   }, []);
 
+  const isLoading = stylesQuery.isPending;
+  const styles = stylesQuery.data;
+
   const handleOpenChange = (next: boolean) => {
     if (!next) {
-      // Close-discard: reset the form to the server values.
-      closeResetRef.current();
+      // Close-discard: reset the form to the server values. Skip when the
+      // form never mounted (styles still loading) so we don't run the reset
+      // handler against stale/undefined styles.
+      if (styles !== undefined && closeResetRef.current) {
+        closeResetRef.current();
+      }
     }
     onOpenChange(next);
   };
-
-  const isLoading = stylesQuery.isPending;
-  const styles = stylesQuery.data;
 
   return (
     <Sheet open={open} onOpenChange={handleOpenChange}>
