@@ -49,5 +49,5 @@ export function ProtectedRoute() {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  return <Outlet />;
+  return <Navigate to="/login" state={{ from: location }} replace />;
 }
