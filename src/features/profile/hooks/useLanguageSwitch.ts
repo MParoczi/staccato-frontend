@@ -10,14 +10,20 @@ export function useLanguageSwitch() {
   const { t } = useTranslation();
 
   return useMutation({
-    mutationFn: (newLanguage: Language) => {
+    mutationFn: async (newLanguage: Language) => {
       const cached = queryClient.getQueryData<User>(['user', 'profile']);
+      if (!cached) {
+        // Profile has not loaded yet — don't send a PUT that would overwrite
+        // firstName/lastName with empty strings. The i18next language change
+        // already happened in onMutate so the UI stays responsive.
+        return null;
+      }
       const request: UpdateProfileRequest = {
-        firstName: cached?.firstName ?? '',
-        lastName: cached?.lastName ?? '',
+        firstName: cached.firstName,
+        lastName: cached.lastName,
         language: newLanguage,
-        defaultPageSize: cached?.defaultPageSize ?? null,
-        defaultInstrumentId: cached?.defaultInstrumentId ?? null,
+        defaultPageSize: cached.defaultPageSize,
+        defaultInstrumentId: cached.defaultInstrumentId,
       };
       return updateMe(request);
     },
