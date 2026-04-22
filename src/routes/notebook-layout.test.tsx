@@ -188,6 +188,7 @@ describe('NotebookLayout — zoom/sidebar reset on notebookId change', () => {
     expect(zoomed).not.toBeNull();
     expect(zoomed?.style.transform).toBe('scale(1.25)');
     expect(zoomed?.style.transformOrigin).toBe('top center');
+    expect(zoomed?.style.width).toBe(`${100 / 1.25}%`);
     expect(zoomed?.style.zoom).toBe('');
   });
 });
