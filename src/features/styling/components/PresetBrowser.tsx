@@ -1,15 +1,31 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import {
   systemPresetSwatches,
   userPresetSwatches,
   type PresetThumbnailSwatch,
 } from '../utils/preset-thumbnails';
 import { useSystemPresets } from '../hooks/useSystemPresets';
-import { USER_PRESET_LIMIT, useUserPresets } from '../hooks/useUserPresets';
+import {
+  USER_PRESET_LIMIT,
+  classifyRenameUserPresetError,
+  useDeleteUserPreset,
+  useRenameUserPreset,
+  useUserPresets,
+} from '../hooks/useUserPresets';
 import { PresetCard } from './PresetCard';
 
 interface PresetBrowserProps {
@@ -47,6 +63,12 @@ export function PresetBrowser({
   const { t } = useTranslation();
   const systemPresetsQuery = useSystemPresets({ enabled });
   const userPresetsQuery = useUserPresets({ enabled });
+  const renameMutation = useRenameUserPreset();
+  const deleteMutation = useDeleteUserPreset();
+  const [duplicateRenameId, setDuplicateRenameId] = useState<string | null>(
+    null,
+  );
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
 
   const systemPresets = useMemo(
     () =>
@@ -72,6 +94,51 @@ export function PresetBrowser({
   const userPresetsLoaded = !userPresetsQuery.isPending;
   const isAtLimit = userPresetsLoaded && userPresetCount >= USER_PRESET_LIMIT;
   const canSave = Boolean(onSaveAsPreset) && userPresetsLoaded && !isAtLimit;
+
+  const pendingDeletePreset = useMemo(
+    () =>
+      pendingDeleteId
+        ? (userPresetsQuery.data ?? []).find((p) => p.id === pendingDeleteId)
+        : undefined,
+    [pendingDeleteId, userPresetsQuery.data],
+  );
+
+  const handleRenameUserPreset = useCallback(
+    (presetId: string, nextName: string) => {
+      setDuplicateRenameId(null);
+      renameMutation.mutate(
+        { id: presetId, name: nextName },
+        {
+          onError: (error) => {
+            const kind = classifyRenameUserPresetError(error);
+            if (kind === 'duplicate') {
+              setDuplicateRenameId(presetId);
+            }
+          },
+        },
+      );
+    },
+    [renameMutation],
+  );
+
+  const handleClearDuplicateRenameError = useCallback(() => {
+    setDuplicateRenameId(null);
+  }, []);
+
+  const handleRequestDeleteUserPreset = useCallback((presetId: string) => {
+    setPendingDeleteId(presetId);
+  }, []);
+
+  const handleCancelDelete = useCallback(() => {
+    setPendingDeleteId(null);
+  }, []);
+
+  const handleConfirmDelete = useCallback(() => {
+    if (!pendingDeleteId) return;
+    const id = pendingDeleteId;
+    setPendingDeleteId(null);
+    deleteMutation.mutate(id);
+  }, [deleteMutation, pendingDeleteId]);
 
   return (
     <section
@@ -126,8 +193,42 @@ export function PresetBrowser({
           onApplyPreset={onApplyPreset}
           applyingPresetId={applyingPresetId}
           isApplying={isApplying}
+          onRenamePreset={handleRenameUserPreset}
+          onDeletePreset={handleRequestDeleteUserPreset}
+          duplicateRenameId={duplicateRenameId}
+          onClearDuplicateRenameError={handleClearDuplicateRenameError}
         />
       </div>
+      <AlertDialog
+        open={pendingDeleteId !== null}
+        onOpenChange={(next) => {
+          if (!next) handleCancelDelete();
+        }}
+      >
+        <AlertDialogContent data-slot="preset-delete-confirm">
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {t('styling.presets.confirmDeleteTitle')}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {t('styling.presets.confirmDeleteMessage', {
+                name: pendingDeletePreset?.name ?? '',
+              })}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel data-slot="preset-delete-cancel">
+              {t('common.cancel')}
+            </AlertDialogCancel>
+            <AlertDialogAction
+              data-slot="preset-delete-confirm-action"
+              onClick={handleConfirmDelete}
+            >
+              {t('common.delete')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </section>
   );
 }
@@ -146,6 +247,10 @@ interface PresetSectionProps {
   onApplyPreset: (presetId: string) => void;
   applyingPresetId: string | null;
   isApplying: boolean;
+  onRenamePreset?: (presetId: string, nextName: string) => void;
+  onDeletePreset?: (presetId: string) => void;
+  duplicateRenameId?: string | null;
+  onClearDuplicateRenameError?: () => void;
 }
 
 function PresetSection({
@@ -158,6 +263,10 @@ function PresetSection({
   onApplyPreset,
   applyingPresetId,
   isApplying,
+  onRenamePreset,
+  onDeletePreset,
+  duplicateRenameId,
+  onClearDuplicateRenameError,
 }: PresetSectionProps) {
   return (
     <div data-slot={slot} className="flex flex-col gap-2">
@@ -196,6 +305,10 @@ function PresetSection({
               onApply={onApplyPreset}
               isApplying={applyingPresetId === preset.id}
               disabled={isApplying && applyingPresetId !== preset.id}
+              onRename={onRenamePreset}
+              onDelete={onDeletePreset}
+              duplicateNameError={duplicateRenameId === preset.id}
+              onClearDuplicateError={onClearDuplicateRenameError}
             />
           ))}
         </div>

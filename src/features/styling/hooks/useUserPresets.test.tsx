@@ -14,7 +14,10 @@ import {
 import {
   USER_PRESET_LIMIT,
   classifyCreateUserPresetError,
+  classifyRenameUserPresetError,
   useCreateUserPreset,
+  useDeleteUserPreset,
+  useRenameUserPreset,
   useUserPresets,
 } from './useUserPresets';
 import type { StyleEntry, UserSavedPreset } from '@/lib/types';
@@ -260,5 +263,178 @@ describe('useUserPresets', () => {
       'u-1',
       'u-2',
     ]);
+  });
+});
+
+describe('classifyRenameUserPresetError', () => {
+  it('maps 409 to duplicate', () => {
+    expect(
+      classifyRenameUserPresetError({ response: { status: 409 } }),
+    ).toBe('duplicate');
+  });
+  it('maps 404 to notFound', () => {
+    expect(
+      classifyRenameUserPresetError({ response: { status: 404 } }),
+    ).toBe('notFound');
+  });
+  it('maps anything else to unknown', () => {
+    expect(classifyRenameUserPresetError(new Error('boom'))).toBe('unknown');
+    expect(
+      classifyRenameUserPresetError({ response: { status: 500 } }),
+    ).toBe('unknown');
+  });
+});
+
+describe('useRenameUserPreset', () => {
+  it('optimistically updates the cached name and commits the server response', async () => {
+    const existing = [
+      makeUserPreset('u-1', 'Old name'),
+      makeUserPreset('u-2', 'Untouched'),
+    ];
+    const updated: UserSavedPreset = {
+      id: 'u-1',
+      name: 'Renamed',
+      styles: [],
+    };
+    server.use(
+      http.put('http://localhost:5000/users/me/presets/u-1', () =>
+        HttpResponse.json(updated, { status: 200 }),
+      ),
+    );
+
+    const { Wrapper, queryClient } = createWrapper(existing);
+    const { result } = renderHook(() => useRenameUserPreset(), {
+      wrapper: Wrapper,
+    });
+
+    act(() => {
+      result.current.mutate({ id: 'u-1', name: 'Renamed' });
+    });
+
+    await waitFor(() => {
+      const cached =
+        queryClient.getQueryData<UserSavedPreset[]>(['user', 'presets']);
+      expect(cached?.find((p) => p.id === 'u-1')?.name).toBe('Renamed');
+      expect(cached?.find((p) => p.id === 'u-2')?.name).toBe('Untouched');
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(toastSuccess).toHaveBeenCalledWith('styling.presets.renameSuccess');
+  });
+
+  it('rolls back the cache and surfaces duplicate via error kind (no toast)', async () => {
+    const existing = [
+      makeUserPreset('u-1', 'Original'),
+      makeUserPreset('u-2', 'Taken'),
+    ];
+    server.use(
+      http.put('http://localhost:5000/users/me/presets/u-1', () =>
+        HttpResponse.json({ message: 'duplicate' }, { status: 409 }),
+      ),
+    );
+
+    const { Wrapper, queryClient } = createWrapper(existing);
+    const { result } = renderHook(() => useRenameUserPreset(), {
+      wrapper: Wrapper,
+    });
+
+    act(() => {
+      result.current.mutate({ id: 'u-1', name: 'Taken' });
+    });
+
+    await waitFor(() => expect(result.current.isError).toBe(true));
+
+    const cached =
+      queryClient.getQueryData<UserSavedPreset[]>(['user', 'presets']);
+    expect(cached?.find((p) => p.id === 'u-1')?.name).toBe('Original');
+    expect(classifyRenameUserPresetError(result.current.error)).toBe(
+      'duplicate',
+    );
+    // Duplicate is shown inline on the preset card, not as a toast.
+    expect(toastError).not.toHaveBeenCalled();
+  });
+
+  it('rolls back and shows a destructive toast on non-duplicate errors', async () => {
+    const existing = [makeUserPreset('u-1', 'Original')];
+    server.use(
+      http.put('http://localhost:5000/users/me/presets/u-1', () =>
+        HttpResponse.json({ message: 'boom' }, { status: 500 }),
+      ),
+    );
+
+    const { Wrapper, queryClient } = createWrapper(existing);
+    const { result } = renderHook(() => useRenameUserPreset(), {
+      wrapper: Wrapper,
+    });
+
+    act(() => {
+      result.current.mutate({ id: 'u-1', name: 'Whatever' });
+    });
+
+    await waitFor(() => expect(result.current.isError).toBe(true));
+    const cached =
+      queryClient.getQueryData<UserSavedPreset[]>(['user', 'presets']);
+    expect(cached?.find((p) => p.id === 'u-1')?.name).toBe('Original');
+    expect(toastError).toHaveBeenCalledWith('styling.presets.renameError');
+  });
+});
+
+describe('useDeleteUserPreset', () => {
+  it('optimistically removes the preset and shows success toast', async () => {
+    const existing = [
+      makeUserPreset('u-1', 'First'),
+      makeUserPreset('u-2', 'Second'),
+    ];
+    server.use(
+      http.delete(
+        'http://localhost:5000/users/me/presets/u-1',
+        () => new HttpResponse(null, { status: 204 }),
+      ),
+    );
+
+    const { Wrapper, queryClient } = createWrapper(existing);
+    const { result } = renderHook(() => useDeleteUserPreset(), {
+      wrapper: Wrapper,
+    });
+
+    act(() => {
+      result.current.mutate('u-1');
+    });
+
+    await waitFor(() => {
+      const cached =
+        queryClient.getQueryData<UserSavedPreset[]>(['user', 'presets']);
+      expect(cached?.map((p) => p.id)).toEqual(['u-2']);
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(toastSuccess).toHaveBeenCalledWith('styling.presets.deleteSuccess');
+  });
+
+  it('rolls back the cache and shows a destructive toast on server error', async () => {
+    const existing = [
+      makeUserPreset('u-1', 'First'),
+      makeUserPreset('u-2', 'Second'),
+    ];
+    server.use(
+      http.delete('http://localhost:5000/users/me/presets/u-1', () =>
+        HttpResponse.json({ message: 'nope' }, { status: 500 }),
+      ),
+    );
+
+    const { Wrapper, queryClient } = createWrapper(existing);
+    const { result } = renderHook(() => useDeleteUserPreset(), {
+      wrapper: Wrapper,
+    });
+
+    act(() => {
+      result.current.mutate('u-1');
+    });
+
+    await waitFor(() => expect(result.current.isError).toBe(true));
+    const cached =
+      queryClient.getQueryData<UserSavedPreset[]>(['user', 'presets']);
+    expect(cached?.map((p) => p.id)).toEqual(['u-1', 'u-2']);
+    expect(toastError).toHaveBeenCalledWith('styling.presets.deleteError');
   });
 });

@@ -404,7 +404,16 @@
       "saveDialogDescription": "Save the current 12 module styles as a reusable preset.",
       "saving": "Saving...",
       "createSuccess": "Preset saved",
-      "createError": "Unable to save preset. Please try again."
+      "createError": "Unable to save preset. Please try again.",
+      "rename": "Rename preset",
+      "renameInputLabel": "Preset name",
+      "renameSuccess": "Preset renamed",
+      "renameError": "Unable to rename preset. Please try again.",
+      "delete": "Delete preset",
+      "deleteSuccess": "Preset deleted",
+      "deleteError": "Unable to delete preset. Please try again.",
+      "confirmDeleteTitle": "Delete preset?",
+      "confirmDeleteMessage": "This will permanently remove \"{{name}}\" from your saved presets."
     },
     "errors": {
       "invalidHex": "Enter a valid 6-digit hex color",

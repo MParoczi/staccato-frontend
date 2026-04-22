@@ -404,7 +404,16 @@
       "saveDialogDescription": "Mentsd el az aktuális 12 modulstílust újrafelhasználható beállításként.",
       "saving": "Mentés...",
       "createSuccess": "Stílusbeállítás elmentve",
-      "createError": "Nem sikerült menteni a stílusbeállítást. Próbáld újra."
+      "createError": "Nem sikerült menteni a stílusbeállítást. Próbáld újra.",
+      "rename": "Stílusbeállítás átnevezése",
+      "renameInputLabel": "Stílusbeállítás neve",
+      "renameSuccess": "Stílusbeállítás átnevezve",
+      "renameError": "Nem sikerült átnevezni a stílusbeállítást. Próbáld újra.",
+      "delete": "Stílusbeállítás törlése",
+      "deleteSuccess": "Stílusbeállítás törölve",
+      "deleteError": "Nem sikerült törölni a stílusbeállítást. Próbáld újra.",
+      "confirmDeleteTitle": "Törlöd a stílusbeállítást?",
+      "confirmDeleteMessage": "Ezzel véglegesen eltávolítod a(z) \"{{name}}\" stílusbeállítást a mentett listádból."
     },
     "errors": {
       "invalidHex": "Adj meg egy érvényes 6 jegyű hex színt",
