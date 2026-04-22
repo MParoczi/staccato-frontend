@@ -48,6 +48,9 @@ export function NotebookCard({ notebook, onDelete }: NotebookCardProps) {
       className="group/notebook-card cursor-pointer overflow-hidden rounded-xl bg-card text-card-foreground ring-1 ring-foreground/10 transition-all duration-150 hover:-translate-y-0.5 hover:shadow-lg motion-reduce:transform-none motion-reduce:transition-none"
       onClick={handleCardClick}
       onKeyDown={(e) => {
+        if (e.target !== e.currentTarget) {
+          return;
+        }
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           handleCardClick();
