@@ -3,6 +3,7 @@ import {
   useCallback,
   useEffect,
   useId,
+  useMemo,
   useRef,
   useState,
   type KeyboardEvent as ReactKeyboardEvent,
@@ -146,12 +147,12 @@ const PresetCardComponent = ({
     commit();
   }, [commit]);
 
-  return (
-    <div
-      data-slot="preset-card"
-      data-preset-id={presetId}
-      className="flex flex-col gap-2 rounded-md border bg-card p-2 text-card-foreground shadow-sm"
-    >
+  // Memoize the 4x3 thumbnail grid so local rename-state transitions
+  // (entering/leaving edit mode, draft typing, duplicate-error flag) do not
+  // rebuild the 12-cell live-preview DOM. Only recomputes when the swatches
+  // or the accessible label actually change.
+  const thumbnail = useMemo(
+    () => (
       <div
         data-slot="preset-thumbnail"
         role="img"
@@ -182,6 +183,17 @@ const PresetCardComponent = ({
           </div>
         ))}
       </div>
+    ),
+    [name, swatches],
+  );
+
+  return (
+    <div
+      data-slot="preset-card"
+      data-preset-id={presetId}
+      className="flex flex-col gap-2 rounded-md border bg-card p-2 text-card-foreground shadow-sm"
+    >
+      {thumbnail}
       <div className="flex items-center justify-between gap-2">
         {isEditing ? (
           <Input
