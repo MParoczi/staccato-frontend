@@ -671,4 +671,301 @@ describe('StyleEditorDrawer', () => {
       document.querySelector('[data-slot="preset-limit-reached"]'),
     ).not.toBeNull();
   });
+
+  it('renames a user preset inline, committing on Enter', async () => {
+    const existing = [
+      {
+        id: 'user-1',
+        name: 'Old name',
+        styles: MODULE_STYLE_TAB_ORDER.map((m) => ({
+          moduleType: m,
+          stylesJson: JSON.stringify({
+            backgroundColor: '#FFFFFF',
+            borderColor: '#CCCCCC',
+            borderStyle: 'Solid',
+            borderWidth: 1,
+            borderRadius: 4,
+            headerBgColor: '#F0E6D3',
+            headerTextColor: '#333333',
+            bodyTextColor: '#333333',
+            fontFamily: 'Default',
+          }),
+        })),
+      },
+    ];
+    let renameBody: { name: string } | null = null;
+    server.use(
+      http.get(
+        `http://localhost:5000/notebooks/${notebookId}/styles`,
+        () => HttpResponse.json(makeStyles(), { status: 200 }),
+      ),
+      http.get('http://localhost:5000/users/me/presets', () =>
+        HttpResponse.json(existing, { status: 200 }),
+      ),
+      http.put(
+        'http://localhost:5000/users/me/presets/user-1',
+        async ({ request }) => {
+          renameBody = (await request.json()) as { name: string };
+          return HttpResponse.json(
+            { id: 'user-1', name: renameBody.name, styles: existing[0].styles },
+            { status: 200 },
+          );
+        },
+      ),
+    );
+
+    renderDrawer();
+
+    const pencil = await screen.findByRole('button', {
+      name: 'styling.presets.rename',
+    });
+    fireEvent.click(pencil);
+
+    const input = document.querySelector<HTMLInputElement>(
+      '[data-slot="preset-name-input"]',
+    );
+    expect(input).not.toBeNull();
+    fireEvent.change(input!, { target: { value: 'Fresh name' } });
+    await act(async () => {
+      fireEvent.keyDown(input!, { key: 'Enter' });
+    });
+
+    await waitFor(() => {
+      expect(renameBody).not.toBeNull();
+    });
+    expect(renameBody?.name).toBe('Fresh name');
+  });
+
+  it('cancels an inline rename on Escape without sending a request', async () => {
+    const existing = [
+      {
+        id: 'user-1',
+        name: 'Keep me',
+        styles: MODULE_STYLE_TAB_ORDER.map((m) => ({
+          moduleType: m,
+          stylesJson: JSON.stringify({
+            backgroundColor: '#FFFFFF',
+            borderColor: '#CCCCCC',
+            borderStyle: 'Solid',
+            borderWidth: 1,
+            borderRadius: 4,
+            headerBgColor: '#F0E6D3',
+            headerTextColor: '#333333',
+            bodyTextColor: '#333333',
+            fontFamily: 'Default',
+          }),
+        })),
+      },
+    ];
+    let putCalls = 0;
+    server.use(
+      http.get(
+        `http://localhost:5000/notebooks/${notebookId}/styles`,
+        () => HttpResponse.json(makeStyles(), { status: 200 }),
+      ),
+      http.get('http://localhost:5000/users/me/presets', () =>
+        HttpResponse.json(existing, { status: 200 }),
+      ),
+      http.put('http://localhost:5000/users/me/presets/user-1', () => {
+        putCalls += 1;
+        return HttpResponse.json(existing[0], { status: 200 });
+      }),
+    );
+
+    renderDrawer();
+
+    const pencil = await screen.findByRole('button', {
+      name: 'styling.presets.rename',
+    });
+    fireEvent.click(pencil);
+
+    const input = document.querySelector<HTMLInputElement>(
+      '[data-slot="preset-name-input"]',
+    );
+    fireEvent.change(input!, { target: { value: 'Abandoned' } });
+    fireEvent.keyDown(input!, { key: 'Escape' });
+
+    await waitFor(() => {
+      expect(
+        document.querySelector('[data-slot="preset-name-input"]'),
+      ).toBeNull();
+    });
+    expect(putCalls).toBe(0);
+  });
+
+  it('surfaces duplicate-name server errors inline on the preset card', async () => {
+    const existing = [
+      {
+        id: 'user-1',
+        name: 'Original',
+        styles: MODULE_STYLE_TAB_ORDER.map((m) => ({
+          moduleType: m,
+          stylesJson: JSON.stringify({
+            backgroundColor: '#FFFFFF',
+            borderColor: '#CCCCCC',
+            borderStyle: 'Solid',
+            borderWidth: 1,
+            borderRadius: 4,
+            headerBgColor: '#F0E6D3',
+            headerTextColor: '#333333',
+            bodyTextColor: '#333333',
+            fontFamily: 'Default',
+          }),
+        })),
+      },
+    ];
+    server.use(
+      http.get(
+        `http://localhost:5000/notebooks/${notebookId}/styles`,
+        () => HttpResponse.json(makeStyles(), { status: 200 }),
+      ),
+      http.get('http://localhost:5000/users/me/presets', () =>
+        HttpResponse.json(existing, { status: 200 }),
+      ),
+      http.put('http://localhost:5000/users/me/presets/user-1', () =>
+        HttpResponse.json({ message: 'duplicate' }, { status: 409 }),
+      ),
+    );
+
+    renderDrawer();
+
+    const pencil = await screen.findByRole('button', {
+      name: 'styling.presets.rename',
+    });
+    fireEvent.click(pencil);
+    const input = document.querySelector<HTMLInputElement>(
+      '[data-slot="preset-name-input"]',
+    );
+    fireEvent.change(input!, { target: { value: 'Taken' } });
+    await act(async () => {
+      fireEvent.keyDown(input!, { key: 'Enter' });
+    });
+
+    await waitFor(() => {
+      expect(
+        document.querySelector('[data-slot="preset-rename-duplicate-error"]'),
+      ).not.toBeNull();
+    });
+    // The rename input remains open so the user can correct the value.
+    expect(
+      document.querySelector('[data-slot="preset-name-input"]'),
+    ).not.toBeNull();
+  });
+
+  it('deletes a user preset only after the confirmation dialog is accepted', async () => {
+    const existing = [
+      {
+        id: 'user-1',
+        name: 'Deletable',
+        styles: MODULE_STYLE_TAB_ORDER.map((m) => ({
+          moduleType: m,
+          stylesJson: JSON.stringify({
+            backgroundColor: '#FFFFFF',
+            borderColor: '#CCCCCC',
+            borderStyle: 'Solid',
+            borderWidth: 1,
+            borderRadius: 4,
+            headerBgColor: '#F0E6D3',
+            headerTextColor: '#333333',
+            bodyTextColor: '#333333',
+            fontFamily: 'Default',
+          }),
+        })),
+      },
+    ];
+    let deleteCalls = 0;
+    server.use(
+      http.get(
+        `http://localhost:5000/notebooks/${notebookId}/styles`,
+        () => HttpResponse.json(makeStyles(), { status: 200 }),
+      ),
+      http.get('http://localhost:5000/users/me/presets', () =>
+        HttpResponse.json(existing, { status: 200 }),
+      ),
+      http.delete('http://localhost:5000/users/me/presets/user-1', () => {
+        deleteCalls += 1;
+        return new HttpResponse(null, { status: 204 });
+      }),
+    );
+
+    renderDrawer();
+
+    const trash = await screen.findByRole('button', {
+      name: 'styling.presets.delete',
+    });
+    fireEvent.click(trash);
+
+    // Confirmation dialog must appear before the request is sent.
+    const dialog = await screen.findByRole('alertdialog');
+    expect(dialog).toHaveTextContent('styling.presets.confirmDeleteTitle');
+    expect(deleteCalls).toBe(0);
+
+    const confirmAction = dialog.querySelector<HTMLButtonElement>(
+      '[data-slot="preset-delete-confirm-action"]',
+    );
+    expect(confirmAction).not.toBeNull();
+    await act(async () => {
+      confirmAction?.click();
+    });
+
+    await waitFor(() => expect(deleteCalls).toBe(1));
+  });
+
+  it('does not send a delete request when the confirmation dialog is cancelled', async () => {
+    const existing = [
+      {
+        id: 'user-1',
+        name: 'Keep me',
+        styles: MODULE_STYLE_TAB_ORDER.map((m) => ({
+          moduleType: m,
+          stylesJson: JSON.stringify({
+            backgroundColor: '#FFFFFF',
+            borderColor: '#CCCCCC',
+            borderStyle: 'Solid',
+            borderWidth: 1,
+            borderRadius: 4,
+            headerBgColor: '#F0E6D3',
+            headerTextColor: '#333333',
+            bodyTextColor: '#333333',
+            fontFamily: 'Default',
+          }),
+        })),
+      },
+    ];
+    let deleteCalls = 0;
+    server.use(
+      http.get(
+        `http://localhost:5000/notebooks/${notebookId}/styles`,
+        () => HttpResponse.json(makeStyles(), { status: 200 }),
+      ),
+      http.get('http://localhost:5000/users/me/presets', () =>
+        HttpResponse.json(existing, { status: 200 }),
+      ),
+      http.delete('http://localhost:5000/users/me/presets/user-1', () => {
+        deleteCalls += 1;
+        return new HttpResponse(null, { status: 204 });
+      }),
+    );
+
+    renderDrawer();
+
+    const trash = await screen.findByRole('button', {
+      name: 'styling.presets.delete',
+    });
+    fireEvent.click(trash);
+
+    const dialog = await screen.findByRole('alertdialog');
+    const cancel = dialog.querySelector<HTMLButtonElement>(
+      '[data-slot="preset-delete-cancel"]',
+    );
+    expect(cancel).not.toBeNull();
+    await act(async () => {
+      cancel?.click();
+    });
+
+    await waitFor(() =>
+      expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument(),
+    );
+    expect(deleteCalls).toBe(0);
+  });
 });

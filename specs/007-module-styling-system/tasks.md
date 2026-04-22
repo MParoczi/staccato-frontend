@@ -131,15 +131,15 @@
 
 ### Tests for User Story 4
 
-- [ ] T038 [P] \[US4] Extend user preset mutation coverage for rename/delete optimistic rollback in `src/features/styling/hooks/useUserPresets.test.tsx`
-- [ ] T039 [P] \[US4] Add preset-card interaction coverage for inline rename, truncation, focus-accessible full-name reveal, and delete actions in `src/features/styling/components/PresetCard.test.tsx`
-- [ ] T040 [P] \[US4] Extend drawer integration coverage for rename commit, Escape cancel, duplicate-name errors, and delete confirmation in `src/features/styling/components/StyleEditorDrawer.test.tsx`
+- [x] T038 [P] \[US4] Extend user preset mutation coverage for rename/delete optimistic rollback in `src/features/styling/hooks/useUserPresets.test.tsx`
+- [x] T039 [P] \[US4] Add preset-card interaction coverage for inline rename, truncation, focus-accessible full-name reveal, and delete actions in `src/features/styling/components/PresetCard.test.tsx`
+- [x] T040 [P] \[US4] Extend drawer integration coverage for rename commit, Escape cancel, duplicate-name errors, and delete confirmation in `src/features/styling/components/StyleEditorDrawer.test.tsx`
 
 ### Implementation for User Story 4
 
-- [ ] T041 \[US4] Extend rename and delete mutations plus duplicate-name error mapping and rename/delete success/error toast behavior in `src/features/styling/hooks/useUserPresets.ts`
-- [ ] T042 \[US4] Implement inline rename, ellipsis truncation, hover/focus full-name reveal, and delete affordances in `src/features/styling/components/PresetCard.tsx`
-- [ ] T043 \[US4] Integrate preset management callbacks and confirmation dialogs in `src/features/styling/components/PresetBrowser.tsx`
+- [x] T041 \[US4] Extend rename and delete mutations plus duplicate-name error mapping and rename/delete success/error toast behavior in `src/features/styling/hooks/useUserPresets.ts`
+- [x] T042 \[US4] Implement inline rename, ellipsis truncation, hover/focus full-name reveal, and delete affordances in `src/features/styling/components/PresetCard.tsx`
+- [x] T043 \[US4] Integrate preset management callbacks and confirmation dialogs in `src/features/styling/components/PresetBrowser.tsx`
 
 **Checkpoint**: All four user stories are independently functional.
 
