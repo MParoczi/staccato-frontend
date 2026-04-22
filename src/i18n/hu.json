@@ -399,7 +399,12 @@
       "confirmApplyTitle": "Alkalmazod a stílusbeállítást?",
       "confirmApplyMessage": "A stílusbeállítás alkalmazása felülírja a mentetlen változtatásokat, és azonnal menti az új értékeket.",
       "limitReached": "Elérted a stílusbeállítási limitet (20). Törölj egy meglévő beállítást az új mentéséhez.",
-      "duplicateName": "Már létezik ilyen nevű stílusbeállítás"
+      "duplicateName": "Már létezik ilyen nevű stílusbeállítás",
+      "saveDialogTitle": "Mentés stílusbeállításként",
+      "saveDialogDescription": "Mentsd el az aktuális 12 modulstílust újrafelhasználható beállításként.",
+      "saving": "Mentés...",
+      "createSuccess": "Stílusbeállítás elmentve",
+      "createError": "Nem sikerült menteni a stílusbeállítást. Próbáld újra."
     },
     "errors": {
       "invalidHex": "Adj meg egy érvényes 6 jegyű hex színt",

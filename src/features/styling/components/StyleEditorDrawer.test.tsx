@@ -514,4 +514,161 @@ describe('StyleEditorDrawer', () => {
     );
     expect(screen.getByText('styling.drawer.unsaved')).toBeInTheDocument();
   });
+
+  it('saves the current styles as a new user preset under a unique name', async () => {
+    const existingPresets = [
+      {
+        id: 'user-existing',
+        name: 'Already saved',
+        styles: MODULE_STYLE_TAB_ORDER.map((m) => ({
+          moduleType: m,
+          stylesJson: JSON.stringify({
+            backgroundColor: '#FFFFFF',
+            borderColor: '#CCCCCC',
+            borderStyle: 'Solid',
+            borderWidth: 1,
+            borderRadius: 4,
+            headerBgColor: '#F0E6D3',
+            headerTextColor: '#333333',
+            bodyTextColor: '#333333',
+            fontFamily: 'Default',
+          }),
+        })),
+      },
+    ];
+    const createdPreset = {
+      id: 'user-new',
+      name: 'My Custom Theme',
+      styles: existingPresets[0].styles,
+    };
+    let capturedCreateBody: { name: string; styles: unknown[] } | null = null;
+
+    server.use(
+      http.get(
+        `http://localhost:5000/notebooks/${notebookId}/styles`,
+        () => HttpResponse.json(makeStyles(), { status: 200 }),
+      ),
+      http.get('http://localhost:5000/users/me/presets', () =>
+        HttpResponse.json(existingPresets, { status: 200 }),
+      ),
+      http.post(
+        'http://localhost:5000/users/me/presets',
+        async ({ request }) => {
+          capturedCreateBody = (await request.json()) as {
+            name: string;
+            styles: unknown[];
+          };
+          return HttpResponse.json(createdPreset, { status: 201 });
+        },
+      ),
+    );
+
+    renderDrawer();
+
+    const saveAsButton = await screen.findByRole('button', {
+      name: 'styling.presets.saveAs',
+    });
+    await waitFor(() => expect(saveAsButton).toBeEnabled());
+
+    await act(async () => {
+      fireEvent.click(saveAsButton);
+    });
+
+    const nameInput = await screen.findByLabelText(
+      'styling.presets.nameLabel',
+    );
+    fireEvent.change(nameInput, { target: { value: 'My Custom Theme' } });
+
+    const submit = screen.getByRole('button', { name: 'common.save' });
+    await act(async () => {
+      fireEvent.click(submit);
+    });
+
+    // The POST body must contain the serialized 12-entry styles payload and
+    // the trimmed name. Identical style payloads are allowed as long as the
+    // name is unique, which this flow exercises.
+    await waitFor(() => {
+      expect(capturedCreateBody).not.toBeNull();
+    });
+    expect(capturedCreateBody?.name).toBe('My Custom Theme');
+    expect(capturedCreateBody?.styles).toHaveLength(
+      MODULE_STYLE_TAB_ORDER.length,
+    );
+
+    // After success the dialog closes.
+    await waitFor(() =>
+      expect(
+        document.querySelector('[data-slot="save-preset-dialog"]'),
+      ).toBeNull(),
+    );
+  });
+
+  it('surfaces duplicate-name server errors inline and keeps the save-as dialog open', async () => {
+    server.use(
+      http.get(
+        `http://localhost:5000/notebooks/${notebookId}/styles`,
+        () => HttpResponse.json(makeStyles(), { status: 200 }),
+      ),
+      http.post('http://localhost:5000/users/me/presets', () =>
+        HttpResponse.json({ message: 'duplicate' }, { status: 409 }),
+      ),
+    );
+
+    renderDrawer();
+
+    const saveAsButton = await screen.findByRole('button', {
+      name: 'styling.presets.saveAs',
+    });
+    await waitFor(() => expect(saveAsButton).toBeEnabled());
+    await act(async () => {
+      fireEvent.click(saveAsButton);
+    });
+
+    const nameInput = await screen.findByLabelText(
+      'styling.presets.nameLabel',
+    );
+    fireEvent.change(nameInput, { target: { value: 'Existing name' } });
+
+    const submit = screen.getByRole('button', { name: 'common.save' });
+    await act(async () => {
+      fireEvent.click(submit);
+    });
+
+    await waitFor(() => {
+      expect(
+        document.querySelector('[data-slot="save-preset-duplicate-error"]'),
+      ).not.toBeNull();
+    });
+    // Dialog must remain open so the user can correct the name.
+    expect(
+      document.querySelector('[data-slot="save-preset-dialog"]'),
+    ).not.toBeNull();
+  });
+
+  it('disables the Save-as CTA and shows the limit-reached message when 20 presets exist', async () => {
+    const atLimit = Array.from({ length: 20 }, (_, i) => ({
+      id: `u-${i}`,
+      name: `Preset ${i}`,
+      styles: [] as Array<{ moduleType: string; stylesJson: string }>,
+    }));
+    server.use(
+      http.get(
+        `http://localhost:5000/notebooks/${notebookId}/styles`,
+        () => HttpResponse.json(makeStyles(), { status: 200 }),
+      ),
+      http.get('http://localhost:5000/users/me/presets', () =>
+        HttpResponse.json(atLimit, { status: 200 }),
+      ),
+    );
+
+    renderDrawer();
+
+    const saveAsButton = await screen.findByRole('button', {
+      name: 'styling.presets.saveAs',
+    });
+    await waitFor(() => expect(saveAsButton).toBeDisabled());
+    expect(
+      document.querySelector('[data-slot="preset-limit-reached"]'),
+    ).not.toBeNull();
+  });
 });

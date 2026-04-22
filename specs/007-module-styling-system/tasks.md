@@ -108,16 +108,16 @@
 
 ### Tests for User Story 3
 
-- [ ] T031 [P] \[US3] Add preset-creation hook coverage for success, duplicate-name conflicts, and 20-preset gating in `src/features/styling/hooks/useUserPresets.test.tsx`
-- [ ] T032 [P] \[US3] Add save-as-preset dialog validation coverage in `src/features/styling/components/SavePresetDialog.test.tsx`
-- [ ] T033 [P] \[US3] Extend drawer integration coverage for saving identical styles under a new unique preset name in `src/features/styling/components/StyleEditorDrawer.test.tsx`
+- [x] T031 [P] \[US3] Add preset-creation hook coverage for success, duplicate-name conflicts, and 20-preset gating in `src/features/styling/hooks/useUserPresets.test.tsx`
+- [x] T032 [P] \[US3] Add save-as-preset dialog validation coverage in `src/features/styling/components/SavePresetDialog.test.tsx`
+- [x] T033 [P] \[US3] Extend drawer integration coverage for saving identical styles under a new unique preset name in `src/features/styling/components/StyleEditorDrawer.test.tsx`
 
 ### Implementation for User Story 3
 
-- [ ] T034 [P] \[US3] Implement the Save as Preset dialog with inline duplicate-name messaging in `src/features/styling/components/SavePresetDialog.tsx`
-- [ ] T035 \[US3] Extend user preset creation, optimistic insert, server-order preservation, limit handling, and create success/error toast behavior in `src/features/styling/hooks/useUserPresets.ts`
-- [ ] T036 \[US3] Add the Save as Preset CTA, limit-reached messaging, and dialog launch flow in `src/features/styling/components/PresetBrowser.tsx`
-- [ ] T037 \[US3] Connect drawer form serialization helpers to preset creation in `src/features/styling/components/StyleEditorDrawer.tsx`
+- [x] T034 [P] \[US3] Implement the Save as Preset dialog with inline duplicate-name messaging in `src/features/styling/components/SavePresetDialog.tsx`
+- [x] T035 \[US3] Extend user preset creation, optimistic insert, server-order preservation, limit handling, and create success/error toast behavior in `src/features/styling/hooks/useUserPresets.ts`
+- [x] T036 \[US3] Add the Save as Preset CTA, limit-reached messaging, and dialog launch flow in `src/features/styling/components/PresetBrowser.tsx`
+- [x] T037 \[US3] Connect drawer form serialization helpers to preset creation in `src/features/styling/components/StyleEditorDrawer.tsx`
 
 **Checkpoint**: User Stories 1, 2, and 3 are independently testable.
 
