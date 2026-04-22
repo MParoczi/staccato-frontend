@@ -52,6 +52,8 @@ export interface NotebookIndexEntry {
 
 export type CreateNotebookStyleInput = Omit<NotebookModuleStyle, 'id' | 'notebookId'>;
 
+export type UpdateNotebookStyleInput = Omit<NotebookModuleStyle, 'id' | 'notebookId'>;
+
 export interface CreateNotebookRequest {
   title: string;
   instrumentId: string;

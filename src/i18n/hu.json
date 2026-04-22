@@ -326,5 +326,103 @@
       "leave": "Elhagyás",
       "stay": "Maradás"
     }
+  },
+  "styling": {
+    "toolbar": {
+      "open": "Stílusok"
+    },
+    "drawer": {
+      "title": "Füzetstílusok",
+      "description": "Színek, szegélyek és betűtípusok beállítása modultípusonként.",
+      "close": "Stílusok bezárása",
+      "save": "Mentés",
+      "saving": "Mentés...",
+      "loading": "Stílusok betöltése...",
+      "unsaved": "Mentetlen változtatások",
+      "moduleTabs": "Modultípusok",
+      "preview": "Élő előnézet",
+      "presets": "Stílusbeállítások",
+      "saveSuccess": "Stílusok elmentve",
+      "saveError": "Nem sikerült menteni a stílusokat. Próbáld újra.",
+      "applySuccess": "Stílusbeállítás alkalmazva",
+      "applyError": "Nem sikerült alkalmazni a stílusbeállítást. Próbáld újra."
+    },
+    "controls": {
+      "backgroundColor": "Háttérszín",
+      "borderColor": "Szegély színe",
+      "borderStyle": "Szegély stílusa",
+      "borderWidth": "Szegély vastagsága",
+      "borderRadius": "Lekerekítés",
+      "headerBgColor": "Fejléc háttere",
+      "headerTextColor": "Fejléc szövegszíne",
+      "bodyTextColor": "Törzsszöveg színe",
+      "fontFamily": "Betűtípus",
+      "fontFamilyOptions": {
+        "default": "Alapértelmezett",
+        "monospace": "Monospace",
+        "serif": "Serif"
+      },
+      "borderStyleOptions": {
+        "none": "Nincs",
+        "solid": "Folytonos",
+        "dashed": "Szaggatott",
+        "dotted": "Pontozott"
+      }
+    },
+    "moduleTypes": {
+      "title": "Cím",
+      "breadcrumb": "Morzsaút",
+      "subtitle": "Alcím",
+      "theory": "Elmélet",
+      "practice": "Gyakorlat",
+      "example": "Példa",
+      "important": "Fontos",
+      "tip": "Tipp",
+      "homework": "Házi feladat",
+      "question": "Kérdés",
+      "chordTablature": "Akkordtab",
+      "freeText": "Szabad szöveg"
+    },
+    "preview": {
+      "fontSample": "Árvíztűrő tükörfúrógép"
+    },
+    "presets": {
+      "title": "Stílusbeállítások",
+      "system": "Rendszer stílusbeállításai",
+      "user": "Saját stílusbeállítások",
+      "empty": "Még nincsenek mentett stílusbeállítások",
+      "apply": "Alkalmazás",
+      "applying": "Alkalmazás...",
+      "saveAs": "Mentés stílusbeállításként",
+      "nameLabel": "Stílusbeállítás neve",
+      "namePlaceholder": "Add meg a stílusbeállítás nevét",
+      "confirmApplyTitle": "Alkalmazod a stílusbeállítást?",
+      "confirmApplyMessage": "A stílusbeállítás alkalmazása felülírja a mentetlen változtatásokat, és azonnal menti az új értékeket.",
+      "limitReached": "Elérted a stílusbeállítási limitet (20). Törölj egy meglévő beállítást az új mentéséhez.",
+      "duplicateName": "Már létezik ilyen nevű stílusbeállítás",
+      "saveDialogTitle": "Mentés stílusbeállításként",
+      "saveDialogDescription": "Mentsd el az aktuális 12 modulstílust újrafelhasználható beállításként.",
+      "saving": "Mentés...",
+      "createSuccess": "Stílusbeállítás elmentve",
+      "createError": "Nem sikerült menteni a stílusbeállítást. Próbáld újra.",
+      "rename": "Stílusbeállítás átnevezése",
+      "renameInputLabel": "Stílusbeállítás neve",
+      "renameSuccess": "Stílusbeállítás átnevezve",
+      "renameError": "Nem sikerült átnevezni a stílusbeállítást. Próbáld újra.",
+      "delete": "Stílusbeállítás törlése",
+      "deleteSuccess": "Stílusbeállítás törölve",
+      "deleteError": "Nem sikerült törölni a stílusbeállítást. Próbáld újra.",
+      "confirmDeleteTitle": "Törlöd a stílusbeállítást?",
+      "confirmDeleteMessage": "Ezzel véglegesen eltávolítod a(z) \"{{name}}\" stílusbeállítást a mentett listádból."
+    },
+    "errors": {
+      "invalidHex": "Adj meg egy érvényes 6 jegyű hex színt",
+      "invalidBorderStyle": "Válassz érvényes szegélystílust",
+      "invalidFontFamily": "Válassz érvényes betűtípust",
+      "invalidBorderWidth": "Adj meg 0 és 10 közötti szegélyvastagságot",
+      "invalidBorderRadius": "Adj meg 0 és 20 közötti lekerekítést",
+      "presetNameRequired": "A stílusbeállítás neve kötelező",
+      "presetNameMaxLength": "A stílusbeállítás neve legfeljebb 50 karakter lehet"
+    }
   }
 }

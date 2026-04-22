@@ -1,0 +1,372 @@
+import { useCallback, useEffect, useState } from 'react';
+import { FormProvider, useForm, useFormState, useWatch } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslation } from 'react-i18next';
+import { Loader2 } from 'lucide-react';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import type {
+  ModuleType,
+  NotebookModuleStyle,
+  UpdateNotebookStyleInput,
+} from '@/lib/types';
+import { MODULE_STYLE_TAB_ORDER } from '../utils/style-defaults';
+import { formStylesToEntries } from '../utils/style-serialization';
+import {
+  styleEditorSchema,
+  type ModuleStyleFormValues,
+  type StyleEditorFormValues,
+} from '../utils/style-schema';
+import {
+  useApplyPresetToNotebook,
+  useSaveNotebookStyles,
+} from '../hooks/useStyleMutations';
+import {
+  classifyCreateUserPresetError,
+  useCreateUserPreset,
+} from '../hooks/useUserPresets';
+import { StyleEditorTab } from './StyleEditorTab';
+import { PresetBrowser } from './PresetBrowser';
+import { SavePresetDialog } from './SavePresetDialog';
+import { StylePreview } from './StylePreview';
+
+interface StyleEditorFormProps {
+  notebookId: string;
+  styles: readonly NotebookModuleStyle[];
+  serverKey: number;
+  registerCloseReset: (handler: () => void) => void;
+}
+
+function moduleTypeKey(moduleType: ModuleType): string {
+  return moduleType.charAt(0).toLowerCase() + moduleType.slice(1);
+}
+
+function styleToFormValues(
+  style: NotebookModuleStyle,
+): ModuleStyleFormValues {
+  return {
+    backgroundColor: style.backgroundColor,
+    borderColor: style.borderColor,
+    borderStyle: style.borderStyle,
+    borderWidth: style.borderWidth,
+    borderRadius: style.borderRadius,
+    headerBgColor: style.headerBgColor,
+    headerTextColor: style.headerTextColor,
+    bodyTextColor: style.bodyTextColor,
+    fontFamily: style.fontFamily,
+  };
+}
+
+function stylesArrayToFormValues(
+  styles: readonly NotebookModuleStyle[],
+): StyleEditorFormValues {
+  const byType = new Map<ModuleType, NotebookModuleStyle>();
+  for (const style of styles) {
+    byType.set(style.moduleType, style);
+  }
+  const result = {} as Record<ModuleType, ModuleStyleFormValues>;
+  for (const moduleType of MODULE_STYLE_TAB_ORDER) {
+    const style = byType.get(moduleType);
+    if (style) {
+      result[moduleType] = styleToFormValues(style);
+    }
+  }
+  return { styles: result };
+}
+
+function formValuesToUpdateInput(
+  values: StyleEditorFormValues,
+): UpdateNotebookStyleInput[] {
+  return MODULE_STYLE_TAB_ORDER.map((moduleType) => {
+    const style = values.styles[moduleType];
+    return {
+      moduleType,
+      ...style,
+    };
+  });
+}
+
+function hasDirtyFields(input: unknown): boolean {
+  if (input === true) return true;
+  if (!input || typeof input !== 'object') return false;
+  if (Array.isArray(input)) return input.some(hasDirtyFields);
+  for (const value of Object.values(input as Record<string, unknown>)) {
+    if (hasDirtyFields(value)) return true;
+  }
+  return false;
+}
+
+/**
+ * The inner editor form. Isolated so it only mounts once styles are
+ * available, guaranteeing all `useWatch`/`Controller` calls see defined
+ * values from the first render.
+ */
+export function StyleEditorForm({
+  notebookId,
+  styles,
+  serverKey,
+  registerCloseReset,
+}: StyleEditorFormProps) {
+  const { t } = useTranslation();
+  const saveMutation = useSaveNotebookStyles(notebookId);
+  const applyMutation = useApplyPresetToNotebook(notebookId);
+  const createPresetMutation = useCreateUserPreset();
+  const [activeTab, setActiveTab] = useState<ModuleType>(
+    MODULE_STYLE_TAB_ORDER[0],
+  );
+  const [pendingPresetId, setPendingPresetId] = useState<string | null>(null);
+  const [confirmPresetId, setConfirmPresetId] = useState<string | null>(null);
+  const [savePresetOpen, setSavePresetOpen] = useState(false);
+  const [duplicatePresetName, setDuplicatePresetName] = useState(false);
+
+  const form = useForm<StyleEditorFormValues>({
+    resolver: zodResolver(styleEditorSchema),
+    defaultValues: stylesArrayToFormValues(styles),
+    mode: 'onChange',
+  });
+
+  // Reset when server data changes (e.g., after a save updates cache).
+  useEffect(() => {
+    form.reset(stylesArrayToFormValues(styles));
+  }, [serverKey, styles, form]);
+
+  // Expose a reset handler to the parent so it can discard unsaved edits
+  // when the drawer is closing.
+  useEffect(() => {
+    registerCloseReset(() => {
+      form.reset(stylesArrayToFormValues(styles));
+    });
+  }, [registerCloseReset, form, styles]);
+
+  const activeStyle = useWatch({
+    control: form.control,
+    name: `styles.${activeTab}`,
+  });
+
+  const isSaving = saveMutation.isPending;
+  const isApplying = applyMutation.isPending;
+  const { dirtyFields } = useFormState({ control: form.control });
+  // Use dirtyFields to derive dirty state. form.formState.isDirty can be
+  // unreliable with deeply nested object forms, so we check whether any
+  // field is tracked as dirty instead.
+  const isDirty = hasDirtyFields(dirtyFields);
+
+  const onSubmit = form.handleSubmit((values) => {
+    saveMutation.mutate(formValuesToUpdateInput(values), {
+      onSuccess: () => {
+        // Reset is driven by serverKey change once the cache updates, so no
+        // explicit reset is required here. However, if the cache writer
+        // didn't run (e.g., mocked tests), clear local dirty state.
+        form.reset(values);
+      },
+    });
+  });
+
+  const runApplyPreset = useCallback(
+    (presetId: string) => {
+      setPendingPresetId(presetId);
+      applyMutation.mutate(presetId, {
+        onSuccess: (applied) => {
+          // Hydrate the form from the returned styles so unsaved edits are
+          // replaced by the preset's values. The cache-driven reset above
+          // will also run once the query updates, but resetting here keeps
+          // dirty state cleared immediately.
+          form.reset(stylesArrayToFormValues(applied));
+        },
+        onSettled: () => {
+          setPendingPresetId(null);
+        },
+      });
+    },
+    [applyMutation, form],
+  );
+
+  const handleApplyPreset = useCallback(
+    (presetId: string) => {
+      if (isApplying) return;
+      if (isDirty) {
+        setConfirmPresetId(presetId);
+        return;
+      }
+      runApplyPreset(presetId);
+    },
+    [isApplying, isDirty, runApplyPreset],
+  );
+
+  const handleConfirmApply = useCallback(() => {
+    const presetId = confirmPresetId;
+    setConfirmPresetId(null);
+    if (presetId) {
+      runApplyPreset(presetId);
+    }
+  }, [confirmPresetId, runApplyPreset]);
+
+  const handleOpenSavePreset = useCallback(() => {
+    setDuplicatePresetName(false);
+    setSavePresetOpen(true);
+  }, []);
+
+  const handleSavePresetOpenChange = useCallback((next: boolean) => {
+    setSavePresetOpen(next);
+    if (!next) setDuplicatePresetName(false);
+  }, []);
+
+  const handleSubmitPresetName = useCallback(
+    (name: string) => {
+      setDuplicatePresetName(false);
+      const values = form.getValues();
+      const entries = formStylesToEntries(values.styles);
+      createPresetMutation.mutate(
+        { name, styles: entries },
+        {
+          onSuccess: () => {
+            setSavePresetOpen(false);
+          },
+          onError: (error) => {
+            const kind = classifyCreateUserPresetError(error);
+            if (kind === 'duplicate') {
+              setDuplicatePresetName(true);
+            } else {
+              // For `limit` / `unknown`, toasts are handled by the hook; close
+              // the dialog so the user can address the underlying state.
+              setSavePresetOpen(false);
+            }
+          },
+        },
+      );
+    },
+    [createPresetMutation, form],
+  );
+
+  return (
+    <FormProvider {...form}>
+      <form
+        onSubmit={onSubmit}
+        noValidate
+        className="flex flex-1 flex-col overflow-hidden"
+      >
+        {isDirty && !isSaving && (
+          <p
+            data-slot="style-editor-dirty"
+            aria-live="polite"
+            className="border-b px-4 pb-2 text-xs text-muted-foreground"
+          >
+            {t('styling.drawer.unsaved')}
+          </p>
+        )}
+        <Tabs
+          value={activeTab}
+          onValueChange={(value) => setActiveTab(value as ModuleType)}
+          className="flex flex-1 flex-col gap-3 overflow-hidden p-4"
+        >
+          <div className="overflow-x-auto">
+            <TabsList
+              aria-label={t('styling.drawer.moduleTabs')}
+              className="inline-flex h-auto w-max gap-1 bg-transparent p-0"
+            >
+              {MODULE_STYLE_TAB_ORDER.map((moduleType) => (
+                <TabsTrigger
+                  key={moduleType}
+                  value={moduleType}
+                  className="h-8 flex-none whitespace-nowrap px-3"
+                >
+                  {t(`styling.moduleTypes.${moduleTypeKey(moduleType)}`)}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
+
+          <div className="flex-1 overflow-y-auto">
+            {MODULE_STYLE_TAB_ORDER.map((moduleType) => (
+              <TabsContent
+                key={moduleType}
+                value={moduleType}
+                forceMount
+                hidden={moduleType !== activeTab}
+                className="flex flex-col gap-4 pt-1 data-[state=inactive]:hidden"
+              >
+                <StyleEditorTab moduleType={moduleType} />
+              </TabsContent>
+            ))}
+
+            {activeStyle && (
+              <div data-slot="style-editor-preview" className="mt-4">
+                <p className="mb-1.5 text-xs font-medium text-muted-foreground">
+                  {t('styling.drawer.preview')}
+                </p>
+                <StylePreview moduleType={activeTab} style={activeStyle} />
+              </div>
+            )}
+
+            <div data-slot="style-editor-presets" className="mt-6">
+              <PresetBrowser
+                onApplyPreset={handleApplyPreset}
+                applyingPresetId={pendingPresetId}
+                isApplying={isApplying}
+                onSaveAsPreset={handleOpenSavePreset}
+              />
+            </div>
+          </div>
+        </Tabs>
+
+        <div className="flex items-center justify-end gap-2 border-t p-3">
+          <Button
+            type="submit"
+            disabled={!isDirty || isSaving}
+            data-slot="style-editor-save"
+          >
+            {isSaving && (
+              <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+            )}
+            {isSaving ? t('styling.drawer.saving') : t('styling.drawer.save')}
+          </Button>
+        </div>
+      </form>
+      <AlertDialog
+        open={confirmPresetId !== null}
+        onOpenChange={(next) => {
+          if (!next) setConfirmPresetId(null);
+        }}
+      >
+        <AlertDialogContent data-slot="preset-apply-confirm">
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {t('styling.presets.confirmApplyTitle')}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {t('styling.presets.confirmApplyMessage')}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel data-slot="preset-apply-cancel">
+              {t('common.cancel')}
+            </AlertDialogCancel>
+            <AlertDialogAction
+              data-slot="preset-apply-confirm-action"
+              onClick={handleConfirmApply}
+            >
+              {t('styling.presets.apply')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      <SavePresetDialog
+        open={savePresetOpen}
+        onOpenChange={handleSavePresetOpenChange}
+        onSubmit={handleSubmitPresetName}
+        isSubmitting={createPresetMutation.isPending}
+        hasDuplicateNameError={duplicatePresetName}
+      />
+    </FormProvider>
+  );
+}

@@ -50,7 +50,7 @@ describe('useSystemPresets', () => {
   it('does not fetch when enabled is false (default)', async () => {
     let requestCount = 0;
     server.use(
-      http.get('http://localhost:5000/presets/system', () => {
+      http.get('http://localhost:5000/presets', () => {
         requestCount++;
         return HttpResponse.json(mockPresets);
       }),
@@ -69,7 +69,7 @@ describe('useSystemPresets', () => {
 
   it('fetches when enabled is true', async () => {
     server.use(
-      http.get('http://localhost:5000/presets/system', () => {
+      http.get('http://localhost:5000/presets', () => {
         return HttpResponse.json(mockPresets);
       }),
     );
@@ -89,7 +89,7 @@ describe('useSystemPresets', () => {
 
   it('uses staleTime 300_000 and query key ["presets"]', () => {
     server.use(
-      http.get('http://localhost:5000/presets/system', () => {
+      http.get('http://localhost:5000/presets', () => {
         return HttpResponse.json([]);
       }),
     );

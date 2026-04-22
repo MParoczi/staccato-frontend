@@ -326,5 +326,103 @@
       "leave": "Leave",
       "stay": "Stay"
     }
+  },
+  "styling": {
+    "toolbar": {
+      "open": "Styles"
+    },
+    "drawer": {
+      "title": "Notebook styles",
+      "description": "Customize colors, borders, and fonts for each module type.",
+      "close": "Close styles",
+      "save": "Save",
+      "saving": "Saving...",
+      "loading": "Loading styles...",
+      "unsaved": "Unsaved changes",
+      "moduleTabs": "Module types",
+      "preview": "Live preview",
+      "presets": "Presets",
+      "saveSuccess": "Styles saved",
+      "saveError": "Unable to save styles. Please try again.",
+      "applySuccess": "Preset applied",
+      "applyError": "Unable to apply preset. Please try again."
+    },
+    "controls": {
+      "backgroundColor": "Background color",
+      "borderColor": "Border color",
+      "borderStyle": "Border style",
+      "borderWidth": "Border width",
+      "borderRadius": "Border radius",
+      "headerBgColor": "Header background",
+      "headerTextColor": "Header text color",
+      "bodyTextColor": "Body text color",
+      "fontFamily": "Font family",
+      "fontFamilyOptions": {
+        "default": "Default",
+        "monospace": "Monospace",
+        "serif": "Serif"
+      },
+      "borderStyleOptions": {
+        "none": "None",
+        "solid": "Solid",
+        "dashed": "Dashed",
+        "dotted": "Dotted"
+      }
+    },
+    "moduleTypes": {
+      "title": "Title",
+      "breadcrumb": "Breadcrumb",
+      "subtitle": "Subtitle",
+      "theory": "Theory",
+      "practice": "Practice",
+      "example": "Example",
+      "important": "Important",
+      "tip": "Tip",
+      "homework": "Homework",
+      "question": "Question",
+      "chordTablature": "Chord tablature",
+      "freeText": "Free text"
+    },
+    "preview": {
+      "fontSample": "The quick brown fox"
+    },
+    "presets": {
+      "title": "Presets",
+      "system": "System presets",
+      "user": "Your presets",
+      "empty": "No saved presets yet",
+      "apply": "Apply",
+      "applying": "Applying...",
+      "saveAs": "Save as preset",
+      "nameLabel": "Preset name",
+      "namePlaceholder": "Enter preset name",
+      "confirmApplyTitle": "Apply preset?",
+      "confirmApplyMessage": "Applying this preset will replace your unsaved changes and save immediately.",
+      "limitReached": "Preset limit reached (20). Delete an existing preset to save a new one.",
+      "duplicateName": "A preset with this name already exists",
+      "saveDialogTitle": "Save as preset",
+      "saveDialogDescription": "Save the current 12 module styles as a reusable preset.",
+      "saving": "Saving...",
+      "createSuccess": "Preset saved",
+      "createError": "Unable to save preset. Please try again.",
+      "rename": "Rename preset",
+      "renameInputLabel": "Preset name",
+      "renameSuccess": "Preset renamed",
+      "renameError": "Unable to rename preset. Please try again.",
+      "delete": "Delete preset",
+      "deleteSuccess": "Preset deleted",
+      "deleteError": "Unable to delete preset. Please try again.",
+      "confirmDeleteTitle": "Delete preset?",
+      "confirmDeleteMessage": "This will permanently remove \"{{name}}\" from your saved presets."
+    },
+    "errors": {
+      "invalidHex": "Enter a valid 6-digit hex color",
+      "invalidBorderStyle": "Select a valid border style",
+      "invalidFontFamily": "Select a valid font family",
+      "invalidBorderWidth": "Enter a border width between 0 and 10",
+      "invalidBorderRadius": "Enter a border radius between 0 and 20",
+      "presetNameRequired": "Preset name is required",
+      "presetNameMaxLength": "Preset name must be 50 characters or fewer"
+    }
   }
 }
