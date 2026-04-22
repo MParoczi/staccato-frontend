@@ -19,6 +19,15 @@ export function useKeyboardNavigation(
         return;
       }
 
+      // Suppress when a modal dialog (Dialog/AlertDialog) is open
+      if (
+        document.querySelector(
+          '[role="dialog"], [role="alertdialog"], [aria-modal="true"]',
+        )
+      ) {
+        return;
+      }
+
       if (event.key === 'ArrowLeft' && prevUrl) {
         void navigate(prevUrl);
       } else if (event.key === 'ArrowRight' && nextUrl) {
