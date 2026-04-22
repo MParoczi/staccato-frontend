@@ -12,7 +12,7 @@ export function useProactiveRefresh() {
     if (delay <= 0) return;
 
     const timer = setTimeout(() => {
-      silentRefresh();
+      silentRefresh().catch(() => {});
     }, delay);
 
     return () => clearTimeout(timer);
