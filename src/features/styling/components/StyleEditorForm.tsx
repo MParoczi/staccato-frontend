@@ -21,6 +21,7 @@ import type {
   UpdateNotebookStyleInput,
 } from '@/lib/types';
 import { MODULE_STYLE_TAB_ORDER } from '../utils/style-defaults';
+import { formStylesToEntries } from '../utils/style-serialization';
 import {
   styleEditorSchema,
   type ModuleStyleFormValues,
@@ -30,8 +31,13 @@ import {
   useApplyPresetToNotebook,
   useSaveNotebookStyles,
 } from '../hooks/useStyleMutations';
+import {
+  classifyCreateUserPresetError,
+  useCreateUserPreset,
+} from '../hooks/useUserPresets';
 import { StyleEditorTab } from './StyleEditorTab';
 import { PresetBrowser } from './PresetBrowser';
+import { SavePresetDialog } from './SavePresetDialog';
 import { StylePreview } from './StylePreview';
 
 interface StyleEditorFormProps {
@@ -114,11 +120,14 @@ export function StyleEditorForm({
   const { t } = useTranslation();
   const saveMutation = useSaveNotebookStyles(notebookId);
   const applyMutation = useApplyPresetToNotebook(notebookId);
+  const createPresetMutation = useCreateUserPreset();
   const [activeTab, setActiveTab] = useState<ModuleType>(
     MODULE_STYLE_TAB_ORDER[0],
   );
   const [pendingPresetId, setPendingPresetId] = useState<string | null>(null);
   const [confirmPresetId, setConfirmPresetId] = useState<string | null>(null);
+  const [savePresetOpen, setSavePresetOpen] = useState(false);
+  const [duplicatePresetName, setDuplicatePresetName] = useState(false);
 
   const form = useForm<StyleEditorFormValues>({
     resolver: zodResolver(styleEditorSchema),
@@ -202,6 +211,43 @@ export function StyleEditorForm({
     }
   }, [confirmPresetId, runApplyPreset]);
 
+  const handleOpenSavePreset = useCallback(() => {
+    setDuplicatePresetName(false);
+    setSavePresetOpen(true);
+  }, []);
+
+  const handleSavePresetOpenChange = useCallback((next: boolean) => {
+    setSavePresetOpen(next);
+    if (!next) setDuplicatePresetName(false);
+  }, []);
+
+  const handleSubmitPresetName = useCallback(
+    (name: string) => {
+      setDuplicatePresetName(false);
+      const values = form.getValues();
+      const entries = formStylesToEntries(values.styles);
+      createPresetMutation.mutate(
+        { name, styles: entries },
+        {
+          onSuccess: () => {
+            setSavePresetOpen(false);
+          },
+          onError: (error) => {
+            const kind = classifyCreateUserPresetError(error);
+            if (kind === 'duplicate') {
+              setDuplicatePresetName(true);
+            } else {
+              // For `limit` / `unknown`, toasts are handled by the hook; close
+              // the dialog so the user can address the underlying state.
+              setSavePresetOpen(false);
+            }
+          },
+        },
+      );
+    },
+    [createPresetMutation, form],
+  );
+
   return (
     <FormProvider {...form}>
       <form
@@ -267,6 +313,7 @@ export function StyleEditorForm({
                 onApplyPreset={handleApplyPreset}
                 applyingPresetId={pendingPresetId}
                 isApplying={isApplying}
+                onSaveAsPreset={handleOpenSavePreset}
               />
             </div>
           </div>
@@ -313,6 +360,13 @@ export function StyleEditorForm({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      <SavePresetDialog
+        open={savePresetOpen}
+        onOpenChange={handleSavePresetOpenChange}
+        onSubmit={handleSubmitPresetName}
+        isSubmitting={createPresetMutation.isPending}
+        hasDuplicateNameError={duplicatePresetName}
+      />
     </FormProvider>
   );
 }

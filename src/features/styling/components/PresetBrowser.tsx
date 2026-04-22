@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Plus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   systemPresetSwatches,
@@ -7,7 +9,7 @@ import {
   type PresetThumbnailSwatch,
 } from '../utils/preset-thumbnails';
 import { useSystemPresets } from '../hooks/useSystemPresets';
-import { useUserPresets } from '../hooks/useUserPresets';
+import { USER_PRESET_LIMIT, useUserPresets } from '../hooks/useUserPresets';
 import { PresetCard } from './PresetCard';
 
 interface PresetBrowserProps {
@@ -19,6 +21,8 @@ interface PresetBrowserProps {
   applyingPresetId?: string | null;
   /** When true, all apply controls are disabled (e.g., during apply). */
   isApplying?: boolean;
+  /** Invoked when the user clicks the Save-as-Preset CTA. */
+  onSaveAsPreset?: () => void;
 }
 
 /**
@@ -29,12 +33,16 @@ interface PresetBrowserProps {
  * - User presets: newest-first ordering is preserved exactly as returned by
  *   `GET /users/me/presets`; no client-side sort is applied.
  * - Each section has independent loading skeletons and empty-state copy.
+ * - A "Save as preset" CTA above the user section opens the save dialog via
+ *   `onSaveAsPreset`. At `USER_PRESET_LIMIT` presets, the CTA is disabled
+ *   and an inline limit-reached message is shown.
  */
 export function PresetBrowser({
   enabled = true,
   onApplyPreset,
   applyingPresetId = null,
   isApplying = false,
+  onSaveAsPreset,
 }: PresetBrowserProps) {
   const { t } = useTranslation();
   const systemPresetsQuery = useSystemPresets({ enabled });
@@ -60,6 +68,11 @@ export function PresetBrowser({
     [userPresetsQuery.data],
   );
 
+  const userPresetCount = userPresetsQuery.data?.length ?? 0;
+  const userPresetsLoaded = !userPresetsQuery.isPending;
+  const isAtLimit = userPresetsLoaded && userPresetCount >= USER_PRESET_LIMIT;
+  const canSave = Boolean(onSaveAsPreset) && userPresetsLoaded && !isAtLimit;
+
   return (
     <section
       data-slot="preset-browser"
@@ -77,23 +90,50 @@ export function PresetBrowser({
         applyingPresetId={applyingPresetId}
         isApplying={isApplying}
       />
-      <PresetSection
-        heading={t('styling.presets.user')}
-        slot="preset-section-user"
-        isLoading={userPresetsQuery.isPending}
-        isEmpty={userPresets.length === 0}
-        emptyText={t('styling.presets.empty')}
-        presets={userPresets}
-        onApplyPreset={onApplyPreset}
-        applyingPresetId={applyingPresetId}
-        isApplying={isApplying}
-      />
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between gap-2">
+          <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            {t('styling.presets.user')}
+          </h4>
+          {onSaveAsPreset && (
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              onClick={onSaveAsPreset}
+              disabled={!canSave}
+              data-slot="preset-save-as-trigger"
+            >
+              <Plus className="size-3.5" aria-hidden="true" />
+              {t('styling.presets.saveAs')}
+            </Button>
+          )}
+        </div>
+        {isAtLimit && (
+          <p
+            data-slot="preset-limit-reached"
+            className="text-xs text-muted-foreground"
+          >
+            {t('styling.presets.limitReached')}
+          </p>
+        )}
+        <PresetSection
+          slot="preset-section-user"
+          isLoading={userPresetsQuery.isPending}
+          isEmpty={userPresets.length === 0}
+          emptyText={t('styling.presets.empty')}
+          presets={userPresets}
+          onApplyPreset={onApplyPreset}
+          applyingPresetId={applyingPresetId}
+          isApplying={isApplying}
+        />
+      </div>
     </section>
   );
 }
 
 interface PresetSectionProps {
-  heading: string;
+  heading?: string;
   slot: string;
   isLoading: boolean;
   isEmpty: boolean;
@@ -121,9 +161,11 @@ function PresetSection({
 }: PresetSectionProps) {
   return (
     <div data-slot={slot} className="flex flex-col gap-2">
-      <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-        {heading}
-      </h4>
+      {heading && (
+        <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          {heading}
+        </h4>
+      )}
       {isLoading ? (
         <div
           data-slot={`${slot}-loading`}

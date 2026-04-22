@@ -399,7 +399,12 @@
       "confirmApplyTitle": "Apply preset?",
       "confirmApplyMessage": "Applying this preset will replace your unsaved changes and save immediately.",
       "limitReached": "Preset limit reached (20). Delete an existing preset to save a new one.",
-      "duplicateName": "A preset with this name already exists"
+      "duplicateName": "A preset with this name already exists",
+      "saveDialogTitle": "Save as preset",
+      "saveDialogDescription": "Save the current 12 module styles as a reusable preset.",
+      "saving": "Saving...",
+      "createSuccess": "Preset saved",
+      "createError": "Unable to save preset. Please try again."
     },
     "errors": {
       "invalidHex": "Enter a valid 6-digit hex color",
