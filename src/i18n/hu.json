@@ -222,6 +222,17 @@
       "surfaceLabel": "Leckeoldal-vászon",
       "emptyState": "Ezen az oldalon még nincsenek modulok.",
       "moduleLabel": "{{moduleType}} modul",
+      "dragHandle": "Modulfejléc mozgatása",
+      "handles": {
+        "n": "Felső átméretező fogantyú",
+        "ne": "Jobb felső átméretező fogantyú",
+        "e": "Jobb oldali átméretező fogantyú",
+        "se": "Jobb alsó átméretező fogantyú",
+        "s": "Alsó átméretező fogantyú",
+        "sw": "Bal alsó átméretező fogantyú",
+        "w": "Bal oldali átméretező fogantyú",
+        "nw": "Bal felső átméretező fogantyú"
+      },
       "addModule": {
         "trigger": "Modul hozzáadása",
         "title": "Modul hozzáadása",
