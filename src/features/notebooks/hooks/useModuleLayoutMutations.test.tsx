@@ -302,3 +302,153 @@ describe('useModuleLayoutMutations - deleteModuleMutation', () => {
     expect(toast.error).toHaveBeenCalledWith('nope');
   });
 });
+
+describe('useModuleLayoutMutations - scheduleLayoutUpdate', () => {
+  it('applies the layout optimistically before any PATCH fires', () => {
+    const { Wrapper, queryClient } = createWrapper();
+    const { result } = renderHook(
+      () => useModuleLayoutMutations({ pageId: 'page-1' }),
+      { wrapper: Wrapper },
+    );
+
+    vi.useFakeTimers();
+    try {
+      act(() => {
+        result.current.scheduleLayoutUpdate('module-1', {
+          gridX: 5,
+          gridY: 6,
+          gridWidth: 8,
+          gridHeight: 5,
+          zIndex: 0,
+        });
+      });
+
+      // Cache reflects optimistic update immediately (before timer).
+      const cached = queryClient.getQueryData<Module[]>([
+        'pages',
+        'page-1',
+        'modules',
+      ]);
+      expect(cached?.[0]).toMatchObject({ gridX: 5, gridY: 6 });
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('fires a single PATCH after the 500 ms debounce for rapid updates', async () => {
+    const patchUrls: string[] = [];
+    let patchBody: unknown = null;
+    server.use(
+      http.patch(
+        'http://localhost:5000/modules/module-1/layout',
+        async ({ request }) => {
+          patchUrls.push(request.url);
+          patchBody = await request.json();
+          return HttpResponse.json({
+            ...initialModule,
+            gridX: 9,
+            gridY: 9,
+          });
+        },
+      ),
+    );
+
+    const { Wrapper, queryClient } = createWrapper();
+    const { result } = renderHook(
+      () => useModuleLayoutMutations({ pageId: 'page-1' }),
+      { wrapper: Wrapper },
+    );
+
+    vi.useFakeTimers();
+    try {
+      act(() => {
+        result.current.scheduleLayoutUpdate('module-1', {
+          gridX: 1,
+          gridY: 1,
+          gridWidth: 8,
+          gridHeight: 5,
+          zIndex: 0,
+        });
+      });
+      act(() => {
+        vi.advanceTimersByTime(200);
+      });
+      act(() => {
+        result.current.scheduleLayoutUpdate('module-1', {
+          gridX: 9,
+          gridY: 9,
+          gridWidth: 8,
+          gridHeight: 5,
+          zIndex: 0,
+        });
+      });
+      // Advancing past the remaining debounce window should fire exactly
+      // one PATCH carrying the latest payload.
+      act(() => {
+        vi.advanceTimersByTime(500);
+      });
+    } finally {
+      vi.useRealTimers();
+    }
+
+    await waitFor(() => {
+      expect(patchUrls).toHaveLength(1);
+    });
+    expect(patchBody).toMatchObject({ gridX: 9, gridY: 9 });
+
+    await waitFor(() => {
+      const cached = queryClient.getQueryData<Module[]>([
+        'pages',
+        'page-1',
+        'modules',
+      ]);
+      expect(cached?.[0]).toMatchObject({ gridX: 9, gridY: 9 });
+    });
+  });
+
+  it('rolls back to the original module and toasts when the server rejects', async () => {
+    server.use(
+      http.patch('http://localhost:5000/modules/module-1/layout', () => {
+        return HttpResponse.json(
+          { message: 'server-overlap' },
+          { status: 400 },
+        );
+      }),
+    );
+
+    const { Wrapper, queryClient } = createWrapper();
+    const { result } = renderHook(
+      () => useModuleLayoutMutations({ pageId: 'page-1' }),
+      { wrapper: Wrapper },
+    );
+
+    vi.useFakeTimers();
+    try {
+      act(() => {
+        result.current.scheduleLayoutUpdate('module-1', {
+          gridX: 99,
+          gridY: 99,
+          gridWidth: 8,
+          gridHeight: 5,
+          zIndex: 0,
+        });
+      });
+      act(() => {
+        vi.advanceTimersByTime(500);
+      });
+    } finally {
+      vi.useRealTimers();
+    }
+
+    await waitFor(() => {
+      expect(toast.error).toHaveBeenCalledWith('server-overlap');
+    });
+
+    const cached = queryClient.getQueryData<Module[]>([
+      'pages',
+      'page-1',
+      'modules',
+    ]);
+    expect(cached?.[0]).toEqual(initialModule);
+  });
+});

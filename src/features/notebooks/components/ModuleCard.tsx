@@ -1,5 +1,6 @@
 import { memo, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDraggable } from '@dnd-kit/core';
 import type { Module, NotebookModuleStyle, ResizeHandle } from '@/lib/types';
 import {
   GRID_CANVAS_STYLE_TOKENS,
@@ -106,6 +107,26 @@ export const ModuleCard = memo(function ModuleCard({
 }: ModuleCardProps) {
   const { t } = useTranslation();
 
+  /**
+   * Register every module with dnd-kit so the selected module's header
+   * can be dragged without needing to re-mount the card when selection
+   * changes. Listeners are only attached to the header when the card is
+   * selected (see `headerListeners` below), so non-selected cards are
+   * visually static while still participating in the DndContext.
+   */
+  const {
+    attributes: draggableAttributes,
+    listeners: draggableListeners,
+    setNodeRef: setDraggableNodeRef,
+    isDragging,
+  } = useDraggable({
+    id: module.id,
+    disabled: !isSelected,
+  });
+
+  const headerListeners = isSelected ? draggableListeners : undefined;
+  const headerAttributes = isSelected ? draggableAttributes : undefined;
+
   const positionStyles = useMemo<React.CSSProperties>(
     () => ({
       position: 'absolute',
@@ -114,6 +135,9 @@ export const ModuleCard = memo(function ModuleCard({
       width: `${gridUnitsToPixels(module.gridWidth, zoom)}px`,
       height: `${gridUnitsToPixels(module.gridHeight, zoom)}px`,
       zIndex: module.zIndex,
+      // Keep the original module card visible in its saved position even
+      // during a drag; the snapped ghost lives in `ModuleDragOverlay`.
+      visibility: isDragging ? 'hidden' : 'visible',
     }),
     [
       module.gridX,
@@ -122,6 +146,7 @@ export const ModuleCard = memo(function ModuleCard({
       module.gridHeight,
       module.zIndex,
       zoom,
+      isDragging,
     ],
   );
 
@@ -183,11 +208,13 @@ export const ModuleCard = memo(function ModuleCard({
 
   return (
     <div
+      ref={setDraggableNodeRef}
       data-testid={`module-card-${module.id}`}
       data-module-id={module.id}
       data-module-type={module.moduleType}
       data-selected={isSelected ? 'true' : 'false'}
       data-conflicting={isConflicting ? 'true' : 'false'}
+      data-dragging={isDragging ? 'true' : 'false'}
       role="button"
       tabIndex={0}
       aria-label={moduleLabel}
@@ -214,6 +241,8 @@ export const ModuleCard = memo(function ModuleCard({
           cursor: isSelected ? 'grab' : 'default',
           touchAction: 'none',
         }}
+        {...(headerAttributes ?? {})}
+        {...(headerListeners ?? {})}
       >
         {moduleLabel}
       </div>
