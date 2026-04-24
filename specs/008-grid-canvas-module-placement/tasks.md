@@ -53,15 +53,15 @@
 
 ### Tests for User Story 1
 
-- [ ] T015 [P] [US1] Add module rendering and selection-affordance tests in `src/features/notebooks/components/ModuleCard.test.tsx`
-- [ ] T016 [P] [US1] Add page-load and select/deselect integration tests in `src/features/notebooks/components/GridCanvas.test.tsx` and `src/features/notebooks/components/LessonPage.test.tsx`
+- [x] T015 [P] [US1] Add module rendering and selection-affordance tests in `src/features/notebooks/components/ModuleCard.test.tsx`
+- [x] T016 [P] [US1] Add page-load and select/deselect integration tests in `src/features/notebooks/components/GridCanvas.test.tsx` and `src/features/notebooks/components/LessonPage.test.tsx`
 
 ### Implementation for User Story 1
 
-- [ ] T017 [P] [US1] Implement the memoized module shell with style mapping, selection outline, header drag region, and conflict visuals in `src/features/notebooks/components/ModuleCard.tsx`
-- [ ] T018 [P] [US1] Implement presentational eight-handle selection grips with labels in `src/features/notebooks/components/ModuleResizeHandles.tsx`
-- [ ] T019 [US1] Implement selection and empty-canvas deselection state handling in `src/features/notebooks/hooks/useCanvasInteractions.ts`
-- [ ] T020 [US1] Replace the lesson-page canvas placeholder with page rendering, module stacking, and selection wiring in `src/features/notebooks/components/GridCanvas.tsx` and `src/features/notebooks/components/LessonPage.tsx`
+- [x] T017 [P] [US1] Implement the memoized module shell with style mapping, selection outline, header drag region, and conflict visuals in `src/features/notebooks/components/ModuleCard.tsx`
+- [x] T018 [P] [US1] Implement presentational eight-handle selection grips with labels in `src/features/notebooks/components/ModuleResizeHandles.tsx`
+- [x] T019 [US1] Implement selection and empty-canvas deselection state handling in `src/features/notebooks/hooks/useCanvasInteractions.ts`
+- [x] T020 [US1] Replace the lesson-page canvas placeholder with page rendering, module stacking, and selection wiring in `src/features/notebooks/components/GridCanvas.tsx` and `src/features/notebooks/components/LessonPage.tsx`
 
 **Checkpoint**: User Story 1 is independently functional and testable.
 

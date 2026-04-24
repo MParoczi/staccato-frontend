@@ -222,6 +222,17 @@
       "surfaceLabel": "Lesson page canvas",
       "emptyState": "No modules on this page yet.",
       "moduleLabel": "{{moduleType}} module",
+      "dragHandle": "Drag module header",
+      "handles": {
+        "n": "Top resize handle",
+        "ne": "Top-right resize handle",
+        "e": "Right resize handle",
+        "se": "Bottom-right resize handle",
+        "s": "Bottom resize handle",
+        "sw": "Bottom-left resize handle",
+        "w": "Left resize handle",
+        "nw": "Top-left resize handle"
+      },
       "addModule": {
         "trigger": "Add module",
         "title": "Add module",

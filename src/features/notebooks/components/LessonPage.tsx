@@ -7,7 +7,9 @@ import { useNotebook } from '../hooks/useNotebook';
 import { useLesson } from '../hooks/useLesson';
 import { usePageNavigation } from '../hooks/usePageNavigation';
 import { useCreatePage } from '../hooks/useCreatePage';
+import { usePageModules } from '../hooks/usePageModules';
 import { DeletePageButton } from './DeletePageButton';
+import { GridCanvas } from './GridCanvas';
 
 export function LessonPage() {
   const { notebookId, lessonId, pageId } = useParams<{
@@ -21,6 +23,7 @@ export function LessonPage() {
   const { data: lesson } = useLesson(notebookId!, lessonId!);
   const pageNav = usePageNavigation(notebookId!);
   const createPageMutation = useCreatePage(notebookId!, lessonId!);
+  const { data: modules } = usePageModules(pageId);
 
   if (!notebook || !lesson) return null;
 
@@ -51,65 +54,60 @@ export function LessonPage() {
   }
 
   return (
-    <DottedPaper
-      pageSize={notebook.pageSize}
-      className="w-full max-w-lg rounded-sm shadow-lg"
-    >
-      <div className="flex h-full flex-col px-8 py-10">
-        {/* Header: lesson title + in-lesson page indicator */}
-        <div className="flex items-baseline justify-between gap-4">
-          <h1
-            className="min-w-0 truncate font-serif text-lg tracking-wide"
-            style={{ color: 'var(--notebook-dot)' }}
+    <div className="flex w-full max-w-5xl flex-col gap-4 px-4 py-6">
+      {/* Header: lesson title + in-lesson page indicator */}
+      <div className="flex items-baseline justify-between gap-4">
+        <h1
+          className="min-w-0 truncate font-serif text-lg tracking-wide"
+          style={{ color: 'var(--notebook-dot)' }}
+        >
+          {lesson.title}
+        </h1>
+        <div className="flex shrink-0 items-center gap-1">
+          <span
+            className="text-xs tabular-nums opacity-50"
+            aria-live="polite"
           >
-            {lesson.title}
-          </h1>
-          <div className="flex shrink-0 items-center gap-1">
-            <span
-              className="text-xs tabular-nums opacity-50"
-              aria-live="polite"
-            >
-              {t('notebooks.shell.lesson.pageIndicator', {
-                current: pageNav.pageNumberInLesson ?? page.pageNumber,
-                total: pageNav.totalPagesInLesson ?? lesson.pages.length,
-              })}
-            </span>
-            {/* Floating Add Page button */}
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              onClick={() => createPageMutation.mutate()}
-              disabled={createPageMutation.isPending}
-              aria-label={t('notebooks.shell.page.addPage')}
-            >
-              <Plus className="size-3.5" aria-hidden="true" />
-            </Button>
-            {/* Delete Page button */}
-            <DeletePageButton
-              notebookId={notebookId!}
-              lessonId={lessonId!}
-              pageId={pageId!}
-              isLastPage={isLastPage}
-            />
-          </div>
-        </div>
-
-        {/* Canvas placeholder */}
-        <div className="flex flex-1 items-center justify-center">
-          <p className="max-w-xs text-center text-sm opacity-40">
-            {t('notebooks.shell.lesson.canvasPlaceholder')}
-          </p>
-        </div>
-
-        {/* Global page number */}
-        {pageNav.globalPageNumber != null && (
-          <div className="mt-4 text-right text-xs opacity-50">
-            {t('notebooks.shell.index.pageNumber', {
-              number: pageNav.globalPageNumber,
+            {t('notebooks.shell.lesson.pageIndicator', {
+              current: pageNav.pageNumberInLesson ?? page.pageNumber,
+              total: pageNav.totalPagesInLesson ?? lesson.pages.length,
             })}
-          </div>
-        )}
+          </span>
+          {/* Floating Add Page button */}
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={() => createPageMutation.mutate()}
+            disabled={createPageMutation.isPending}
+            aria-label={t('notebooks.shell.page.addPage')}
+          >
+            <Plus className="size-3.5" aria-hidden="true" />
+          </Button>
+          {/* Delete Page button */}
+          <DeletePageButton
+            notebookId={notebookId!}
+            lessonId={lessonId!}
+            pageId={pageId!}
+            isLastPage={isLastPage}
+          />
+        </div>
       </div>
-    </DottedPaper>
+
+      {/* Canvas */}
+      <GridCanvas
+        pageSize={notebook.pageSize}
+        modules={modules ?? []}
+        styles={notebook.styles}
+      />
+
+      {/* Global page number */}
+      {pageNav.globalPageNumber != null && (
+        <div className="text-right text-xs opacity-50">
+          {t('notebooks.shell.index.pageNumber', {
+            number: pageNav.globalPageNumber,
+          })}
+        </div>
+      )}
+    </div>
   );
 }
