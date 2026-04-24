@@ -32,7 +32,7 @@ export function UserMenu({ projection, avatarUrl, onLogout }: UserMenuProps) {
           className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-sidebar-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring motion-reduce:transition-none"
         >
           <Avatar className="size-8 shrink-0">
-            {avatarUrl != null && <AvatarImage src={avatarUrl} alt="" />}
+            {avatarUrl != null && <AvatarImage src={avatarUrl} alt={projection.displayName} />}
             <AvatarFallback>
               {projection.avatarFallback === 'icon' ? (
                 <UserCircle className="size-4" aria-hidden="true" />
