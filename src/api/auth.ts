@@ -19,11 +19,6 @@ export async function register(data: RegisterRequest): Promise<AuthResponse> {
   return res.data;
 }
 
-export async function refreshToken(): Promise<AuthResponse> {
-  const res = await rawClient.post<AuthResponse>('/auth/refresh');
-  return res.data;
-}
-
 export async function logout(): Promise<void> {
   await rawClient.delete('/auth/logout');
 }
