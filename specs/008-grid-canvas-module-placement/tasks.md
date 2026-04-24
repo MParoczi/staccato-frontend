@@ -29,17 +29,17 @@
 
 **⚠️ CRITICAL**: No user story work should begin until this phase is complete.
 
-- [ ] T004 [P] Extend shared canvas domain types for `ModuleLayout`, layout mutations, and transient interaction state in `src/lib/types/modules.ts`
-- [ ] T005 [P] Align module API helpers with the documented GET/POST/PATCH `/layout`/DELETE contracts and add API coverage in `src/api/modules.ts` and `src/api/modules.test.ts`
-- [ ] T006 [P] Clamp and persist canvas zoom and selected-module helpers for the 50%-200% range in `src/stores/uiStore.ts` and `src/stores/uiStore.test.ts`
-- [ ] T007 [P] Implement zoom-aware grid conversion helpers and tests in `src/features/notebooks/utils/grid-layout.ts` and `src/features/notebooks/utils/grid-layout.test.ts`
-- [ ] T008 [P] Implement rectangle overlap detection with edge-touch validity tests in `src/features/notebooks/utils/overlap.ts` and `src/features/notebooks/utils/overlap.test.ts`
-- [ ] T009 [P] Implement first-fit module placement scanning and no-space tests in `src/features/notebooks/utils/placement.ts` and `src/features/notebooks/utils/placement.test.ts`
-- [ ] T010 [P] Implement the composed bounds/min-size/overlap validation pipeline and tests in `src/features/notebooks/utils/layout-validation.ts` and `src/features/notebooks/utils/layout-validation.test.ts`
-- [ ] T011 [P] Implement layering helpers for bring-to-front/send-to-back and tests in `src/features/notebooks/utils/z-index.ts` and `src/features/notebooks/utils/z-index.test.ts`
-- [ ] T012 [P] Implement the page-modules query hook and query-key test coverage in `src/features/notebooks/hooks/usePageModules.ts` and `src/features/notebooks/hooks/usePageModules.test.tsx`
-- [ ] T013 [P] Create the shared optimistic module-mutation scaffold and test harness in `src/features/notebooks/hooks/useModuleLayoutMutations.ts` and `src/features/notebooks/hooks/useModuleLayoutMutations.test.tsx`
-- [ ] T014 Upgrade true page sizing, dotted-paper rendering, and review-target styling in `src/components/common/DottedPaper.tsx` and `src/components/common/DottedPaper.test.tsx`
+- [x] T004 [P] Extend shared canvas domain types for `ModuleLayout`, layout mutations, and transient interaction state in `src/lib/types/modules.ts`
+- [x] T005 [P] Align module API helpers with the documented GET/POST/PATCH `/layout`/DELETE contracts and add API coverage in `src/api/modules.ts` and `src/api/modules.test.ts`
+- [x] T006 [P] Clamp and persist canvas zoom and selected-module helpers for the 50%-200% range in `src/stores/uiStore.ts` and `src/stores/uiStore.test.ts`
+- [x] T007 [P] Implement zoom-aware grid conversion helpers and tests in `src/features/notebooks/utils/grid-layout.ts` and `src/features/notebooks/utils/grid-layout.test.ts`
+- [x] T008 [P] Implement rectangle overlap detection with edge-touch validity tests in `src/features/notebooks/utils/overlap.ts` and `src/features/notebooks/utils/overlap.test.ts`
+- [x] T009 [P] Implement first-fit module placement scanning and no-space tests in `src/features/notebooks/utils/placement.ts` and `src/features/notebooks/utils/placement.test.ts`
+- [x] T010 [P] Implement the composed bounds/min-size/overlap validation pipeline and tests in `src/features/notebooks/utils/layout-validation.ts` and `src/features/notebooks/utils/layout-validation.test.ts`
+- [x] T011 [P] Implement layering helpers for bring-to-front/send-to-back and tests in `src/features/notebooks/utils/z-index.ts` and `src/features/notebooks/utils/z-index.test.ts`
+- [x] T012 [P] Implement the page-modules query hook and query-key test coverage in `src/features/notebooks/hooks/usePageModules.ts` and `src/features/notebooks/hooks/usePageModules.test.tsx`
+- [x] T013 [P] Create the shared optimistic module-mutation scaffold and test harness in `src/features/notebooks/hooks/useModuleLayoutMutations.ts` and `src/features/notebooks/hooks/useModuleLayoutMutations.test.tsx`
+- [x] T014 Upgrade true page sizing, dotted-paper rendering, and review-target styling in `src/components/common/DottedPaper.tsx` and `src/components/common/DottedPaper.test.tsx`
 
 **Checkpoint**: Foundation ready. User story work can begin.
 

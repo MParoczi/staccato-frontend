@@ -38,6 +38,14 @@ export type {
 } from './lessons';
 
 export type { BuildingBlock, Module } from './modules';
+export type {
+  ModuleLayout,
+  UpdateModuleLayoutInput,
+  CreateModuleInput,
+  ResizeHandle,
+  DragPreviewState,
+  ResizeSession,
+} from './modules';
 
 export type {
   Instrument,
