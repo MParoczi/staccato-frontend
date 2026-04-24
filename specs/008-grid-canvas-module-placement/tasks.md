@@ -75,16 +75,16 @@
 
 ### Tests for User Story 2
 
-- [ ] T021 [P] [US2] Add snapped drag/resize session tests with invalid-preview coverage in `src/features/notebooks/hooks/useCanvasInteractions.test.tsx`
-- [ ] T022 [P] [US2] Add debounced optimistic layout-save and rollback tests in `src/features/notebooks/hooks/useModuleLayoutMutations.test.tsx`
-- [ ] T023 [P] [US2] Extend drag/resize integration coverage for valid and invalid releases in `src/features/notebooks/components/GridCanvas.test.tsx` and `src/features/notebooks/components/LessonPage.test.tsx`
+- [x] T021 [P] [US2] Add snapped drag/resize session tests with invalid-preview coverage in `src/features/notebooks/hooks/useCanvasInteractions.test.tsx`
+- [x] T022 [P] [US2] Add debounced optimistic layout-save and rollback tests in `src/features/notebooks/hooks/useModuleLayoutMutations.test.tsx`
+- [x] T023 [P] [US2] Extend drag/resize integration coverage for valid and invalid releases in `src/features/notebooks/components/GridCanvas.test.tsx` and `src/features/notebooks/components/LessonPage.test.tsx`
 
 ### Implementation for User Story 2
 
-- [ ] T024 [P] [US2] Implement the snapped semi-transparent drag ghost in `src/features/notebooks/components/ModuleDragOverlay.tsx`
-- [ ] T025 [US2] Implement optimistic move/resize persistence with 500 ms delayed `PATCH /layout`, rollback, and server-message toasts in `src/features/notebooks/hooks/useModuleLayoutMutations.ts`
-- [ ] T026 [US2] Extend resize-handle behavior and pointer-driven resize math in `src/features/notebooks/components/ModuleResizeHandles.tsx` and `src/features/notebooks/hooks/useCanvasInteractions.ts`
-- [ ] T027 [US2] Wire dnd-kit header dragging, conflict highlighting, bounds rejection, and zoom-disable behavior during active drag/resize in `src/features/notebooks/components/GridCanvas.tsx` and `src/features/notebooks/hooks/useCanvasInteractions.ts`
+- [x] T024 [P] [US2] Implement the snapped semi-transparent drag ghost in `src/features/notebooks/components/ModuleDragOverlay.tsx`
+- [x] T025 [US2] Implement optimistic move/resize persistence with 500 ms delayed `PATCH /layout`, rollback, and server-message toasts in `src/features/notebooks/hooks/useModuleLayoutMutations.ts`
+- [x] T026 [US2] Extend resize-handle behavior and pointer-driven resize math in `src/features/notebooks/components/ModuleResizeHandles.tsx` and `src/features/notebooks/hooks/useCanvasInteractions.ts`
+- [x] T027 [US2] Wire dnd-kit header dragging, conflict highlighting, bounds rejection, and zoom-disable behavior during active drag/resize in `src/features/notebooks/components/GridCanvas.tsx` and `src/features/notebooks/hooks/useCanvasInteractions.ts`
 
 **Checkpoint**: User Story 2 is independently functional and testable.
 

@@ -1,13 +1,16 @@
+import { useCallback } from 'react';
 import { useParams, Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DottedPaper } from '@/components/common/DottedPaper';
+import type { UpdateModuleLayoutInput } from '@/lib/types';
 import { useNotebook } from '../hooks/useNotebook';
 import { useLesson } from '../hooks/useLesson';
 import { usePageNavigation } from '../hooks/usePageNavigation';
 import { useCreatePage } from '../hooks/useCreatePage';
 import { usePageModules } from '../hooks/usePageModules';
+import { useModuleLayoutMutations } from '../hooks/useModuleLayoutMutations';
 import { DeletePageButton } from './DeletePageButton';
 import { GridCanvas } from './GridCanvas';
 
@@ -24,6 +27,17 @@ export function LessonPage() {
   const pageNav = usePageNavigation(notebookId!);
   const createPageMutation = useCreatePage(notebookId!, lessonId!);
   const { data: modules } = usePageModules(pageId);
+  const { scheduleLayoutUpdate } = useModuleLayoutMutations({
+    pageId: pageId ?? '',
+  });
+
+  const handleCommitLayout = useCallback(
+    (moduleId: string, layout: UpdateModuleLayoutInput) => {
+      if (!pageId) return;
+      scheduleLayoutUpdate(moduleId, layout);
+    },
+    [pageId, scheduleLayoutUpdate],
+  );
 
   if (!notebook || !lesson) return null;
 
@@ -98,6 +112,7 @@ export function LessonPage() {
         pageSize={notebook.pageSize}
         modules={modules ?? []}
         styles={notebook.styles}
+        onCommitLayout={handleCommitLayout}
       />
 
       {/* Global page number */}

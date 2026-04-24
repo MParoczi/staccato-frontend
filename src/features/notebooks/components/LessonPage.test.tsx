@@ -3,6 +3,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter, Routes, Route } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act } from 'react';
+import { toast } from 'sonner';
 import { LessonPage } from './LessonPage';
 import { useUIStore } from '@/stores/uiStore';
 import type {
@@ -126,6 +127,17 @@ vi.mock('../hooks/usePageModules', () => ({
     ['pages', pageId, 'modules'] as const,
 }));
 
+const scheduleLayoutUpdateMock = vi.fn();
+vi.mock('../hooks/useModuleLayoutMutations', () => ({
+  useModuleLayoutMutations: () => ({
+    scheduleLayoutUpdate: scheduleLayoutUpdateMock,
+    updateLayoutMutation: { mutate: vi.fn(), isPending: false },
+    createModuleMutation: { mutate: vi.fn(), isPending: false },
+    deleteModuleMutation: { mutate: vi.fn(), isPending: false },
+    flushPendingLayoutUpdates: vi.fn(),
+  }),
+}));
+
 function renderLessonPage() {
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -152,6 +164,7 @@ function renderLessonPage() {
 describe('LessonPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    scheduleLayoutUpdateMock.mockReset();
     act(() => {
       useUIStore.getState().clearSelectedModule();
       useUIStore.getState().setZoom(1);
@@ -190,5 +203,68 @@ describe('LessonPage', () => {
     await waitFor(() => {
       expect(useUIStore.getState().selectedModuleId).toBeNull();
     });
+  });
+
+  it('commits a valid resize release through the optimistic layout mutation', async () => {
+    renderLessonPage();
+
+    const card = await screen.findByTestId('module-card-module-top');
+    fireEvent.click(card);
+    await waitFor(() => {
+      expect(useUIStore.getState().selectedModuleId).toBe('module-top');
+    });
+
+    const seHandle = screen.getByTestId('module-resize-handle-se');
+    fireEvent.pointerDown(seHandle, {
+      clientX: 160,
+      clientY: 100,
+      pointerId: 1,
+    });
+    fireEvent(
+      window,
+      Object.assign(new Event('pointerup', { bubbles: true }), {
+        clientX: 200,
+        clientY: 120,
+      }),
+    );
+
+    await waitFor(() => {
+      expect(scheduleLayoutUpdateMock).toHaveBeenCalled();
+    });
+    const [moduleId, layout] = scheduleLayoutUpdateMock.mock.calls[0];
+    expect(moduleId).toBe('module-top');
+    expect(layout).toMatchObject({
+      gridWidth: modulesFixture[0].gridWidth + 2,
+      gridHeight: modulesFixture[0].gridHeight + 1,
+    });
+  });
+
+  it('rolls back via toast feedback when a resize release overlaps a sibling', async () => {
+    renderLessonPage();
+
+    const card = await screen.findByTestId('module-card-module-top');
+    fireEvent.click(card);
+
+    const seHandle = screen.getByTestId('module-resize-handle-se');
+    fireEvent.pointerDown(seHandle, {
+      clientX: 160,
+      clientY: 100,
+      pointerId: 1,
+    });
+    // Expand far enough to intersect module-bottom at (0, 10).
+    fireEvent(
+      window,
+      Object.assign(new Event('pointerup', { bubbles: true }), {
+        clientX: 160,
+        clientY: 400,
+      }),
+    );
+
+    await waitFor(() => {
+      expect(toast.error).toHaveBeenCalledWith(
+        'notebooks.canvas.toasts.layoutInvalid',
+      );
+    });
+    expect(scheduleLayoutUpdateMock).not.toHaveBeenCalled();
   });
 });
