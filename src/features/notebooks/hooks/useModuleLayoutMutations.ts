@@ -12,8 +12,19 @@ import type {
   Module,
   UpdateModuleLayoutInput,
 } from '@/lib/types';
-import { getMaxZIndex } from '@/features/notebooks/utils/z-index';
+import {
+  bringToFront as computeBringToFront,
+  getMaxZIndex,
+  sendToBack as computeSendToBack,
+} from '@/features/notebooks/utils/z-index';
 import { pageModulesQueryKey } from './usePageModules';
+
+export type LayerMode = 'front' | 'back';
+
+interface LayerVariables {
+  moduleId: string;
+  mode: LayerMode;
+}
 
 /**
  * Debounce window for server-side layout persistence. Matches the
@@ -145,6 +156,9 @@ export function useModuleLayoutMutations({
       ]);
       return { previousModules };
     },
+    onSuccess: () => {
+      toast.success(t('notebooks.canvas.toasts.added'));
+    },
     onError: (error, _vars, context) => {
       restorePreviousModules(context?.previousModules);
       toast.error(
@@ -171,10 +185,83 @@ export function useModuleLayoutMutations({
       );
       return { previousModules };
     },
+    onSuccess: () => {
+      toast.success(t('notebooks.canvas.toasts.deleted'));
+    },
     onError: (error, _vars, context) => {
       restorePreviousModules(context?.previousModules);
       toast.error(
         readServerMessage(error, t('notebooks.canvas.toasts.deleteFailed')),
+      );
+    },
+    onSettled: () => {
+      void queryClient.invalidateQueries({ queryKey });
+    },
+  });
+
+  /**
+   * Optimistic z-index update for "Bring to Front" / "Send to Back".
+   *
+   * The new `zIndex` is computed from the cached module list using the
+   * shared `bringToFront` / `sendToBack` helpers so layering changes stay
+   * consistent with the constitution's no-overlap rule (only stacking
+   * order changes; grid coordinates are preserved). A short-circuit
+   * returns early when the module is already at the requested edge so
+   * we do not dispatch a no-op PATCH.
+   */
+  const layerMutation = useMutation<
+    Module,
+    unknown,
+    LayerVariables,
+    MutationContext
+  >({
+    mutationFn: ({ moduleId, mode }) => {
+      const current = queryClient.getQueryData<Module[]>(queryKey) ?? [];
+      const target = current.find((m) => m.id === moduleId);
+      if (!target) {
+        return Promise.reject(new Error('module-not-found'));
+      }
+      const nextZ =
+        mode === 'front'
+          ? computeBringToFront(current, moduleId)
+          : computeSendToBack();
+      return updateModuleLayoutRequest(moduleId, {
+        gridX: target.gridX,
+        gridY: target.gridY,
+        gridWidth: target.gridWidth,
+        gridHeight: target.gridHeight,
+        zIndex: nextZ,
+      });
+    },
+    onMutate: async ({ moduleId, mode }) => {
+      await queryClient.cancelQueries({ queryKey });
+      const previousModules = snapshotPreviousModules();
+      const current = previousModules ?? [];
+      const target = current.find((m) => m.id === moduleId);
+      if (!target) {
+        return { previousModules };
+      }
+      const nextZ =
+        mode === 'front'
+          ? computeBringToFront(current, moduleId)
+          : computeSendToBack();
+      queryClient.setQueryData<Module[]>(queryKey, (old) =>
+        old?.map((m) =>
+          m.id === moduleId ? { ...m, zIndex: nextZ } : m,
+        ) ?? [],
+      );
+      return { previousModules };
+    },
+    onSuccess: (savedModule) => {
+      queryClient.setQueryData<Module[]>(queryKey, (old) =>
+        old?.map((m) => (m.id === savedModule.id ? savedModule : m)) ?? [],
+      );
+      toast.success(t('notebooks.canvas.toasts.layerUpdated'));
+    },
+    onError: (error, _vars, context) => {
+      restorePreviousModules(context?.previousModules);
+      toast.error(
+        readServerMessage(error, t('notebooks.canvas.toasts.layerUpdateFailed')),
       );
     },
     onSettled: () => {
@@ -288,6 +375,7 @@ export function useModuleLayoutMutations({
     updateLayoutMutation,
     createModuleMutation,
     deleteModuleMutation,
+    layerMutation,
     scheduleLayoutUpdate,
     flushPendingLayoutUpdates,
   };

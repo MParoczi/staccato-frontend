@@ -84,4 +84,15 @@ describe('firstAvailablePosition', () => {
     const result = firstAvailablePosition('A4', 'FreeText', existing);
     expect(result).toEqual({ gridX: 4, gridY: 0 });
   });
+
+  it('returns null when the page exactly fits one module and a second placement is requested (no-space failure for add)', () => {
+    // Saturate the page with one large existing module at minimum size of FreeText
+    const page = PAGE_SIZE_DIMENSIONS.A4;
+    const existing = [
+      makeModule('a', 0, 0, page.width, page.height - 3, 'FreeText'),
+      // Cover the bottom 3 rows with another module so no FreeText (4 high) fits.
+      makeModule('b', 0, page.height - 3, page.width, 3, 'FreeText'),
+    ];
+    expect(firstAvailablePosition('A4', 'FreeText', existing)).toBeNull();
+  });
 });
