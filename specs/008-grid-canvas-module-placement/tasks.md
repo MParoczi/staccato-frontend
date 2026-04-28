@@ -98,15 +98,15 @@
 
 ### Tests for User Story 3
 
-- [ ] T028 [P] [US3] Add first-fit creation and no-space validation tests in `src/features/notebooks/components/AddModulePicker.test.tsx` and `src/features/notebooks/utils/placement.test.ts`
-- [ ] T029 [P] [US3] Add delete, rollback, and layering integration coverage in `src/features/notebooks/components/LessonPage.test.tsx` and `src/features/notebooks/hooks/useModuleLayoutMutations.test.tsx`
+- [x] T028 [P] [US3] Add first-fit creation and no-space validation tests in `src/features/notebooks/components/AddModulePicker.test.tsx` and `src/features/notebooks/utils/placement.test.ts`
+- [x] T029 [P] [US3] Add delete, rollback, and layering integration coverage in `src/features/notebooks/components/LessonPage.test.tsx` and `src/features/notebooks/hooks/useModuleLayoutMutations.test.tsx`
 
 ### Implementation for User Story 3
 
-- [ ] T030 [P] [US3] Implement the keyboard-accessible 12-type module picker with labeled icons and immediate create flow in `src/features/notebooks/components/AddModulePicker.tsx`
-- [ ] T031 [P] [US3] Implement delete, confirm-delete, bring-to-front, and send-to-back actions in `src/features/notebooks/components/ModuleContextMenu.tsx`
-- [ ] T032 [US3] Extend optimistic create/delete/layer mutations, validation-code mapping, and z-index reconciliation in `src/features/notebooks/hooks/useModuleLayoutMutations.ts`
-- [ ] T033 [US3] Integrate add-module and context-menu actions into the canvas shell in `src/features/notebooks/components/GridCanvas.tsx` and `src/features/notebooks/components/LessonPage.tsx`
+- [x] T030 [P] [US3] Implement the keyboard-accessible 12-type module picker with labeled icons and immediate create flow in `src/features/notebooks/components/AddModulePicker.tsx`
+- [x] T031 [P] [US3] Implement delete, confirm-delete, bring-to-front, and send-to-back actions in `src/features/notebooks/components/ModuleContextMenu.tsx`
+- [x] T032 [US3] Extend optimistic create/delete/layer mutations, validation-code mapping, and z-index reconciliation in `src/features/notebooks/hooks/useModuleLayoutMutations.ts`
+- [x] T033 [US3] Integrate add-module and context-menu actions into the canvas shell in `src/features/notebooks/components/GridCanvas.tsx` and `src/features/notebooks/components/LessonPage.tsx`
 
 **Checkpoint**: User Story 3 is independently functional and testable.
 

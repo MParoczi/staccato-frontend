@@ -452,3 +452,161 @@ describe('useModuleLayoutMutations - scheduleLayoutUpdate', () => {
     expect(cached?.[0]).toEqual(initialModule);
   });
 });
+
+describe('useModuleLayoutMutations - layerMutation', () => {
+  const moduleA: Module = { ...initialModule, id: 'module-1', zIndex: 0 };
+  const moduleB: Module = {
+    ...initialModule,
+    id: 'module-2',
+    gridX: 0,
+    gridY: 10,
+    zIndex: 5,
+  };
+
+  it('optimistically promotes a module above the current max on bring-to-front', async () => {
+    server.use(
+      http.patch(
+        'http://localhost:5000/modules/module-1/layout',
+        async ({ request }) => {
+          const body = (await request.json()) as { zIndex: number };
+          return HttpResponse.json({ ...moduleA, zIndex: body.zIndex });
+        },
+      ),
+    );
+
+    const { Wrapper, queryClient } = createWrapper([moduleA, moduleB]);
+    const { result } = renderHook(
+      () => useModuleLayoutMutations({ pageId: 'page-1' }),
+      { wrapper: Wrapper },
+    );
+
+    act(() => {
+      result.current.layerMutation.mutate({
+        moduleId: 'module-1',
+        mode: 'front',
+      });
+    });
+
+    await waitFor(() => {
+      const cached = queryClient.getQueryData<Module[]>([
+        'pages',
+        'page-1',
+        'modules',
+      ]);
+      const updated = cached?.find((m) => m.id === 'module-1');
+      expect(updated?.zIndex).toBe(6);
+    });
+
+    await waitFor(() => {
+      expect(result.current.layerMutation.isSuccess).toBe(true);
+    });
+    expect(toast.success).toHaveBeenCalledWith(
+      'notebooks.canvas.toasts.layerUpdated',
+    );
+  });
+
+  it('resets zIndex to 0 on send-to-back', async () => {
+    server.use(
+      http.patch(
+        'http://localhost:5000/modules/module-2/layout',
+        async ({ request }) => {
+          const body = (await request.json()) as { zIndex: number };
+          return HttpResponse.json({ ...moduleB, zIndex: body.zIndex });
+        },
+      ),
+    );
+
+    const { Wrapper, queryClient } = createWrapper([moduleA, moduleB]);
+    const { result } = renderHook(
+      () => useModuleLayoutMutations({ pageId: 'page-1' }),
+      { wrapper: Wrapper },
+    );
+
+    act(() => {
+      result.current.layerMutation.mutate({
+        moduleId: 'module-2',
+        mode: 'back',
+      });
+    });
+
+    await waitFor(() => {
+      const cached = queryClient.getQueryData<Module[]>([
+        'pages',
+        'page-1',
+        'modules',
+      ]);
+      const updated = cached?.find((m) => m.id === 'module-2');
+      expect(updated?.zIndex).toBe(0);
+    });
+  });
+
+  it('rolls back the optimistic z-index update when the server rejects', async () => {
+    server.use(
+      http.patch('http://localhost:5000/modules/module-1/layout', () => {
+        return HttpResponse.json(
+          { message: 'cannot reorder' },
+          { status: 400 },
+        );
+      }),
+    );
+
+    const { Wrapper, queryClient } = createWrapper([moduleA, moduleB]);
+    const { result } = renderHook(
+      () => useModuleLayoutMutations({ pageId: 'page-1' }),
+      { wrapper: Wrapper },
+    );
+
+    act(() => {
+      result.current.layerMutation.mutate({
+        moduleId: 'module-1',
+        mode: 'front',
+      });
+    });
+
+    await waitFor(() => {
+      expect(result.current.layerMutation.isError).toBe(true);
+    });
+
+    const cached = queryClient.getQueryData<Module[]>([
+      'pages',
+      'page-1',
+      'modules',
+    ]);
+    const restored = cached?.find((m) => m.id === 'module-1');
+    expect(restored?.zIndex).toBe(0);
+    expect(toast.error).toHaveBeenCalledWith('cannot reorder');
+  });
+});
+
+describe('useModuleLayoutMutations - delete rollback integration', () => {
+  it('preserves the original module list when delete fails', async () => {
+    server.use(
+      http.delete('http://localhost:5000/modules/module-1', () => {
+        return HttpResponse.json({ message: 'fail' }, { status: 500 });
+      }),
+    );
+
+    const second: Module = { ...initialModule, id: 'module-2', gridY: 10 };
+    const { Wrapper, queryClient } = createWrapper([initialModule, second]);
+    const { result } = renderHook(
+      () => useModuleLayoutMutations({ pageId: 'page-1' }),
+      { wrapper: Wrapper },
+    );
+
+    act(() => {
+      result.current.deleteModuleMutation.mutate('module-1');
+    });
+
+    await waitFor(() => {
+      expect(result.current.deleteModuleMutation.isError).toBe(true);
+    });
+
+    const cached = queryClient.getQueryData<Module[]>([
+      'pages',
+      'page-1',
+      'modules',
+    ]);
+    expect(cached).toHaveLength(2);
+    expect(cached?.map((m) => m.id)).toEqual(['module-1', 'module-2']);
+  });
+});

@@ -128,12 +128,16 @@ vi.mock('../hooks/usePageModules', () => ({
 }));
 
 const scheduleLayoutUpdateMock = vi.fn();
+const createModuleMutateMock = vi.fn();
+const deleteModuleMutateMock = vi.fn();
+const layerMutateMock = vi.fn();
 vi.mock('../hooks/useModuleLayoutMutations', () => ({
   useModuleLayoutMutations: () => ({
     scheduleLayoutUpdate: scheduleLayoutUpdateMock,
     updateLayoutMutation: { mutate: vi.fn(), isPending: false },
-    createModuleMutation: { mutate: vi.fn(), isPending: false },
-    deleteModuleMutation: { mutate: vi.fn(), isPending: false },
+    createModuleMutation: { mutate: createModuleMutateMock, isPending: false },
+    deleteModuleMutation: { mutate: deleteModuleMutateMock, isPending: false },
+    layerMutation: { mutate: layerMutateMock, isPending: false },
     flushPendingLayoutUpdates: vi.fn(),
   }),
 }));
@@ -165,6 +169,9 @@ describe('LessonPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     scheduleLayoutUpdateMock.mockReset();
+    createModuleMutateMock.mockReset();
+    deleteModuleMutateMock.mockReset();
+    layerMutateMock.mockReset();
     act(() => {
       useUIStore.getState().clearSelectedModule();
       useUIStore.getState().setZoom(1);
@@ -266,5 +273,182 @@ describe('LessonPage', () => {
       );
     });
     expect(scheduleLayoutUpdateMock).not.toHaveBeenCalled();
+  });
+
+  it('opens the add-module picker and creates a module at the first valid position', async () => {
+    renderLessonPage();
+
+    const trigger = await screen.findByTestId('add-module-trigger');
+    fireEvent.click(trigger);
+
+    const option = await screen.findByTestId('add-module-option-Theory');
+    fireEvent.click(option);
+
+    await waitFor(() => {
+      expect(createModuleMutateMock).toHaveBeenCalledTimes(1);
+    });
+    const payload = createModuleMutateMock.mock.calls[0][0];
+    expect(payload).toMatchObject({
+      moduleType: 'Theory',
+      gridWidth: 8,
+      gridHeight: 5,
+    });
+    expect(typeof payload.gridX).toBe('number');
+    expect(typeof payload.gridY).toBe('number');
+  });
+
+  it('shows a no-space toast and skips the create mutation when the page has no available slot', async () => {
+    // Cover the page with one giant FreeText so no Title or Theory slot exists.
+    const fullPageModule: Module = {
+      id: 'fill',
+      lessonPageId: 'page-1',
+      moduleType: 'FreeText',
+      gridX: 0,
+      gridY: 0,
+      gridWidth: 42,
+      gridHeight: 59,
+      zIndex: 0,
+      content: [],
+    };
+    modulesFixture.push(fullPageModule);
+    try {
+      renderLessonPage();
+
+      fireEvent.click(await screen.findByTestId('add-module-trigger'));
+      const option = await screen.findByTestId('add-module-option-Title');
+      fireEvent.click(option);
+
+      await waitFor(() => {
+        expect(toast.error).toHaveBeenCalledWith(
+          'notebooks.canvas.toasts.noSpace',
+        );
+      });
+      expect(createModuleMutateMock).not.toHaveBeenCalled();
+    } finally {
+      modulesFixture.pop();
+    }
+  });
+
+  it('deletes an empty selected module immediately via the context menu', async () => {
+    renderLessonPage();
+
+    const card = await screen.findByTestId('module-card-module-top');
+    fireEvent.click(card);
+    await waitFor(() => {
+      expect(useUIStore.getState().selectedModuleId).toBe('module-top');
+    });
+
+    const trigger = screen.getByTestId('module-context-menu-trigger');
+    await act(async () => {
+      fireEvent.pointerDown(trigger, { pointerType: 'mouse' });
+      fireEvent.pointerUp(trigger, { pointerType: 'mouse' });
+      fireEvent.click(trigger);
+    });
+    const deleteItem = await screen.findByTestId(
+      'module-context-menu-delete',
+    );
+    fireEvent.click(deleteItem);
+
+    await waitFor(() => {
+      expect(deleteModuleMutateMock).toHaveBeenCalledWith('module-top');
+    });
+    // No confirmation dialog is shown for empty modules.
+    expect(
+      screen.queryByTestId('module-context-menu-confirm-delete'),
+    ).toBeNull();
+  });
+
+  it('requires confirmation before deleting a module that has content', async () => {
+    // Patch the second fixture module to have content for this test only.
+    const original = modulesFixture[1].content;
+    modulesFixture[1] = {
+      ...modulesFixture[1],
+      content: [{ type: 'Text' }],
+    };
+    try {
+      renderLessonPage();
+
+      const card = await screen.findByTestId('module-card-module-bottom');
+      fireEvent.click(card);
+      await waitFor(() => {
+        expect(useUIStore.getState().selectedModuleId).toBe('module-bottom');
+      });
+
+      const trigger = screen.getByTestId('module-context-menu-trigger');
+      await act(async () => {
+        fireEvent.pointerDown(trigger, { pointerType: 'mouse' });
+        fireEvent.pointerUp(trigger, { pointerType: 'mouse' });
+        fireEvent.click(trigger);
+      });
+      const deleteItem = await screen.findByTestId(
+        'module-context-menu-delete',
+      );
+      fireEvent.click(deleteItem);
+
+      // First click only opens the confirmation dialog; no delete fires yet.
+      const confirm = await screen.findByTestId(
+        'module-context-menu-confirm-delete',
+      );
+      expect(deleteModuleMutateMock).not.toHaveBeenCalled();
+
+      fireEvent.click(confirm);
+      await waitFor(() => {
+        expect(deleteModuleMutateMock).toHaveBeenCalledWith('module-bottom');
+      });
+    } finally {
+      modulesFixture[1] = { ...modulesFixture[1], content: original };
+    }
+  });
+
+  it('invokes bring-to-front and send-to-back through the layer mutation', async () => {
+    renderLessonPage();
+
+    const card = await screen.findByTestId('module-card-module-top');
+    fireEvent.click(card);
+    await waitFor(() => {
+      expect(useUIStore.getState().selectedModuleId).toBe('module-top');
+    });
+
+    let trigger = screen.getByTestId('module-context-menu-trigger');
+    await act(async () => {
+      fireEvent.pointerDown(trigger, { pointerType: 'mouse' });
+      fireEvent.pointerUp(trigger, { pointerType: 'mouse' });
+      fireEvent.click(trigger);
+    });
+    const sendBack = await screen.findByTestId(
+      'module-context-menu-send-to-back',
+    );
+    fireEvent.click(sendBack);
+
+    await waitFor(() => {
+      expect(layerMutateMock).toHaveBeenCalledWith({
+        moduleId: 'module-top',
+        mode: 'back',
+      });
+    });
+
+    // Reopen and bring to front (module-top has the highest z-index in
+    // fixtures, so the menu disables this entry; pick module-bottom instead).
+    fireEvent.click(screen.getByTestId('module-card-module-bottom'));
+    await waitFor(() => {
+      expect(useUIStore.getState().selectedModuleId).toBe('module-bottom');
+    });
+    trigger = screen.getByTestId('module-context-menu-trigger');
+    await act(async () => {
+      fireEvent.pointerDown(trigger, { pointerType: 'mouse' });
+      fireEvent.pointerUp(trigger, { pointerType: 'mouse' });
+      fireEvent.click(trigger);
+    });
+    const bringFront = await screen.findByTestId(
+      'module-context-menu-bring-to-front',
+    );
+    fireEvent.click(bringFront);
+
+    await waitFor(() => {
+      expect(layerMutateMock).toHaveBeenCalledWith({
+        moduleId: 'module-bottom',
+        mode: 'front',
+      });
+    });
   });
 });

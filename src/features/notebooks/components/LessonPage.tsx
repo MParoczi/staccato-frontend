@@ -1,18 +1,24 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useParams, Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Plus } from 'lucide-react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { DottedPaper } from '@/components/common/DottedPaper';
-import type { UpdateModuleLayoutInput } from '@/lib/types';
+import { useUIStore } from '@/stores/uiStore';
+import type { ModuleType, UpdateModuleLayoutInput } from '@/lib/types';
+import { MODULE_MIN_SIZES } from '@/lib/constants/modules';
 import { useNotebook } from '../hooks/useNotebook';
 import { useLesson } from '../hooks/useLesson';
 import { usePageNavigation } from '../hooks/usePageNavigation';
 import { useCreatePage } from '../hooks/useCreatePage';
 import { usePageModules } from '../hooks/usePageModules';
 import { useModuleLayoutMutations } from '../hooks/useModuleLayoutMutations';
+import { firstAvailablePosition } from '../utils/placement';
 import { DeletePageButton } from './DeletePageButton';
 import { GridCanvas } from './GridCanvas';
+import { AddModulePicker } from './AddModulePicker';
+import { ModuleContextMenu } from './ModuleContextMenu';
 
 export function LessonPage() {
   const { notebookId, lessonId, pageId } = useParams<{
@@ -27,9 +33,15 @@ export function LessonPage() {
   const pageNav = usePageNavigation(notebookId!);
   const createPageMutation = useCreatePage(notebookId!, lessonId!);
   const { data: modules } = usePageModules(pageId);
-  const { scheduleLayoutUpdate } = useModuleLayoutMutations({
+  const {
+    scheduleLayoutUpdate,
+    createModuleMutation,
+    deleteModuleMutation,
+    layerMutation,
+  } = useModuleLayoutMutations({
     pageId: pageId ?? '',
   });
+  const selectedModuleId = useUIStore((state) => state.selectedModuleId);
 
   const handleCommitLayout = useCallback(
     (moduleId: string, layout: UpdateModuleLayoutInput) => {
@@ -37,6 +49,57 @@ export function LessonPage() {
       scheduleLayoutUpdate(moduleId, layout);
     },
     [pageId, scheduleLayoutUpdate],
+  );
+
+  const moduleList = useMemo(() => modules ?? [], [modules]);
+  const selectedModule =
+    selectedModuleId !== null
+      ? moduleList.find((m) => m.id === selectedModuleId) ?? null
+      : null;
+
+  const handleAddModule = useCallback(
+    (moduleType: ModuleType) => {
+      if (!notebook || !pageId) return;
+      const position = firstAvailablePosition(
+        notebook.pageSize,
+        moduleType,
+        moduleList,
+      );
+      if (position === null) {
+        toast.error(t('notebooks.canvas.toasts.noSpace'));
+        return;
+      }
+      const minSize = MODULE_MIN_SIZES[moduleType];
+      createModuleMutation.mutate({
+        moduleType,
+        gridX: position.gridX,
+        gridY: position.gridY,
+        gridWidth: minSize.minWidth,
+        gridHeight: minSize.minHeight,
+      });
+    },
+    [createModuleMutation, moduleList, notebook, pageId, t],
+  );
+
+  const handleBringToFront = useCallback(
+    (moduleId: string) => {
+      layerMutation.mutate({ moduleId, mode: 'front' });
+    },
+    [layerMutation],
+  );
+
+  const handleSendToBack = useCallback(
+    (moduleId: string) => {
+      layerMutation.mutate({ moduleId, mode: 'back' });
+    },
+    [layerMutation],
+  );
+
+  const handleDeleteModule = useCallback(
+    (moduleId: string) => {
+      deleteModuleMutation.mutate(moduleId);
+    },
+    [deleteModuleMutation],
   );
 
   if (!notebook || !lesson) return null;
@@ -87,6 +150,21 @@ export function LessonPage() {
               total: pageNav.totalPagesInLesson ?? lesson.pages.length,
             })}
           </span>
+          {/* Add Module picker */}
+          <AddModulePicker
+            onSelectType={handleAddModule}
+            disabled={!pageId || createModuleMutation.isPending}
+          />
+          {/* Module context menu (visible only when a module is selected) */}
+          {selectedModule ? (
+            <ModuleContextMenu
+              module={selectedModule}
+              modules={moduleList}
+              onBringToFront={handleBringToFront}
+              onSendToBack={handleSendToBack}
+              onDelete={handleDeleteModule}
+            />
+          ) : null}
           {/* Floating Add Page button */}
           <Button
             variant="ghost"
@@ -110,7 +188,7 @@ export function LessonPage() {
       {/* Canvas */}
       <GridCanvas
         pageSize={notebook.pageSize}
-        modules={modules ?? []}
+        modules={moduleList}
         styles={notebook.styles}
         onCommitLayout={handleCommitLayout}
       />
