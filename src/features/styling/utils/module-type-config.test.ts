@@ -3,9 +3,11 @@ import {
   getVisibleControls,
   isControlVisible,
   isBorderControlDisabled,
+  MODULE_ALLOWED_BLOCKS,
+  isBlockAllowed,
   type ModuleStyleControl,
 } from './module-type-config';
-import type { BorderStyle, ModuleType } from '@/lib/types';
+import type { BorderStyle, BuildingBlockType, ModuleType } from '@/lib/types';
 
 const ALL_TYPES: ModuleType[] = [
   'Title',
@@ -133,3 +135,67 @@ describe('isBorderControlDisabled', () => {
     },
   );
 });
+
+describe('MODULE_ALLOWED_BLOCKS', () => {
+  const ALL_BLOCK_TYPES: BuildingBlockType[] = [
+    'SectionHeading',
+    'Date',
+    'Text',
+    'BulletList',
+    'NumberedList',
+    'CheckboxList',
+    'Table',
+    'MusicalNotes',
+    'ChordProgression',
+    'ChordTablatureGroup',
+  ];
+
+  it('exhaustively keys every ModuleType', () => {
+    const keys = Object.keys(MODULE_ALLOWED_BLOCKS).sort();
+    expect(keys).toEqual([...ALL_TYPES].sort());
+  });
+
+  it('only references real BuildingBlockType values', () => {
+    const known = new Set<BuildingBlockType>(ALL_BLOCK_TYPES);
+    for (const moduleType of Object.keys(MODULE_ALLOWED_BLOCKS) as ModuleType[]) {
+      for (const block of MODULE_ALLOWED_BLOCKS[moduleType]) {
+        expect(known.has(block)).toBe(true);
+      }
+    }
+  });
+
+  it('Title allows exactly [Date, Text]', () => {
+    expect(MODULE_ALLOWED_BLOCKS.Title).toEqual(['Date', 'Text']);
+  });
+
+  it('Breadcrumb allows nothing', () => {
+    expect(MODULE_ALLOWED_BLOCKS.Breadcrumb).toEqual([]);
+  });
+
+  it('FreeText allows all 10 BuildingBlockType values', () => {
+    expect(MODULE_ALLOWED_BLOCKS.FreeText.length).toBe(10);
+    const set = new Set(MODULE_ALLOWED_BLOCKS.FreeText);
+    for (const block of ALL_BLOCK_TYPES) {
+      expect(set.has(block)).toBe(true);
+    }
+  });
+});
+
+describe('isBlockAllowed', () => {
+  it('Title accepts Text', () => {
+    expect(isBlockAllowed('Title', 'Text')).toBe(true);
+  });
+
+  it('Title rejects BulletList', () => {
+    expect(isBlockAllowed('Title', 'BulletList')).toBe(false);
+  });
+
+  it('Breadcrumb rejects Text (Breadcrumb is closed)', () => {
+    expect(isBlockAllowed('Breadcrumb', 'Text')).toBe(false);
+  });
+
+  it('FreeText accepts ChordProgression', () => {
+    expect(isBlockAllowed('FreeText', 'ChordProgression')).toBe(true);
+  });
+});
+

@@ -1,4 +1,4 @@
-import type { BorderStyle, ModuleType } from '@/lib/types';
+import type { BorderStyle, BuildingBlockType, ModuleType } from '@/lib/types';
 
 export type ModuleStyleControl =
   | 'backgroundColor'
@@ -77,3 +77,106 @@ export function isBorderControlDisabled(
   }
   return borderStyle === 'None';
 }
+
+/**
+ * Per-module-type whitelist of building blocks the editor (Phase 1+)
+ * may insert. Enforced both in the Add Block popover (UI gate) and in
+ * the optimistic state mutation (defense-in-depth).
+ *
+ * - Title: only `Date` and `Text` (UI-SPEC §4.4 / §4.12).
+ * - Breadcrumb: empty — content auto-generated from subtitle modules.
+ * - FreeText: all 10 BuildingBlockType values.
+ * - Other 9 module types: see table below (sourced from F9 prompt).
+ */
+export const MODULE_ALLOWED_BLOCKS: Record<
+  ModuleType,
+  readonly BuildingBlockType[]
+> = {
+  Title: ['Date', 'Text'],
+  Breadcrumb: [],
+  Subtitle: ['Text'],
+  Theory: [
+    'SectionHeading',
+    'Text',
+    'BulletList',
+    'NumberedList',
+    'CheckboxList',
+    'Table',
+    'MusicalNotes',
+    'ChordProgression',
+    'ChordTablatureGroup',
+  ],
+  Practice: [
+    'SectionHeading',
+    'Text',
+    'BulletList',
+    'NumberedList',
+    'CheckboxList',
+    'Table',
+    'MusicalNotes',
+    'ChordProgression',
+    'ChordTablatureGroup',
+  ],
+  Example: [
+    'SectionHeading',
+    'Text',
+    'BulletList',
+    'NumberedList',
+    'CheckboxList',
+    'Table',
+    'MusicalNotes',
+    'ChordProgression',
+    'ChordTablatureGroup',
+  ],
+  Important: [
+    'SectionHeading',
+    'Text',
+    'BulletList',
+    'NumberedList',
+    'CheckboxList',
+  ],
+  Tip: [
+    'SectionHeading',
+    'Text',
+    'BulletList',
+    'NumberedList',
+    'CheckboxList',
+  ],
+  Homework: [
+    'SectionHeading',
+    'Text',
+    'BulletList',
+    'NumberedList',
+    'CheckboxList',
+    'Table',
+  ],
+  Question: [
+    'SectionHeading',
+    'Text',
+    'BulletList',
+    'NumberedList',
+    'CheckboxList',
+  ],
+  ChordTablature: ['Text', 'ChordTablatureGroup'],
+  FreeText: [
+    'SectionHeading',
+    'Date',
+    'Text',
+    'BulletList',
+    'NumberedList',
+    'CheckboxList',
+    'Table',
+    'MusicalNotes',
+    'ChordProgression',
+    'ChordTablatureGroup',
+  ],
+} as const;
+
+/** Returns true if the given block type may be inserted into a module of the given type. */
+export function isBlockAllowed(
+  moduleType: ModuleType,
+  blockType: BuildingBlockType,
+): boolean {
+  return MODULE_ALLOWED_BLOCKS[moduleType].includes(blockType);
+}
+
