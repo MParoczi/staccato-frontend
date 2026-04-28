@@ -267,6 +267,44 @@
     }
   },
   "editor": {
+    "edit": "Edit",
+    "addBlock": "Add block",
+    "bold": "Bold",
+    "undo": "Undo",
+    "redo": "Redo",
+    "dragHandle": "Drag to reorder",
+    "deleteBlock": "Delete block",
+    "textSpanLabel": "Block text",
+    "textSpanPlaceholder": "Start writing\u2026",
+    "placeholderBlockA11y": "{{type}} block \u2014 coming soon",
+    "breadcrumbAutoGen": "Content is auto-generated from subtitle modules.",
+    "breadcrumbNoSave": "Nothing to save here.",
+    "saving": "Saving\u2026",
+    "saved": "Saved",
+    "saveFailed": "Couldn't save \u2014 try again",
+    "blockType": {
+      "sectionHeading": "Section heading",
+      "date": "Date",
+      "text": "Text",
+      "bulletList": "Bullet list",
+      "numberedList": "Numbered list",
+      "checkboxList": "Checklist",
+      "table": "Table",
+      "musicalNotes": "Musical notes",
+      "chordProgression": "Chord progression",
+      "chordTablatureGroup": "Chord tablature"
+    },
+    "deleteBlockTitle": "Delete this block?",
+    "deleteBlockDescription": "This block has content. Deleting it can't be undone after you save.",
+    "deleteBlockConfirm": "Delete block",
+    "unsavedTitle": "You have unsaved changes.",
+    "unsavedDescription": "Your last save didn't go through. Leaving now will discard your latest edits.",
+    "unsavedKeepEditing": "Keep editing",
+    "unsavedDiscard": "Discard changes",
+    "errors": {
+      "invalidBuildingBlock": "This block isn't allowed in this module type.",
+      "breadcrumbContentNotEmpty": "Breadcrumb modules can't have content \u2014 it's filled in automatically."
+    },
     "blocks": {
       "addBlock": "Add block"
     }

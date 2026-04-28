@@ -267,6 +267,44 @@
     }
   },
   "editor": {
+    "edit": "Szerkesztés",
+    "addBlock": "Blokk hozzáadása",
+    "bold": "Félkövér",
+    "undo": "Visszavonás",
+    "redo": "Újra",
+    "dragHandle": "Húzd át a sorrend módosításához",
+    "deleteBlock": "Blokk törlése",
+    "textSpanLabel": "Blokk szövege",
+    "textSpanPlaceholder": "Kezdj írni\u2026",
+    "placeholderBlockA11y": "{{type}} blokk \u2014 hamarosan",
+    "breadcrumbAutoGen": "A tartalom automatikusan a feliratmodulokból készül.",
+    "breadcrumbNoSave": "Itt nincs mit menteni.",
+    "saving": "Mentés\u2026",
+    "saved": "Mentve",
+    "saveFailed": "A mentés nem sikerült \u2014 próbáld újra",
+    "blockType": {
+      "sectionHeading": "Szakaszcím",
+      "date": "Dátum",
+      "text": "Szöveg",
+      "bulletList": "Felsorolás",
+      "numberedList": "Számozott lista",
+      "checkboxList": "Teendőlista",
+      "table": "Táblázat",
+      "musicalNotes": "Kotta",
+      "chordProgression": "Akkordmenet",
+      "chordTablatureGroup": "Akkordtáblázat"
+    },
+    "deleteBlockTitle": "Törlöd ezt a blokkot?",
+    "deleteBlockDescription": "A blokk tartalmaz adatot. Mentés után a törlés nem vonható vissza.",
+    "deleteBlockConfirm": "Blokk törlése",
+    "unsavedTitle": "Nem mentett változásaid vannak.",
+    "unsavedDescription": "Az utolsó mentés nem sikerült. Ha most kilépsz, elveszíted a friss módosításokat.",
+    "unsavedKeepEditing": "Maradok",
+    "unsavedDiscard": "Változások elvetése",
+    "errors": {
+      "invalidBuildingBlock": "Ez a blokk nem engedélyezett ebben a modultípusban.",
+      "breadcrumbContentNotEmpty": "A morzsamodulok nem tartalmazhatnak tartalmat \u2014 automatikusan töltődik ki."
+    },
     "blocks": {
       "addBlock": "Blokk hozzáadása"
     }
