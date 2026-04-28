@@ -220,6 +220,13 @@
     },
     "canvas": {
       "surfaceLabel": "Lesson page canvas",
+      "viewport": {
+        "label": "Canvas zoom controls",
+        "zoomIn": "Zoom in",
+        "zoomOut": "Zoom out",
+        "resetZoom": "Reset zoom",
+        "currentZoom": "Current zoom {{value}}%"
+      },
       "emptyState": "No modules on this page yet.",
       "moduleLabel": "{{moduleType}} module",
       "dragHandle": "Drag module header",

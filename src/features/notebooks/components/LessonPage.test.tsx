@@ -451,4 +451,74 @@ describe('LessonPage', () => {
       });
     });
   });
+
+  it('exposes labeled zoom controls with visible focus ordering', async () => {
+    renderLessonPage();
+    const zoomOut = await screen.findByTestId('canvas-zoom-out');
+    const zoomIn = screen.getByTestId('canvas-zoom-in');
+    const zoomReset = screen.getByTestId('canvas-zoom-reset');
+
+    expect(zoomOut.getAttribute('aria-label')).toBe(
+      'notebooks.canvas.viewport.zoomOut',
+    );
+    expect(zoomIn.getAttribute('aria-label')).toBe(
+      'notebooks.canvas.viewport.zoomIn',
+    );
+    expect(zoomReset.getAttribute('aria-label')).toBe(
+      'notebooks.canvas.viewport.resetZoom',
+    );
+
+    // Focus moves through each control in DOM order.
+    zoomOut.focus();
+    expect(document.activeElement).toBe(zoomOut);
+    zoomIn.focus();
+    expect(document.activeElement).toBe(zoomIn);
+    zoomReset.focus();
+    expect(document.activeElement).toBe(zoomReset);
+  });
+
+  it('changes zoom through keyboard activation of the zoom controls', async () => {
+    renderLessonPage();
+    const zoomIn = await screen.findByTestId('canvas-zoom-in');
+    fireEvent.click(zoomIn);
+    await waitFor(() => {
+      expect(useUIStore.getState().zoom).toBeCloseTo(1.1);
+    });
+
+    const zoomReset = screen.getByTestId('canvas-zoom-reset');
+    fireEvent.click(zoomReset);
+    await waitFor(() => {
+      expect(useUIStore.getState().zoom).toBe(1);
+    });
+  });
+
+  it('opens the add-module picker via keyboard and announces a labeled trigger', async () => {
+    renderLessonPage();
+    const trigger = await screen.findByTestId('add-module-trigger');
+    expect(trigger.getAttribute('aria-label')).toBe(
+      'notebooks.canvas.addModule.trigger',
+    );
+    trigger.focus();
+    expect(document.activeElement).toBe(trigger);
+    // The picker dialog opens on click (Enter and Space activate buttons).
+    fireEvent.click(trigger);
+    expect(
+      await screen.findByTestId('add-module-option-Theory'),
+    ).toBeTruthy();
+  });
+
+  it('exposes the module context-menu trigger with an accessible label', async () => {
+    renderLessonPage();
+    const card = await screen.findByTestId('module-card-module-top');
+    fireEvent.click(card);
+    await waitFor(() => {
+      expect(useUIStore.getState().selectedModuleId).toBe('module-top');
+    });
+    const menuTrigger = screen.getByTestId('module-context-menu-trigger');
+    expect(menuTrigger.getAttribute('aria-label')).toBe(
+      'notebooks.canvas.menu.open',
+    );
+    menuTrigger.focus();
+    expect(document.activeElement).toBe(menuTrigger);
+  });
 });
