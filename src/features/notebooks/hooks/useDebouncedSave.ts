@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef } from 'react';
-
 /**
  * Generic debounced-save hook used by the editor (CONTEXT decision 5: shared
  * 1000 ms debounce for all dirty-state→server flushes). Models the
@@ -45,7 +44,9 @@ export function useDebouncedSave<T>(
   // Keep the latest onSave in a ref so consumers can pass an inline closure
   // without breaking the stable identity of `schedule` / `flush` / `cancel`.
   const onSaveRef = useRef(opts.onSave);
-  onSaveRef.current = opts.onSave;
+  useEffect(() => {
+    onSaveRef.current = opts.onSave;
+  }, [opts.onSave]);
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pendingValueRef = useRef<T | undefined>(undefined);
@@ -113,17 +114,21 @@ export function useDebouncedSave<T>(
   // Cleanup: cancel any pending timer on unmount so a save does not fire
   // after the consumer is gone.
   useEffect(() => {
+    const marker = pendingMarkerRef.current;
     return () => {
       if (timerRef.current !== null) {
         clearTimeout(timerRef.current);
         timerRef.current = null;
       }
       pendingValueRef.current = undefined;
-      pendingMarkerRef.current.has = false;
+      marker.has = false;
     };
   }, []);
 
   return { schedule, flush, cancel, isSaving };
 }
+
+
+
 
 

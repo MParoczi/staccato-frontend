@@ -119,7 +119,7 @@ export function splitSpansAtSelection(
   // Apply end split first (higher index) so start indices stay stable.
   let working = spans.slice();
   let endSpanIndex = end.spanIndex;
-  let endOffset = end.charOffset;
+  const endOffset = end.charOffset;
 
   // Split at end position. If split actually happens, working grows by 1 at
   // endSpanIndex; the "end boundary" is then between endSpanIndex and
