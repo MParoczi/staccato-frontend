@@ -1,6 +1,6 @@
 # Staccato Frontend — STATE.md
 
-*Last updated: 2026-04-28 after Phase 1 planning complete*
+*Last updated: 2026-04-28 after Phase 1 plan 01-01 complete (1/6 plans done)*
 
 ## Active Milestone
 
@@ -12,21 +12,31 @@
 
 ## Current Phase
 
-**Phase 1 — Module Content Editor (Core)** *(planned — ready to execute)*
+**Phase 1 — Module Content Editor (Core)** *(executing — 1/6 plans complete)*
 
 - REQ: `EDIT-01` (+ `Text` block as registry seed; remainder of `BLOCK-01` stays in Phase 2)
 - PRD source: `frontend-speckit-prompts.md` lines ~1402–1547 (Feature 9 prompt block)
 - Context: `.planning/phases/01-module-content-editor-core/01-CONTEXT.md`
 - UI-SPEC: `.planning/phases/01-module-content-editor-core/01-UI-SPEC.md`
-- Research: `.planning/phases/01-module-content-editor-core/01-RESEARCH.md` (Validation Architecture covers 30+ invariants; threat model covers XSS / cache poisoning / 422)
+- Research: `.planning/phases/01-module-content-editor-core/01-RESEARCH.md`
 - Plans: 6 plans across 3 waves
-  - Wave 1: `01-01-foundation`, `01-02-pure-utils`, `01-03-block-registry`
+  - Wave 1: `01-01-foundation` ✓ done · `01-02-pure-utils` · `01-03-block-registry`
   - Wave 2: `01-04-text-block`, `01-05-editor-shell`
   - Wave 3: `01-06-integration`
-- All 6 plans declare `requirements: [EDIT-01]`; CONTEXT decisions 1–6 are reflected in plan `must_haves.truths`.
 - Codebase touchpoints: `src/features/styling/`, `src/features/notebooks/`, `src/api/modules.ts`, `src/i18n/{en,hu}.json`, `src/index.css`, `src/components/ui/*` (reuse-only)
-- Status: **Plans written — ready to execute**
-- Next command: `/gsd-execute-phase 1`
+- Status: **In progress — resume from `01-02-pure-utils`**
+- Resume command: `/skill:gsd-execute-phase 1` (will auto-skip 01-01 because SUMMARY.md exists)
+
+### Plan-by-plan progress
+
+| Plan | Wave | Status | Notes |
+|------|------|--------|-------|
+| 01-01-foundation     | 1 | ✓ Complete (2026-04-28) | API client + TextSpan + MODULE_ALLOWED_BLOCKS + 35 i18n keys; 50/50 tests pass |
+| 01-02-pure-utils     | 1 | Pending | Resume here |
+| 01-03-block-registry | 1 | Pending | |
+| 01-04-text-block     | 2 | Pending | |
+| 01-05-editor-shell   | 2 | Pending | |
+| 01-06-integration    | 3 | Pending | |
 
 ## Phase Status Snapshot
 
@@ -50,6 +60,7 @@
 
 ## Recent Events
 
+- **2026-04-28** — **Phase 1, Plan 01-01-foundation complete (1/6).** Inline interactive execution after gsd-executor subagent failed under Copilot runtime (empty tool output). Delivered: `updateModuleFull` PUT client in `src/api/modules.ts`; `TextSpan {text,bold}` + `isTextSpan` guard in `src/lib/types/text-spans.ts` (re-exported from barrel); `MODULE_ALLOWED_BLOCKS` + `isBlockAllowed` in `src/features/styling/utils/module-type-config.ts` with 26 new tests (50/50 pass); 35 `editor.*` i18n keys in EN + HU per UI-SPEC §9. Self-Check PASSED on all 14 acceptance criteria. 5 commits (`4b85292`, `1a2447b`, `fde1ee9`, `7b32ea2`, `6f094bb`). Pre-existing test infra noise (72 failures across 17 files, all MSW `onUnhandledRequest: error` issues from F2/F3/F7) confirmed unrelated to 01-01.
 - **2026-04-28** — **Phase 1 planning complete.** `/gsd-plan-phase 1` produced `01-RESEARCH.md` (Executive Summary, Validation Architecture covering 30+ test invariants, Implementation Notes for contentEditable / TanStack Query optimistic flush / `useBlocker` / `@dnd-kit/sortable` / `React.lazy`, Threat Model covering XSS/cache-poisoning/race/422, STAB-02 hooks). Then 6 PLAN.md files in 3 waves: foundation (API + types + i18n + MODULE_ALLOWED_BLOCKS), pure utilities (TextSpan ops + undo reducer + debounced-save hook), block registry framework, TextSpan editor + Text block, editor shell (toolbar + Add Block popover + dnd-kit reorder + dialogs + save indicator + content-mutation hook), and integration into ModuleCard (edit-mode entry + click-outside + dirty-nav `useBlocker` guard + `React.lazy` boundary + end-to-end round-trip test). Every plan cites EDIT-01; CONTEXT decisions 1–6 covered in `must_haves.truths`.
 - **2026-04-28** — **Phase 1 UI-SPEC approved.** `/gsd-ui-phase 1` produced `01-UI-SPEC.md` covering 12 surfaces (selection chrome + Edit button, edit-mode glow, toolbar, Add Block popover, per-block chrome, save indicator, delete-block dialog, TextSpan editor, placeholder block, breadcrumb empty state, nav-guard dialog, Title constraint). Inline 6-dimension check passed (1 non-blocking a11y documentation flag re: AlertDialog default focus — fix in planning). 30+ i18n keys locked in EN + HU. One new CSS var `--editor-edit-glow`; otherwise pure reuse of existing shadcn primitives.
 - **2026-04-28** — **Phase 1 context captured.** `/gsd-discuss-phase 1` ran in text-mode fallback; all 6 gray areas discussed; recommendations accepted (1=b, 2=a, 3=b, 4=a, 5=a, 6=c). Key decisions: Phase 1 ships `Text` block as registry seed; contentEditable TextSpan editor; whole-module undo/redo stack; route-only dirty guard; shared 1000ms debounce for all mutations; F9 gestures + explicit Edit button.
