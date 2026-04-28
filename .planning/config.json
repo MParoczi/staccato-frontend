@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "mode": "yolo",
+  "granularity": "standard",
+  "parallelization": false,
+  "commit_docs": true,
+  "model_profile": "inherit",
+  "workflow": {
+    "research": false,
+    "plan_check": false,
+    "verifier": false,
+    "nyquist_validation": false,
+    "auto_advance": true,
+    "speckit_primary": true
+  },
+  "planning": {
+    "speckit_dir": "specs",
+    "speckit_active_spec": "008-grid-canvas-module-placement",
+    "phase_artifacts_dir": ".planning/phases"
+  },
+  "notes": [
+    "Speckit (specs/) remains the system of record for feature-level WHAT/HOW.",
+    "GSD provides the umbrella: PROJECT.md, REQUIREMENTS.md, ROADMAP.md, STATE.md.",
+    "Per-phase plans should *reference* the corresponding specs/NNN-<slug>/plan.md instead of duplicating it.",
+    "Workflow agents (research/plan_check/verifier) disabled to avoid duplicating Speckit's own checklists/contracts.",
+    "Solo developer, no public timeline — auto-advance on, no parallelization needed."
+  ]
+}
+
