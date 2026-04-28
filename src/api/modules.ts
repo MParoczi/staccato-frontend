@@ -1,6 +1,7 @@
 import type {
   CreateModuleInput,
   Module,
+  ModuleType,
   UpdateModuleLayoutInput,
   BuildingBlock,
 } from '@/lib/types';
@@ -74,6 +75,30 @@ export async function updateModule(
   }>,
 ): Promise<Module> {
   const res = await apiClient.patch<Module>(`/modules/${moduleId}`, data);
+  return res.data;
+}
+
+/**
+ * Replace the full module record via `PUT /modules/{moduleId}`.
+ *
+ * Sends the entire module payload — moduleType, all five layout fields,
+ * zIndex, and the full `content: BuildingBlock[]`. Used by the module
+ * content editor (Phase 1) for last-write-wins persistence of edits.
+ * Layout-only updates continue to flow through `updateModuleLayout`.
+ */
+export async function updateModuleFull(
+  moduleId: string,
+  data: {
+    moduleType: ModuleType;
+    gridX: number;
+    gridY: number;
+    gridWidth: number;
+    gridHeight: number;
+    zIndex: number;
+    content: BuildingBlock[];
+  },
+): Promise<Module> {
+  const res = await apiClient.put<Module>(`/modules/${moduleId}`, data);
   return res.data;
 }
 
