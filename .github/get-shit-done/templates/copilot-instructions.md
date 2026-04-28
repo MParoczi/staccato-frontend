@@ -1,10 +1,3 @@
-<!-- SPECKIT START -->
-For current implementation guidance, read `specs/008-grid-canvas-module-placement/plan.md`.
-For additional context about module styling and notebook rendering conventions,
-also read `specs/007-module-styling-system/plan.md`.
-<!-- SPECKIT END -->
-
-<!-- GSD Configuration — managed by get-shit-done installer -->
 # Instructions for GSD
 
 - Use the get-shit-done skill when the user asks for GSD or uses a `gsd-*` command.
@@ -12,4 +5,3 @@ also read `specs/007-module-styling-system/plan.md`.
 - When a command says to spawn a subagent, prefer a matching custom agent from `.github/agents`.
 - Do not apply GSD workflows unless the user explicitly asks for them.
 - After completing any `gsd-*` command (or any deliverable it triggers: feature, bug fix, tests, docs, etc.), ALWAYS: (1) offer the user the next step by prompting via `ask_user`; repeat this feedback loop until the user explicitly indicates they are done.
-<!-- /GSD Configuration -->
