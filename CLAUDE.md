@@ -1,6 +1,11 @@
 ﻿# Frontend Development Guidelines
 
-YesAuto-generated from all feature plans. Last updated: 2026-04-06
+Manually maintained snapshot of the active frontend stack and conventions.
+Originally seeded from Speckit feature plans (F1–F8); now hand-edited as
+the project evolves under GSD. For full project context, see
+`.planning/PROJECT.md` and `.planning/codebase/`.
+
+Last updated: 2026-04-28 (Speckit→GSD migration).
 
 ## Active Technologies
 - TypeScript 5.9+ with strict mode enabled + React 19, Vite 8, Tailwind CSS v4, shadcn/ui (Radix), Zustand 5, TanStack Query v5, React Router v7, Axios, React Hook Form, Zod 4, react-i18next, @react-oauth/google, Lucide React (002-auth-token-management)

@@ -1,8 +1,18 @@
-<!-- SPECKIT START -->
-For current implementation guidance, read `specs/008-grid-canvas-module-placement/plan.md`.
-For additional context about module styling and notebook rendering conventions,
-also read `specs/007-module-styling-system/plan.md`.
-<!-- SPECKIT END -->
+<!-- PROJECT CONTEXT -->
+For current project context and active phase, read `.planning/STATE.md`,
+`.planning/PROJECT.md`, and `.planning/ROADMAP.md`.
+For codebase conventions, stack, structure, and known concerns, read the
+files under `.planning/codebase/` (STACK, INTEGRATIONS, ARCHITECTURE,
+STRUCTURE, CONVENTIONS, TESTING, CONCERNS).
+For frontend dev guidelines (active tech, commands, code style), read
+`CLAUDE.md`.
+
+`specs/001..008/` are kept as a read-only historical record of features
+delivered before the GSD migration. `frontend-speckit-prompts.md` is
+retained as a PRD source — its F9–F17 prompt blocks are well-formed
+feature briefs that feed `/gsd-discuss-phase` as initial context. Do not
+treat `specs/` or those prompts as current implementation guidance.
+<!-- /PROJECT CONTEXT -->
 
 <!-- GSD Configuration — managed by get-shit-done installer -->
 # Instructions for GSD
