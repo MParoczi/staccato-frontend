@@ -47,6 +47,9 @@ export type {
   ResizeSession,
 } from './modules';
 
+export type { TextSpan } from './text-spans';
+export { isTextSpan } from './text-spans';
+
 export type {
   Instrument,
   ChordSummary,
