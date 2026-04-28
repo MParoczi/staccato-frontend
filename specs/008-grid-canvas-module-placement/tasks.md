@@ -138,10 +138,10 @@
 
 **Purpose**: Final review alignment, copy cleanup, and validation across all stories.
 
-- [ ] T040 [P] Reconcile paper, dot, selection, conflict, and page-shadow review targets across `src/components/common/DottedPaper.tsx`, `src/features/notebooks/components/GridCanvas.tsx`, and `src/features/notebooks/components/ModuleCard.tsx`
-- [ ] T041 [P] Standardize localized toast-only success and error copy in `src/i18n/en.json`, `src/i18n/hu.json`, and `src/features/notebooks/hooks/useModuleLayoutMutations.ts`
-- [ ] T042 Run `pnpm test` and `pnpm run lint` from `package.json` and capture implementation follow-up notes in `specs/008-grid-canvas-module-placement/implementation-notes.md`
-- [ ] T043 Validate `SC-001`, `SC-003`, and `SC-005` timing targets under normal conditions and record the results in `specs/008-grid-canvas-module-placement/implementation-notes.md`
+- [x] T040 [P] Reconcile paper, dot, selection, conflict, and page-shadow review targets across `src/components/common/DottedPaper.tsx`, `src/features/notebooks/components/GridCanvas.tsx`, and `src/features/notebooks/components/ModuleCard.tsx`
+- [x] T041 [P] Standardize localized toast-only success and error copy in `src/i18n/en.json`, `src/i18n/hu.json`, and `src/features/notebooks/hooks/useModuleLayoutMutations.ts`
+- [x] T042 Run `pnpm test` and `pnpm run lint` from `package.json` and capture implementation follow-up notes in `specs/008-grid-canvas-module-placement/implementation-notes.md`
+- [x] T043 Validate `SC-001`, `SC-003`, and `SC-005` timing targets under normal conditions and record the results in `specs/008-grid-canvas-module-placement/implementation-notes.md`
 
 ---
 

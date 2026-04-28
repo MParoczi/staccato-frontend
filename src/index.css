@@ -46,7 +46,10 @@
   --color-notebook-paper: var(--notebook-paper);
   --color-notebook-dot: var(--notebook-dot);
   --color-notebook-selection: var(--notebook-selection);
+  --color-notebook-handle: var(--notebook-handle);
+  --color-notebook-conflict: var(--notebook-conflict);
   --color-notebook-hover: var(--notebook-hover);
+  --color-notebook-page-border: var(--notebook-page-border);
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
   --radius-sm: calc(var(--radius) * 0.6);
@@ -97,11 +100,24 @@
   --warning: oklch(0.88 0.10 85);
   --warning-foreground: oklch(0.25 0.05 55);
 
-  /* Zone 2 — Notebook Canvas (Light) */
-  --notebook-paper: oklch(0.98 0.006 85);
-  --notebook-dot: oklch(0.82 0.015 75);
-  --notebook-selection: oklch(0.80 0.08 85);
+  /* Zone 2 — Notebook Canvas (Light)
+   * Representative review targets (per spec FR-006/FR-007/FR-015/FR-023):
+   *   paper        #F7F1E3   warm off-white paper fill
+   *   dot          #A79B8B   warm-gray grid dots
+   *   selection    #8A6A43   earthy brown selection outline
+   *   handle       #B08968   warm-toned resize handles
+   *   conflict     #B85C4B   muted terracotta conflict highlight
+   *   page-border  #E2D6C2   subtle 1 px page edge
+   *   page-shadow  0 10px 30px rgba(92, 74, 52, 0.14)  soft page lift
+   */
+  --notebook-paper: #f7f1e3;
+  --notebook-dot: #a79b8b;
+  --notebook-selection: #8a6a43;
+  --notebook-handle: #b08968;
+  --notebook-conflict: #b85c4b;
   --notebook-hover: oklch(0.90 0.04 85);
+  --notebook-page-border: #e2d6c2;
+  --notebook-page-shadow: 0 10px 30px rgba(92, 74, 52, 0.14);
 }
 
 .dark {
@@ -146,7 +162,11 @@
   --notebook-paper: oklch(0.25 0.015 75);
   --notebook-dot: oklch(0.35 0.015 75);
   --notebook-selection: oklch(0.45 0.08 85);
+  --notebook-handle: oklch(0.55 0.06 60);
+  --notebook-conflict: oklch(0.55 0.13 30);
   --notebook-hover: oklch(0.32 0.03 85);
+  --notebook-page-border: oklch(0.32 0.02 60);
+  --notebook-page-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 @layer base {

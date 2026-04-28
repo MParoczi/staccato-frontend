@@ -44,7 +44,7 @@ export const ModuleDragOverlay = memo(function ModuleDragOverlay({
   const width = gridUnitsToPixels(layout.gridWidth, zoom);
   const height = gridUnitsToPixels(layout.gridHeight, zoom);
   const background = isValid
-    ? style?.backgroundColor ?? 'var(--notebook-paper, #fff)'
+    ? style?.backgroundColor ?? GRID_CANVAS_STYLE_TOKENS.paper
     : GRID_CANVAS_STYLE_TOKENS.conflict;
   const border = isValid
     ? `2px solid ${GRID_CANVAS_STYLE_TOKENS.selection}`

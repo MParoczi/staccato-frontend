@@ -256,7 +256,6 @@
       "toasts": {
         "added": "A modul hozzáadva az oldalhoz.",
         "deleted": "A modul törölve.",
-        "layoutSaved": "A modul elrendezése elmentve.",
         "layerUpdated": "A modul sorrendje frissítve.",
         "layoutInvalid": "Ez az elhelyezés nem érvényes ezen az oldalon.",
         "noSpace": "Nincs szabad hely ennek a modulnak az oldalon.",
