@@ -17,9 +17,10 @@
 - REQ: `EDIT-01` (+ `Text` block as registry seed; remainder of `BLOCK-01` stays in Phase 2)
 - PRD source: `frontend-speckit-prompts.md` lines ~1402–1547 (Feature 9 prompt block)
 - Context: `.planning/phases/01-module-content-editor-core/01-CONTEXT.md`
+- UI-SPEC: `.planning/phases/01-module-content-editor-core/01-UI-SPEC.md` (6/6 dimensions verified, 1 non-blocking flag → fix in planning)
 - Codebase touchpoints: `src/features/styling/`, `src/features/notebooks/`, module styling system, grid canvas
-- Status: **discussed — ready for UI-phase / plan-phase**
-- Next command: `/gsd-ui-phase 1` *(recommended)* then `/gsd-plan-phase 1`
+- Status: **UI design contract approved — ready for planning**
+- Next command: `/gsd-plan-phase 1`
 
 ## Phase Status Snapshot
 
@@ -43,6 +44,7 @@
 
 ## Recent Events
 
+- **2026-04-28** — **Phase 1 UI-SPEC approved.** `/gsd-ui-phase 1` produced `01-UI-SPEC.md` covering 12 surfaces (selection chrome + Edit button, edit-mode glow, toolbar, Add Block popover, per-block chrome, save indicator, delete-block dialog, TextSpan editor, placeholder block, breadcrumb empty state, nav-guard dialog, Title constraint). Inline 6-dimension check passed (1 non-blocking a11y documentation flag re: AlertDialog default focus — fix in planning). 30+ i18n keys locked in EN + HU. One new CSS var `--editor-edit-glow`; otherwise pure reuse of existing shadcn primitives.
 - **2026-04-28** — **Phase 1 context captured.** `/gsd-discuss-phase 1` ran in text-mode fallback; all 6 gray areas discussed; recommendations accepted (1=b, 2=a, 3=b, 4=a, 5=a, 6=c). Key decisions: Phase 1 ships `Text` block as registry seed; contentEditable TextSpan editor; whole-module undo/redo stack; route-only dirty guard; shared 1000ms debounce for all mutations; F9 gestures + explicit Edit button.
 - **2026-04-28** — **Speckit → GSD migration.** GSD adopted as primary planning system for phases 1–9. Speckit retained read-only as historical record (`specs/001..008/`). `frontend-speckit-prompts.md` retained as PRD source (feature briefs feed into `/gsd-discuss-phase`). Config updated to enable workflow agents (research, plan_check, verifier).
 - **2026-04-28** — Project initialized via `/gsd-new-project`. Codebase map created (`.planning/codebase/`). PROJECT.md, REQUIREMENTS.md, ROADMAP.md, STATE.md, config.json written and committed.
