@@ -59,6 +59,8 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --editor-edit-glow: color-mix(in oklab, var(--color-primary) 35%, transparent);
+  --editor-edit-glow-ring: var(--color-primary);
 }
 
 :root {
@@ -177,3 +179,22 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  /* TextSpanEditor placeholder (Plan 01-04 — UI-SPEC §4.8 / §2.2). */
+  [data-text-span-editor][data-empty="true"]:before {
+    content: attr(data-placeholder);
+    color: var(--color-muted-foreground);
+    font-style: italic;
+    pointer-events: none;
+  }
+
+  /* Edit-mode glow on the host module wrapper (UI-SPEC §3). */
+  .module-edit-glow {
+    outline: 2px solid var(--editor-edit-glow-ring);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 6px var(--editor-edit-glow);
+    border-radius: inherit;
+  }
+}
+
