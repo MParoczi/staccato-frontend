@@ -217,6 +217,53 @@
         "deleteError": "Az oldal törlése sikertelen. Kérjük, próbáld újra.",
         "createError": "Az oldal hozzáadása sikertelen. Kérjük, próbáld újra."
       }
+    },
+    "canvas": {
+      "surfaceLabel": "Leckeoldal-vászon",
+      "viewport": {
+        "label": "Vászon nagyítási vezérlők",
+        "zoomIn": "Nagyítás",
+        "zoomOut": "Kicsinyítés",
+        "resetZoom": "Nagyítás visszaállítása",
+        "currentZoom": "Jelenlegi nagyítás {{value}}%"
+      },
+      "emptyState": "Ezen az oldalon még nincsenek modulok.",
+      "moduleLabel": "{{moduleType}} modul",
+      "dragHandle": "Modulfejléc mozgatása",
+      "handles": {
+        "n": "Felső átméretező fogantyú",
+        "ne": "Jobb felső átméretező fogantyú",
+        "e": "Jobb oldali átméretező fogantyú",
+        "se": "Jobb alsó átméretező fogantyú",
+        "s": "Alsó átméretező fogantyú",
+        "sw": "Bal alsó átméretező fogantyú",
+        "w": "Bal oldali átméretező fogantyú",
+        "nw": "Bal felső átméretező fogantyú"
+      },
+      "addModule": {
+        "trigger": "Modul hozzáadása",
+        "title": "Modul hozzáadása",
+        "description": "Válassz modultípust az oldalra helyezéshez."
+      },
+      "menu": {
+        "open": "Modulműveletek megnyitása",
+        "bringToFront": "Előrehozás",
+        "sendToBack": "Hátraküldés",
+        "delete": "Modul törlése",
+        "confirmDeleteTitle": "Törlöd ezt a modult?",
+        "confirmDeleteDescription": "Ez a modul már tartalmaz tartalmat. Biztosan törlöd?"
+      },
+      "toasts": {
+        "added": "A modul hozzáadva az oldalhoz.",
+        "deleted": "A modul törölve.",
+        "layerUpdated": "A modul sorrendje frissítve.",
+        "layoutInvalid": "Ez az elhelyezés nem érvényes ezen az oldalon.",
+        "noSpace": "Nincs szabad hely ennek a modulnak az oldalon.",
+        "addFailed": "A modul hozzáadása nem sikerült.",
+        "deleteFailed": "A modul törlése nem sikerült.",
+        "layoutSaveFailed": "A modul elrendezését nem sikerült menteni.",
+        "layerUpdateFailed": "A modul sorrendjét nem sikerült frissíteni."
+      }
     }
   },
   "editor": {
