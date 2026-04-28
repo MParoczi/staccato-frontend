@@ -256,7 +256,6 @@
       "toasts": {
         "added": "Module added to the page.",
         "deleted": "Module deleted.",
-        "layoutSaved": "Module layout saved.",
         "layerUpdated": "Module order updated.",
         "layoutInvalid": "This placement is not valid on the page.",
         "noSpace": "No space is available for this module on the page.",

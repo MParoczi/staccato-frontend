@@ -170,6 +170,7 @@ export const ModuleCard = memo(function ModuleCard({
             position: 'absolute',
             inset: 0,
             backgroundColor: GRID_CANVAS_STYLE_TOKENS.conflict,
+            opacity: 0.24,
             pointerEvents: 'none',
             borderRadius: 'inherit',
           }
