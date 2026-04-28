@@ -220,6 +220,13 @@
     },
     "canvas": {
       "surfaceLabel": "Leckeoldal-vászon",
+      "viewport": {
+        "label": "Vászon nagyítási vezérlők",
+        "zoomIn": "Nagyítás",
+        "zoomOut": "Kicsinyítés",
+        "resetZoom": "Nagyítás visszaállítása",
+        "currentZoom": "Jelenlegi nagyítás {{value}}%"
+      },
       "emptyState": "Ezen az oldalon még nincsenek modulok.",
       "moduleLabel": "{{moduleType}} modul",
       "dragHandle": "Modulfejléc mozgatása",

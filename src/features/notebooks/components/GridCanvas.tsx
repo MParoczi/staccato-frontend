@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import {
@@ -18,6 +18,7 @@ import type { PageSize } from '@/lib/types/common';
 import { DottedPaper } from '@/components/common/DottedPaper';
 import { useUIStore } from '@/stores/uiStore';
 import { useCanvasInteractions } from '../hooks/useCanvasInteractions';
+import { useCanvasZoomShortcuts } from '../hooks/useCanvasZoomShortcuts';
 import { ModuleCard } from './ModuleCard';
 import { ModuleDragOverlay } from './ModuleDragOverlay';
 
@@ -69,6 +70,8 @@ export function GridCanvas({
 }: GridCanvasProps) {
   const { t } = useTranslation();
   const zoom = useUIStore((state) => state.zoom);
+  const zoomIn = useUIStore((state) => state.zoomIn);
+  const zoomOut = useUIStore((state) => state.zoomOut);
 
   /**
    * Handle an invalid drag or resize release. Per the feature's
@@ -84,6 +87,7 @@ export function GridCanvas({
     selectModule,
     handleCanvasPointerDown,
     dragPreview,
+    isInteracting,
     conflictingModuleId,
     handleDragStart,
     handleDragMove,
@@ -97,6 +101,11 @@ export function GridCanvas({
     onCommitLayout,
     onInvalidLayout: handleInvalidLayout,
   });
+
+  // Disable keyboard zoom shortcuts during an active drag/resize so a
+  // mid-gesture key combo cannot mutate the scale and corrupt the
+  // pointer-relative math the interaction is using.
+  useCanvasZoomShortcuts({ disabled: isInteracting });
 
   /**
    * Require the pointer to move a few pixels before a drag activates so
@@ -144,6 +153,36 @@ export function GridCanvas({
     [beginResize],
   );
 
+  /**
+   * Attach a non-passive `wheel` listener to the canvas viewport so we
+   * can intercept `Ctrl+wheel` for zoom changes without disabling the
+   * browser's native plain-wheel scroll. React's synthetic wheel
+   * handlers are passive by default, which prevents `preventDefault()`
+   * from suppressing the page-level zoom gesture.
+   */
+  const viewportRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const node = viewportRef.current;
+    if (!node) return;
+    function onWheel(event: WheelEvent) {
+      if (!(event.ctrlKey || event.metaKey)) {
+        // Plain wheel: defer to the viewport's native vertical scroll.
+        return;
+      }
+      // Ctrl+wheel: stop the browser's page-zoom default in every case
+      // so the canvas reliably owns the gesture.
+      event.preventDefault();
+      if (isInteracting) return;
+      if (event.deltaY < 0) {
+        zoomIn();
+      } else if (event.deltaY > 0) {
+        zoomOut();
+      }
+    }
+    node.addEventListener('wheel', onWheel, { passive: false });
+    return () => node.removeEventListener('wheel', onWheel);
+  }, [isInteracting, zoomIn, zoomOut]);
+
   return (
     <DndContext
       sensors={sensors}
@@ -152,32 +191,39 @@ export function GridCanvas({
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
     >
-      <DottedPaper
-        pageSize={pageSize}
-        zoom={zoom}
-        className={className}
+      <div
+        ref={viewportRef}
+        data-testid="grid-canvas-viewport"
+        aria-label={t('notebooks.canvas.surfaceLabel')}
+        className="max-h-[calc(100vh-12rem)] overflow-y-auto"
       >
-        <div
-          data-testid="grid-canvas-surface"
-          role="presentation"
-          aria-label={t('notebooks.canvas.surfaceLabel')}
-          onPointerDown={handleCanvasPointerDown}
-          className="absolute inset-0"
+        <DottedPaper
+          pageSize={pageSize}
+          zoom={zoom}
+          className={className}
         >
-          {orderedModules.map((module) => (
-            <ModuleCard
-              key={module.id}
-              module={module}
-              style={stylesByType[module.moduleType]}
-              zoom={zoom}
-              isSelected={selectedModuleId === module.id}
-              isConflicting={conflictingModuleId === module.id}
-              onSelect={selectModule}
-              onHandlePointerDown={handleResizeHandlePointerDown}
-            />
-          ))}
-        </div>
-      </DottedPaper>
+          <div
+            data-testid="grid-canvas-surface"
+            role="presentation"
+            aria-label={t('notebooks.canvas.surfaceLabel')}
+            onPointerDown={handleCanvasPointerDown}
+            className="absolute inset-0"
+          >
+            {orderedModules.map((module) => (
+              <ModuleCard
+                key={module.id}
+                module={module}
+                style={stylesByType[module.moduleType]}
+                zoom={zoom}
+                isSelected={selectedModuleId === module.id}
+                isConflicting={conflictingModuleId === module.id}
+                onSelect={selectModule}
+                onHandlePointerDown={handleResizeHandlePointerDown}
+              />
+            ))}
+          </div>
+        </DottedPaper>
+      </div>
       <DragOverlay dropAnimation={null}>
         {dragPreview && activeModule ? (
           <ModuleDragOverlay

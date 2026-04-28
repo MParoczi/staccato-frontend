@@ -120,15 +120,15 @@
 
 ### Tests for User Story 4
 
-- [ ] T034 [P] [US4] Add keyboard-shortcut and wheel pan/zoom tests in `src/features/notebooks/hooks/useCanvasZoomShortcuts.test.tsx` and `src/features/notebooks/components/GridCanvas.test.tsx`
-- [ ] T035 [P] [US4] Add accessibility-focused integration tests for focus states, labels, and keyboard-triggered actions in `src/features/notebooks/components/LessonPage.test.tsx`
+- [x] T034 [P] [US4] Add keyboard-shortcut and wheel pan/zoom tests in `src/features/notebooks/hooks/useCanvasZoomShortcuts.test.tsx` and `src/features/notebooks/components/GridCanvas.test.tsx`
+- [x] T035 [P] [US4] Add accessibility-focused integration tests for focus states, labels, and keyboard-triggered actions in `src/features/notebooks/components/LessonPage.test.tsx`
 
 ### Implementation for User Story 4
 
-- [ ] T036 [P] [US4] Implement labeled zoom controls with visible focus treatment in `src/features/notebooks/components/CanvasViewportControls.tsx`
-- [ ] T037 [P] [US4] Implement `Ctrl+Plus`, `Ctrl+Minus`, and `Ctrl+0` handling in `src/features/notebooks/hooks/useCanvasZoomShortcuts.ts`
-- [ ] T038 [US4] Implement plain-wheel vertical panning, `Ctrl+wheel` zooming, zoom clamping, and selection-preserving scale updates in `src/features/notebooks/components/GridCanvas.tsx` and `src/features/notebooks/hooks/useCanvasInteractions.ts`
-- [ ] T039 [US4] Finalize accessibility labels and keyboard activation paths across `src/features/notebooks/components/AddModulePicker.tsx`, `src/features/notebooks/components/ModuleContextMenu.tsx`, and `src/features/notebooks/components/LessonPage.tsx`
+- [x] T036 [P] [US4] Implement labeled zoom controls with visible focus treatment in `src/features/notebooks/components/CanvasViewportControls.tsx`
+- [x] T037 [P] [US4] Implement `Ctrl+Plus`, `Ctrl+Minus`, and `Ctrl+0` handling in `src/features/notebooks/hooks/useCanvasZoomShortcuts.ts`
+- [x] T038 [US4] Implement plain-wheel vertical panning, `Ctrl+wheel` zooming, zoom clamping, and selection-preserving scale updates in `src/features/notebooks/components/GridCanvas.tsx` and `src/features/notebooks/hooks/useCanvasInteractions.ts`
+- [x] T039 [US4] Finalize accessibility labels and keyboard activation paths across `src/features/notebooks/components/AddModulePicker.tsx`, `src/features/notebooks/components/ModuleContextMenu.tsx`, and `src/features/notebooks/components/LessonPage.tsx`
 
 **Checkpoint**: User Story 4 is independently functional and testable.
 

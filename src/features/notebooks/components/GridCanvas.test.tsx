@@ -244,4 +244,134 @@ describe('GridCanvas', () => {
       zIndex: moduleA.zIndex,
     });
   });
+
+  it('zooms in on Ctrl+wheel up over the canvas viewport', () => {
+    render(<GridCanvas pageSize="A4" modules={[]} />);
+    const viewport = screen.getByTestId('grid-canvas-viewport');
+    act(() => {
+      const event = new WheelEvent('wheel', {
+        deltaY: -100,
+        ctrlKey: true,
+        bubbles: true,
+        cancelable: true,
+      });
+      viewport.dispatchEvent(event);
+    });
+    expect(useUIStore.getState().zoom).toBeCloseTo(1.1);
+  });
+
+  it('zooms out on Ctrl+wheel down and clamps at the documented minimum', () => {
+    render(<GridCanvas pageSize="A4" modules={[]} />);
+    const viewport = screen.getByTestId('grid-canvas-viewport');
+    act(() => {
+      useUIStore.getState().setZoom(0.5);
+    });
+    act(() => {
+      viewport.dispatchEvent(
+        new WheelEvent('wheel', {
+          deltaY: 100,
+          ctrlKey: true,
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+    });
+    expect(useUIStore.getState().zoom).toBe(0.5);
+  });
+
+  it('does not zoom on a plain wheel scroll over the viewport', () => {
+    render(<GridCanvas pageSize="A4" modules={[]} />);
+    const viewport = screen.getByTestId('grid-canvas-viewport');
+    let event!: WheelEvent;
+    act(() => {
+      event = new WheelEvent('wheel', {
+        deltaY: -100,
+        bubbles: true,
+        cancelable: true,
+      });
+      viewport.dispatchEvent(event);
+    });
+    expect(useUIStore.getState().zoom).toBe(1);
+    expect(event.defaultPrevented).toBe(false);
+  });
+
+  it('ignores Ctrl+wheel zoom requests during an active resize session', () => {
+    const moving = makeModule({
+      id: 'moving',
+      gridX: 0,
+      gridY: 0,
+      gridWidth: 8,
+      gridHeight: 5,
+    });
+    render(<GridCanvas pageSize="A4" modules={[moving]} />);
+    fireEvent.click(screen.getByTestId('module-card-moving'));
+    const eastHandle = screen.getByTestId('module-resize-handle-e');
+    fireEvent.pointerDown(eastHandle, {
+      clientX: 160,
+      clientY: 50,
+      pointerId: 1,
+    });
+
+    const viewport = screen.getByTestId('grid-canvas-viewport');
+    act(() => {
+      viewport.dispatchEvent(
+        new WheelEvent('wheel', {
+          deltaY: -100,
+          ctrlKey: true,
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+    });
+    expect(useUIStore.getState().zoom).toBe(1);
+
+    // Clean up the active resize session.
+    act(() => {
+      window.dispatchEvent(
+        Object.assign(new Event('pointerup', { bubbles: true }), {
+          clientX: 160,
+          clientY: 50,
+        }),
+      );
+    });
+  });
+
+  it('ignores Ctrl+Plus keyboard shortcut during an active resize session', () => {
+    const moving = makeModule({
+      id: 'kb-moving',
+      gridX: 0,
+      gridY: 0,
+      gridWidth: 8,
+      gridHeight: 5,
+    });
+    render(<GridCanvas pageSize="A4" modules={[moving]} />);
+    fireEvent.click(screen.getByTestId('module-card-kb-moving'));
+    const eastHandle = screen.getByTestId('module-resize-handle-e');
+    fireEvent.pointerDown(eastHandle, {
+      clientX: 160,
+      clientY: 50,
+      pointerId: 1,
+    });
+
+    act(() => {
+      window.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: '+',
+          ctrlKey: true,
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+    });
+    expect(useUIStore.getState().zoom).toBe(1);
+
+    act(() => {
+      window.dispatchEvent(
+        Object.assign(new Event('pointerup', { bubbles: true }), {
+          clientX: 160,
+          clientY: 50,
+        }),
+      );
+    });
+  });
 });

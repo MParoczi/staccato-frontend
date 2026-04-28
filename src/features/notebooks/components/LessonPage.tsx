@@ -19,6 +19,7 @@ import { DeletePageButton } from './DeletePageButton';
 import { GridCanvas } from './GridCanvas';
 import { AddModulePicker } from './AddModulePicker';
 import { ModuleContextMenu } from './ModuleContextMenu';
+import { CanvasViewportControls } from './CanvasViewportControls';
 
 export function LessonPage() {
   const { notebookId, lessonId, pageId } = useParams<{
@@ -150,6 +151,8 @@ export function LessonPage() {
               total: pageNav.totalPagesInLesson ?? lesson.pages.length,
             })}
           </span>
+          {/* Zoom controls (User Story 4) */}
+          <CanvasViewportControls />
           {/* Add Module picker */}
           <AddModulePicker
             onSelectType={handleAddModule}
