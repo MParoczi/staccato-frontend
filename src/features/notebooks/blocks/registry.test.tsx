@@ -40,6 +40,8 @@ const ALL_TYPES: BuildingBlockType[] = [
   'ChordTablatureGroup',
 ];
 
+const PLACEHOLDER_TYPES = ALL_TYPES.filter((t) => t !== 'Text');
+
 describe('BLOCK_REGISTRY', () => {
   it.each(ALL_TYPES)('has an entry for %s', (type) => {
     expect(BLOCK_REGISTRY[type]).toBeDefined();
@@ -66,13 +68,30 @@ describe('BLOCK_REGISTRY', () => {
     expect(block.type).toBe(type);
   });
 
-  it('marks all entries as not yet implemented (plan 01-04 flips Text to true)', () => {
-    for (const type of ALL_TYPES) {
+  it('marks Text as implemented and all other entries as not implemented', () => {
+    expect(BLOCK_REGISTRY.Text.implemented).toBe(true);
+    for (const type of PLACEHOLDER_TYPES) {
       expect(BLOCK_REGISTRY[type].implemented).toBe(false);
     }
   });
 
-  it.each(ALL_TYPES)('Renderer for %s falls back to PlaceholderBlock', (type) => {
+  it('Text.create() seeds an empty TextSpan (plan 01-04 contract)', () => {
+    const block = BLOCK_REGISTRY.Text.create();
+    expect(block).toEqual({ type: 'Text', spans: [{ text: '', bold: false }] });
+  });
+
+  it('Text.Editor mounts a contentEditable surface (smoke test — full coverage in TextBlock.test.tsx)', () => {
+    const { Editor } = BLOCK_REGISTRY.Text;
+    const onChange = vi.fn();
+    const { container, unmount } = render(
+      <Editor block={{ type: 'Text', spans: [{ text: 'hi', bold: false }] }} onChange={onChange} />,
+    );
+    const root = container.querySelector('[data-text-span-editor]');
+    expect(root).toBeTruthy();
+    unmount();
+  });
+
+  it.each(PLACEHOLDER_TYPES)('Renderer for %s falls back to PlaceholderBlock', (type) => {
     const { Renderer } = BLOCK_REGISTRY[type];
     const { unmount } = render(<Renderer block={{ type }} />);
     const node = screen.getByRole('note');
@@ -81,7 +100,7 @@ describe('BLOCK_REGISTRY', () => {
     unmount();
   });
 
-  it.each(ALL_TYPES)('Editor for %s falls back to PlaceholderBlock', (type) => {
+  it.each(PLACEHOLDER_TYPES)('Editor for %s falls back to PlaceholderBlock', (type) => {
     const { Editor } = BLOCK_REGISTRY[type];
     const { unmount } = render(<Editor block={{ type }} onChange={() => {}} />);
     const node = screen.getByRole('note');

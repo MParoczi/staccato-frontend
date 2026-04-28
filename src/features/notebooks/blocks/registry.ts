@@ -14,6 +14,7 @@ import {
 import type { BuildingBlock, BuildingBlockType } from '@/lib/types';
 import type { BlockDescriptor, BlockEditorProps, BlockRendererProps } from './types';
 import { PlaceholderBlock } from './PlaceholderBlock';
+import { TextBlockEditor, TextBlockRenderer } from './text/TextBlock';
 
 /** Build a placeholder-only descriptor for an unimplemented block type. */
 function placeholderDescriptor(
@@ -39,13 +40,19 @@ function placeholderDescriptor(
  * Type-level contract: `Record<BuildingBlockType, BlockDescriptor>` forces a
  * compile-time error if any union member is omitted from the registry.
  *
- * Plan 01-04 swaps the `Text` entry for the real Renderer/Editor pair and
- * flips `implemented` to `true`.
+ * Plan 01-04 swapped the `Text` entry for the real Renderer/Editor pair.
  */
 export const BLOCK_REGISTRY: Record<BuildingBlockType, BlockDescriptor> = {
   SectionHeading: placeholderDescriptor('SectionHeading', Heading, 'editor.blockType.sectionHeading'),
   Date: placeholderDescriptor('Date', Calendar, 'editor.blockType.date'),
-  Text: placeholderDescriptor('Text', Type, 'editor.blockType.text'),
+  Text: {
+    Renderer: TextBlockRenderer,
+    Editor: TextBlockEditor,
+    create: (): BuildingBlock => ({ type: 'Text', spans: [{ text: '', bold: false }] }),
+    icon: Type,
+    labelKey: 'editor.blockType.text',
+    implemented: true,
+  },
   BulletList: placeholderDescriptor('BulletList', List, 'editor.blockType.bulletList'),
   NumberedList: placeholderDescriptor('NumberedList', ListOrdered, 'editor.blockType.numberedList'),
   CheckboxList: placeholderDescriptor('CheckboxList', CheckSquare, 'editor.blockType.checkboxList'),
