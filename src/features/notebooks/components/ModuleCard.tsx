@@ -188,37 +188,44 @@ export const ModuleCard = memo(function ModuleCard({
   const headerListeners = isSelected ? draggableListeners : undefined;
   const headerAttributes = isSelected ? draggableAttributes : undefined;
 
-  const positionStyles = useMemo<React.CSSProperties>(
-    () => ({
+  const positionStyles = useMemo<React.CSSProperties>(() => {
+    const widthPx = gridUnitsToPixels(module.gridWidth, zoom);
+    const heightPx = gridUnitsToPixels(module.gridHeight, zoom);
+    // Edit mode pops the card open to a usable minimum so the full
+    // editor toolbar (Add Block | Bold | Undo | Redo | save indicator |
+    // Cancel | Save) and at least one block row are reachable in modules
+    // saved at their grid-minimum size. Saved gridWidth/gridHeight are
+    // unaffected; this is a purely visual expansion that reverts on
+    // edit-mode exit (bug audit 2026-04-30).
+    const EDIT_MIN_WIDTH = 480;
+    const EDIT_MIN_HEIGHT = 240;
+    const renderedWidth = isEditing
+      ? Math.max(widthPx, EDIT_MIN_WIDTH)
+      : widthPx;
+    const renderedHeight = isEditing
+      ? Math.max(heightPx, EDIT_MIN_HEIGHT)
+      : heightPx;
+    return {
       position: 'absolute',
       left: `${gridUnitsToPixels(module.gridX, zoom)}px`,
       top: `${gridUnitsToPixels(module.gridY, zoom)}px`,
-      width: `${gridUnitsToPixels(module.gridWidth, zoom)}px`,
-      height: `${gridUnitsToPixels(module.gridHeight, zoom)}px`,
-      // Edit mode pops the card open to a usable minimum so the full
-      // editor toolbar (Add Block / Bold / Undo / Redo / save indicator
-      // / Cancel / Save) and at least one block row are reachable in
-      // modules saved at their grid-minimum size. Saved gridHeight is
-      // unaffected; this is a purely visual expansion (bug audit
-      // 2026-04-30).
-      minWidth: isEditing ? '460px' : undefined,
-      minHeight: isEditing ? '220px' : undefined,
+      width: `${renderedWidth}px`,
+      height: `${renderedHeight}px`,
       zIndex: module.zIndex,
       // Keep the original module card visible in its saved position even
       // during a drag; the snapped ghost lives in `ModuleDragOverlay`.
       visibility: isDragging ? 'hidden' : 'visible',
-    }),
-    [
-      module.gridX,
-      module.gridY,
-      module.gridWidth,
-      module.gridHeight,
-      module.zIndex,
-      zoom,
-      isDragging,
-      isEditing,
-    ],
-  );
+    };
+  }, [
+    module.gridX,
+    module.gridY,
+    module.gridWidth,
+    module.gridHeight,
+    module.zIndex,
+    zoom,
+    isDragging,
+    isEditing,
+  ]);
 
   const resolved = useMemo(() => resolveCssStyles(style), [style]);
 
