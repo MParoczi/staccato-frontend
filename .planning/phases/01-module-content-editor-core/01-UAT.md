@@ -9,19 +9,19 @@ source:
   - 01-05-editor-shell-SUMMARY.md
   - 01-06-integration-SUMMARY.md
 started: 2026-04-30T00:00:00Z
-updated: 2026-04-30T21:30:00Z
+updated: 2026-04-30T21:00:00Z
 ---
 
 ## Current Test
 <!-- OVERWRITE each test - shows where we are -->
 
-number: 3
-name: Add a Text block and type into it
-expected: |
-  Pick "Text" from the Add Block popover. A new empty Text block is
-  appended; focus lands inside it. Typing renders the characters live
-  in the same block. Pasting rich content (e.g. copied bold HTML)
-  pastes as plain text only — no markup leaks.
+number: 2
+name: Add Block popover lists allowed types
+  In edit mode on a Theory module, clicking "Add Block" opens a popover
+  listing the allowed block types (Heading, Date, Text, List,
+  OrderedList, Checklist, Table, Note, Chord, Tab). On a Title module
+  the popover shows exactly Date and Text — nothing else.
+awaiting: user response
 awaiting: re-test after Radix portal click-outside fix
 
 ## Tests
@@ -42,13 +42,7 @@ notes: |
 
 
 ### 2. Add Block popover lists allowed types
-expected: In edit mode on a Theory module, clicking "Add Block" opens a popover listing the allowed block types (Heading, Date, Text, List, OrderedList, Checklist, Table, Note, Chord, Tab). On a **Title** module the popover shows exactly **Date** and **Text** — nothing else.
-result: pass
-notes: |
-  Theory module shows all 10 allowed types; Title module shows exactly
-  Date + Text. Side-bug uncovered while testing: clicking a type in the
-  popover did nothing AND collapsed the module — caused by EditModeOverlay's
-  click-outside handler treating Radix-portaled popover clicks as outside
+result: [pending]
   the module wrapper. Logged as a separate gap and fixed.
 
 ### 3. Add a Text block and type into it
@@ -118,10 +112,10 @@ skipped: 0
     - src/api/lessons.ts
     - src/features/notebooks/hooks/usePageNavigation.test.tsx
   missing: []
-  fix_applied: 2026-04-30
+passed: 1
   fix_commit: 7093b55
   notes: |
-    Out of phase-1 scope (lessons API client predates phase 1) but blocks
+pending: 13
     every UAT test because the LessonPage route can't hydrate. Fix is a
     surgical re-pathing of three calls + verb change for update; hook
     callers untouched.

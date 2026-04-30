@@ -44,38 +44,37 @@ export interface TextSpanEditorProps {
  * `<span data-span-index>` per TextSpan; if the user typed, those spans now
  * carry the freshly-edited textContent.
  */
+/** Zero-width space used inside the empty-state placeholder span so the
+ * contentEditable caret reliably lands INSIDE the span (browsers don't
+ * place the caret inside a truly empty inline element, which causes the
+ * first typed character to land as a sibling text node and corrupts the
+ * React-owned DOM). Stripped on read. */
+const EMPTY_ANCHOR = '\u200B';
+
+function stripAnchor(s: string): string {
+  return s.replace(/\u200B/g, '');
+}
+
 function readSpansFromDom(root: HTMLElement, prev: readonly TextSpan[]): TextSpan[] {
   const spanEls = Array.from(
     root.querySelectorAll<HTMLElement>('[data-span-index]'),
   );
-  // Fast path: when the editor is freshly empty (value=[]) we render a single
-  // zero-width <span data-span-index="0" />, but browsers don't reliably place
-  // the caret INSIDE an empty inline; the first typed character lands as a
-  // sibling text node of the placeholder span. Without this recovery the
-  // typed text never enters state — placeholder stays visible, save persists
-  // nothing. Detect "stray text outside spans" and synthesize a single span
-  // from root.textContent.
-  const aggregateSpanText = spanEls
-    .map((el) => el.textContent ?? '')
-    .join('');
-  const rootText = root.textContent ?? '';
-  if (rootText.length > aggregateSpanText.length) {
-    if (rootText.length === 0) return [];
-    return [{ text: rootText, bold: prev[0]?.bold ?? false }];
-  }
   if (spanEls.length === 0) return [];
   // Map by current data-span-index so we can recover bold flag from `prev`.
   const out: TextSpan[] = [];
   for (const el of spanEls) {
     const idx = Number.parseInt(el.getAttribute('data-span-index') ?? '', 10);
     const bold = el.getAttribute('data-bold') === 'true';
-    const text = el.textContent ?? '';
+    const text = stripAnchor(el.textContent ?? '');
     // Prefer the bold from prev[idx] if available — it's the source of truth
     // and matches `data-bold` attribute we just rendered.
     const fallback = !Number.isNaN(idx) ? prev[idx] : undefined;
     out.push({ text, bold: fallback?.bold ?? bold });
   }
-  return out;
+  // Drop empty placeholder spans created by the empty-state render so the
+  // caller sees a true [] when the user has erased everything.
+  const filtered = out.filter((s) => s.text.length > 0);
+  return filtered.length === 0 ? [] : out;
 }
 
 /**
@@ -363,8 +362,16 @@ export function TextSpanEditor({
       onSelect={handleSelect}
     >
       {value.length === 0 ? (
-        // Render a single empty span so DOM coords are always resolvable.
-        <span data-span-index="0" data-bold="false" />
+        // Render a single span containing a ZERO WIDTH SPACE so the caret
+        // reliably lands INSIDE this span on focus. Without the ZWSP a truly
+        // empty inline element has no text node for the caret to anchor to,
+        // and the browser inserts the first typed character as a sibling
+        // text node — orphaning it from React's owned subtree and corrupting
+        // subsequent renders (duplicated text, removeChild crashes).
+        // The ZWSP is invisible to the user and stripped on read.
+        <span data-span-index="0" data-bold="false">
+          {EMPTY_ANCHOR}
+        </span>
       ) : (
         value.map((span, i) => (
           <span
