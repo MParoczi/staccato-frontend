@@ -98,7 +98,7 @@ result: [pending]
 
 total: 14
 passed: 0
-issues: 3
+issues: 4
 pending: 13
 skipped: 0
 
@@ -152,6 +152,23 @@ skipped: 0
     icon-only (size="icon-sm") to labeled (size="sm" with Plus icon +
     text). Zoom +/- controls (CanvasViewportControls) kept icon-only as
     the "100%" indicator between them disambiguates them clearly.
+
+- truth: "Adding a module via POST /pages/{pageId}/modules succeeds."
+  status: failed
+  reason: "User reported: backend returned 400 with {\"errors\":{\"Content\":[\"Content must be an empty array for new modules.\"]}}. Frontend was omitting the `content` field entirely; backend validator rejects missing/null and requires an explicit empty array."
+  severity: blocker
+  test: 1
+  artifacts:
+    - src/api/modules.ts
+  missing: []
+  fix_applied: 2026-04-30
+  fix_commit: pending
+  notes: |
+    Spread `content: []` into the POST body inside the createModule API
+    client. CreateModuleInput type unchanged — content is an
+    implementation detail of the request shape, not a value callers ever
+    supply on create (blocks are added later via PATCH /modules/{id}).
+
 
 
 

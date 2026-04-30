@@ -32,7 +32,14 @@ export async function createModule(
   pageId: string,
   data: CreateModuleInput,
 ): Promise<Module> {
-  const res = await apiClient.post<Module>(`/pages/${pageId}/modules`, data);
+  // Backend validation requires `content` to be an explicit empty array on
+  // create (a missing/null value is rejected with
+  // "Content must be an empty array for new modules."). Blocks are added
+  // later via the editor's PATCH /modules/{id} flow.
+  const res = await apiClient.post<Module>(`/pages/${pageId}/modules`, {
+    ...data,
+    content: [],
+  });
   return res.data;
 }
 
