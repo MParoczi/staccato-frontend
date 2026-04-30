@@ -62,13 +62,28 @@ export function EditModeOverlay({
   // ─── Click-outside (mousedown, capture phase) ─────────────────────────
   // Use mousedown in capture so the gesture lands before any inner click
   // handler that might re-focus the editor. Bail if the click landed
-  // inside the wrapper.
+  // inside the wrapper, OR inside any Radix-portaled surface that the
+  // editor opens (Add Block popover, Delete Block alert dialog, etc.).
+  // Without the portal-aware bail-out, picking a block type from the
+  // popover triggers exit-on-outside-click, the editor unmounts before
+  // its onSelect handler runs, and the module collapses to its saved
+  // size with no block added (UAT bug, 2026-04-30).
   useEffect(() => {
     function handle(event: MouseEvent) {
       const target = event.target;
-      if (!(target instanceof Node)) return;
+      if (!(target instanceof Element)) return;
       const wrapper = wrapperRef.current;
       if (wrapper && wrapper.contains(target)) return;
+      // Radix renders Popover/Dialog/DropdownMenu/Tooltip content into
+      // document.body via portals. Treat any of those as "still inside
+      // the editor" so interacting with them does not exit edit mode.
+      if (
+        target.closest(
+          '[data-radix-popper-content-wrapper],[data-radix-portal],[role="dialog"],[role="alertdialog"],[role="menu"],[role="listbox"]',
+        )
+      ) {
+        return;
+      }
       // Outside click → flush silently and exit edit mode (CONTEXT decision 4).
       editorRef.current?.flush();
       onExit();

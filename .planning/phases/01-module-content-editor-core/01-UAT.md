@@ -9,20 +9,20 @@ source:
   - 01-05-editor-shell-SUMMARY.md
   - 01-06-integration-SUMMARY.md
 started: 2026-04-30T00:00:00Z
-updated: 2026-04-30T21:00:00Z
+updated: 2026-04-30T21:30:00Z
 ---
 
 ## Current Test
 <!-- OVERWRITE each test - shows where we are -->
 
-number: 2
-name: Add Block popover lists allowed types
+number: 3
+name: Add a Text block and type into it
 expected: |
-  In edit mode on a Theory module, clicking "Add Block" opens a popover
-  listing the allowed block types (Heading, Date, Text, List,
-  OrderedList, Checklist, Table, Note, Chord, Tab). On a Title module
-  the popover shows exactly Date and Text — nothing else.
-awaiting: user response
+  Pick "Text" from the Add Block popover. A new empty Text block is
+  appended; focus lands inside it. Typing renders the characters live
+  in the same block. Pasting rich content (e.g. copied bold HTML)
+  pastes as plain text only — no markup leaks.
+awaiting: re-test after Radix portal click-outside fix
 
 ## Tests
 
@@ -43,7 +43,13 @@ notes: |
 
 ### 2. Add Block popover lists allowed types
 expected: In edit mode on a Theory module, clicking "Add Block" opens a popover listing the allowed block types (Heading, Date, Text, List, OrderedList, Checklist, Table, Note, Chord, Tab). On a **Title** module the popover shows exactly **Date** and **Text** — nothing else.
-result: [pending]
+result: pass
+notes: |
+  Theory module shows all 10 allowed types; Title module shows exactly
+  Date + Text. Side-bug uncovered while testing: clicking a type in the
+  popover did nothing AND collapsed the module — caused by EditModeOverlay's
+  click-outside handler treating Radix-portaled popover clicks as outside
+  the module wrapper. Logged as a separate gap and fixed.
 
 ### 3. Add a Text block and type into it
 expected: Pick "Text" from the Add Block popover. A new empty Text block is appended; focus lands inside it. Typing renders the characters live in the same block. Pasting rich content (e.g. copied bold HTML) pastes as plain text only — no markup leaks.
@@ -96,9 +102,9 @@ result: [pending]
 ## Summary
 
 total: 14
-passed: 1
+passed: 2
 issues: 0
-pending: 13
+pending: 12
 skipped: 0
 
 ## Gaps
@@ -261,6 +267,26 @@ skipped: 0
     drag-math investigation proves the wrapper is wrongly stretched
     beyond the page bounds, the page-number alignment will be revisited
     as part of that fix.
+
+- truth: "Picking a block type from the Add Block popover adds the block (rather than collapsing the editor with no effect)."
+  status: failed
+  reason: "User reported: clicking a type in the Add Block popover does nothing AND the module collapses to its saved size. Caused by EditModeOverlay's mousedown click-outside handler — Radix Popover content renders into a document.body portal that lives outside the module's wrapperRef, so the click is treated as 'outside the module' and triggers exit-edit-mode before the popover's onSelect fires."
+  severity: major
+  test: 2
+  artifacts:
+    - src/features/notebooks/components/EditModeOverlay.tsx
+  missing: []
+  fix_applied: 2026-04-30
+  fix_commit: pending
+  notes: |
+    Added a portal-aware bail-out in the click-outside handler: if the
+    target is inside `[data-radix-popper-content-wrapper]`,
+    `[data-radix-portal]`, or any element with role `dialog` /
+    `alertdialog` / `menu` / `listbox`, the editor stays mounted. This
+    covers the AddBlockPopover, the DeleteBlockDialog (test 8), the
+    UnsavedChangesDialog (test 11), and any future Radix-portaled
+    surface the editor opens.
+
 
 
 
