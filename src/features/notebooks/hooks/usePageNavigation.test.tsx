@@ -67,7 +67,7 @@ const server = setupServer(
     HttpResponse.json(mockLessons),
   ),
   http.get(
-    `http://localhost:5000/notebooks/${NOTEBOOK_ID}/lessons/:lessonId`,
+    `http://localhost:5000/lessons/:lessonId`,
     ({ params }) => {
       const detail = mockLessonDetails[String(params.lessonId)];
       if (!detail) return new HttpResponse(null, { status: 404 });
