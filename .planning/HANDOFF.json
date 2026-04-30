@@ -1,0 +1,45 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-04-30T17:22:37+02:00",
+  "phase": "1",
+  "phase_name": "Module Content Editor (Core)",
+  "phase_dir": ".planning/phases/01-module-content-editor-core",
+  "plan": "01-06-integration",
+  "task": 3,
+  "total_tasks": 5,
+  "status": "paused",
+  "completed_tasks": [
+    {"id": "5.1", "name": "edit-glow CSS vars + textspan-editor placeholder utility", "status": "done", "commit": "8fcf675"},
+    {"id": "5.2", "name": "useModuleContentMutation optimistic+debounce hook", "status": "done", "commit": "17e498d"},
+    {"id": "5.3", "name": "Editor leaf components + tests (7 components, 26 tests)", "status": "done", "commit": "304a0b7"},
+    {"id": "5.4", "name": "ModuleEditor orchestrator + tests + dnd-kit/sortable dep", "status": "done", "commit": "137d934"},
+    {"id": "5-summary", "name": "Plan 01-05 SUMMARY + STATE update (Wave 2 done)", "status": "done", "commit": "6f94f8c"},
+    {"id": "6.1", "name": "EditButton + tests", "status": "done", "commit": "33f37f3"},
+    {"id": "6.2", "name": "useEditModeEntry hook + tests", "status": "done", "commit": "33f37f3"}
+  ],
+  "remaining_tasks": [
+    {"id": "6.3", "name": "useDirtyNavBlocker (react-router useBlocker) + UnsavedChangesDialog + tests (≥6 tests)", "status": "not_started"},
+    {"id": "6.4", "name": "ModuleCard.tsx integration (React.lazy, click-outside, Esc, dirty-nav guard, view-mode BlockListRenderer); ≥8 new tests; existing F8 tests must keep passing", "status": "not_started"},
+    {"id": "6.5", "name": "ModuleCard.roundtrip.test.tsx — end-to-end test covering all 9 CONTEXT acceptance criteria with MSW", "status": "not_started"},
+    {"id": "phase-gates", "name": "Phase gates: regression, code review, schema drift, codebase drift, verify_phase_goal, ROADMAP/STATE update", "status": "not_started"}
+  ],
+  "blockers": [],
+  "human_actions_pending": [],
+  "decisions": [
+    {"decision": "Installed @dnd-kit/sortable@10.0.0 + @dnd-kit/utilities@3.2.2 during plan 01-05 task 5.4", "rationale": "Plan claimed they were pre-installed but only @dnd-kit/core@6.3.1 was vendored; companions match the dnd-kit 10/utilities 3 line that pairs with core 6.3.x", "phase": "1"},
+    {"decision": "Toolbar Bold ↔ active TextSpanEditor cross-wiring deferred to plan 01-06 polish", "rationale": "BlockEditorProps signature ({block, onChange}) doesn't expose onReady/onBoldStateChange — extending the registry contract was out of scope for plan 01-05. Ctrl+B inside the contentEditable still works end-to-end.", "phase": "1"},
+    {"decision": "SaveIndicator's auto-fade effect uses an eslint-disable for react-hooks/set-state-in-effect", "rationale": "Plan 01-05 task 5.3 explicitly required internal setTimeout-driven fade; the trigger is an external prop (status), not derived state. Comment in source documents this.", "phase": "1"}
+  ],
+  "uncommitted_files": [
+    ".planning/PROJECT.md",
+    ".planning/ROADMAP.md",
+    ".planning/config.json"
+  ],
+  "next_action": "Begin plan 01-06 task 6.3: read src/App.tsx + src/routes/ to confirm createBrowserRouter (already verified — data router is in use); then create src/features/notebooks/hooks/useDirtyNavBlocker.ts using react-router's useBlocker hook + src/features/notebooks/components/UnsavedChangesDialog.tsx wrapping shadcn AlertDialog. Tests use MemoryRouter wrapper.",
+  "context_notes": "Wave 2 of Phase 1 is fully complete (plan 01-05 shipped). Wave 3 (plan 01-06) is mid-flight: tasks 6.1 + 6.2 done. Task 6.3 is medium-risk (touches react-router data-router via useBlocker; need MemoryRouter test wrapper). Task 6.4 is the highest-risk step — modifies existing 267-line ModuleCard.tsx with 230 lines of F8 regression tests that must NOT break. Task 6.5 is a single comprehensive round-trip test mocking MSW PUT /modules/:id. Phase 1 is 5/6 plans complete; finishing 01-06 closes Phase 1. Pre-existing pnpm run build TS errors in profile/styling/notebook-layout test files predate Phase 1 and are documented in plan 01-01 SUMMARY — leave them alone.",
+  "anti_patterns": [
+    {"pattern": "STATE.md drift", "description": "STATE.md was 2 plans behind reality at session start (claimed 3/6 done while git/SUMMARY artifacts proved 4/6 + 01-05 mid-flight). User had to ask 'sync state first' before resuming.", "severity": "advisory", "mitigation": "Update STATE.md as part of every plan completion (do not defer to phase-end)."},
+    {"pattern": "Phantom dependency claim in plan", "description": "Plan 01-05 task 5.4 stated @dnd-kit/sortable was 'already in node_modules; no new dep' — only @dnd-kit/core was vendored. Forced an unplanned pnpm add mid-execution.", "severity": "advisory", "mitigation": "Plan-checker should run a quick `pnpm ls <claimed-pkg>` smoke test for any 'no new dep' claim during plan_check."}
+  ]
+}
+
