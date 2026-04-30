@@ -25,9 +25,15 @@ export function SaveIndicator({ status, className }: SaveIndicatorProps) {
 
   useEffect(() => {
     if (status === 'saved') {
+      // Plan 01-05 task 5.3: auto-fade the saved chip after 1500ms even
+      // when the parent's auto-idle timer is short-circuited (e.g. mutation
+      // hook unmounted). The setState-in-effect rule is acknowledged and
+      // intentional here — the trigger is an external prop (`status`),
+      // not derived state.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowSaved(true);
-      const t = setTimeout(() => setShowSaved(false), 1500);
-      return () => clearTimeout(t);
+      const id = setTimeout(() => setShowSaved(false), 1500);
+      return () => clearTimeout(id);
     }
     setShowSaved(false);
     return undefined;
