@@ -36,12 +36,10 @@ export function EditButton({ onActivate, className }: EditButtonProps) {
       }}
       className={
         className ??
-        // Anchor: top-right inside the header strip. Strong contrast
-        // (secondary variant + ring + shadow) so the chip is visible on
-        // any header background color the user picked. Pill shape +
-        // explicit "Edit" label disambiguates from the resize handle in
-        // the corner.
-        'absolute right-1.5 top-1 z-10 h-6 gap-1 rounded-full px-2 text-[11px] leading-none shadow-sm ring-1 ring-border'
+        // Compact pill chip designed to sit in the header strip's flex
+        // row next to the title. Pencil + 'Edit' label, secondary
+        // variant, ring + shadow for contrast on any header background.
+        'h-5 shrink-0 gap-1 rounded-full px-2 text-[11px] leading-none shadow-sm ring-1 ring-border'
       }
     >
       <Pencil className="size-3.5" aria-hidden />

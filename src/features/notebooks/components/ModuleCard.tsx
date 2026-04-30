@@ -195,13 +195,14 @@ export const ModuleCard = memo(function ModuleCard({
       top: `${gridUnitsToPixels(module.gridY, zoom)}px`,
       width: `${gridUnitsToPixels(module.gridWidth, zoom)}px`,
       height: `${gridUnitsToPixels(module.gridHeight, zoom)}px`,
-      // Edit mode pops the card open to a usable minimum so the editor
-      // toolbar (Add Block / Bold / Undo / Redo / Save / Cancel) and at
-      // least one block row are reachable in modules that were saved at
-      // their grid-minimum size. Saved gridHeight is unaffected; this is
-      // a purely visual expansion (bug audit 2026-04-30).
-      minWidth: isEditing ? '320px' : undefined,
-      minHeight: isEditing ? '200px' : undefined,
+      // Edit mode pops the card open to a usable minimum so the full
+      // editor toolbar (Add Block / Bold / Undo / Redo / save indicator
+      // / Cancel / Save) and at least one block row are reachable in
+      // modules saved at their grid-minimum size. Saved gridHeight is
+      // unaffected; this is a purely visual expansion (bug audit
+      // 2026-04-30).
+      minWidth: isEditing ? '460px' : undefined,
+      minHeight: isEditing ? '220px' : undefined,
       zIndex: module.zIndex,
       // Keep the original module card visible in its saved position even
       // during a drag; the snapped ghost lives in `ModuleDragOverlay`.
@@ -327,7 +328,7 @@ export const ModuleCard = memo(function ModuleCard({
         data-drag-handle="true"
         data-prevent-edit-entry="true"
         aria-label={t('notebooks.canvas.dragHandle')}
-        className="select-none px-2 py-1 text-xs font-medium"
+        className="flex select-none items-center gap-2 px-2 py-1 text-xs font-medium"
         style={{
           ...resolved.header,
           cursor: isSelected ? 'grab' : 'default',
@@ -336,7 +337,10 @@ export const ModuleCard = memo(function ModuleCard({
         {...(headerAttributes ?? {})}
         {...(headerListeners ?? {})}
       >
-        {moduleLabel}
+        <span className="min-w-0 flex-1 truncate">{moduleLabel}</span>
+        {isSelected && !isEditing && (
+          <EditButton onActivate={enterEdit} />
+        )}
       </div>
       <div
         data-testid={`module-card-body-${module.id}`}
@@ -362,9 +366,6 @@ export const ModuleCard = memo(function ModuleCard({
           data-testid={`module-conflict-overlay-${module.id}`}
           style={conflictOverlayStyle}
         />
-      )}
-      {isSelected && !isEditing && (
-        <EditButton onActivate={enterEdit} />
       )}
       {isSelected && (
         <ModuleResizeHandles onHandlePointerDown={handlePointerDown} />
