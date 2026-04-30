@@ -98,7 +98,7 @@ result: [pending]
 
 total: 14
 passed: 0
-issues: 4
+issues: 7
 pending: 13
 skipped: 0
 
@@ -168,6 +168,101 @@ skipped: 0
     client. CreateModuleInput type unchanged — content is an
     implementation detail of the request shape, not a value callers ever
     supply on create (blocks are added later via PATCH /modules/{id}).
+
+- truth: "Edit chip on a selected module is clearly visible and unambiguously placed."
+  status: failed
+  reason: "User reported: edit chip is hard to see unless hovered, and looks misplaced (straddles the header/body boundary on the right side of the module). Originally rendered as a `ghost`-variant icon-only `<Pencil>` at `right-2 top-2`, which has near-zero contrast against the user-styled module header (e.g. dark navy on the Theory module)."
+  severity: minor
+  test: 1
+  artifacts:
+    - src/features/notebooks/components/EditButton.tsx
+  missing: []
+  fix_applied: 2026-04-30
+  fix_commit: pending
+  notes: |
+    Switched to a labeled pill chip (Pencil icon + "Edit" text), variant
+    `secondary`, with a 1px ring + shadow for contrast on any header
+    color. Anchored at `right-1.5 top-1` so it sits cleanly inside the
+    header strip rather than straddling the header/body seam. Stays
+    inside the module's `overflow-hidden` clip rect (no negative offsets)
+    so it's visible regardless of saved module size.
+
+- truth: "Page number indicator visually aligns with the centered DottedPaper."
+  status: failed
+  reason: "User reported: the page number ('2') appears way off to the right of the page. Caused by `text-right` on the `<div>` rendering the indicator, which right-aligns within the `max-w-5xl` flex column — much wider than the centered DottedPaper, so the number ends up far past the page's right edge."
+  severity: cosmetic
+  test: 1
+  artifacts:
+    - src/features/notebooks/components/LessonPage.tsx
+  missing: []
+  fix_applied: 2026-04-30
+  fix_commit: pending
+  notes: |
+    Changed `text-right` → `text-center`. DottedPaper is `mx-auto` so the
+    centered indicator sits roughly under the page. A future polish pass
+    can render the number INSIDE the DottedPaper bottom-right gutter for
+    pixel-perfect alignment, but center is good enough for UAT.
+
+- truth: "Editor toolbar + block area are usable in modules saved at their grid minimum size."
+  status: failed
+  reason: "User reported: when the module is too small the Add Block panel's buttons and other editor controls cannot be seen — only the '+ Add block' button remains visible. The editor toolbar (Add Block / Bold / Undo / Redo / save indicator / Cancel / Save) gets clipped by the module's overflow-hidden box because the saved gridHeight (e.g. 4 grid units ~80px) is smaller than the toolbar height plus a single block row."
+  severity: major
+  test: 1
+  artifacts:
+    - src/features/notebooks/components/ModuleCard.tsx
+  missing: []
+  fix_applied: 2026-04-30
+  fix_commit: pending
+  notes: |
+    Added `minWidth: 320px` and `minHeight: 200px` to the module's
+    rendered position style WHEN `isEditing` is true. Saved gridX/gridY/
+    gridWidth/gridHeight are unchanged; the visual expansion lasts only
+    while edit mode is active so the toolbar + at least one block row
+    are reachable on small modules. Trade-off: in edit mode the module
+    can visually overlap a sibling at a tightly-packed position, but
+    that's acceptable for a transient editing state and reverts on exit.
+
+- truth: "Dragging a module aligns the drag preview to the cursor's grab point."
+  status: failed
+  reason: "User reported: when dragging by the top-right corner of the module the preview appears centered above the cursor; when dragging by the top-left corner it appears half a module width to the left and slightly above. The cursor-relative grab point is not preserved. Believed to also cause valid placements to be flagged conflicting (red) — the third screenshot shows the drag preview tinted red on an otherwise empty page."
+  severity: blocker
+  test: 1
+  artifacts:
+    - src/features/notebooks/components/ModuleDragOverlay.tsx
+    - src/features/notebooks/components/GridCanvas.tsx
+    - src/features/notebooks/hooks/useCanvasInteractions.ts
+  missing:
+    - root-cause diagnosis (likely DragOverlay sizing vs. activator rect mismatch, or pixelsToGridUnits using wrong reference frame)
+    - reproduction in Playwright/jsdom (needs DOM rect math)
+  fix_applied: null
+  fix_commit: null
+  notes: |
+    DEFERRED — out of phase-1 scope (F8 grid canvas territory). Needs a
+    dedicated bug-fix phase: requires verifying dnd-kit's DragOverlay
+    rect calculation against the canvas's nested layout (LessonPage
+    flex column → GridCanvas viewport → DottedPaper → absolute child),
+    confirming pixelsToGridUnits' reference frame, and end-to-end
+    Playwright reproduction. Recommend `/gsd-debug` or an inserted
+    decimal phase (e.g. 1.1) once Phase 1 UAT can otherwise complete.
+    UAT can proceed for blocks/editor coverage by SKIPPING module-drag
+    and using only the Add Module + edit-mode flows.
+
+- truth: "Page number is positioned within or close to the page bounds (related to drag-math reference frame)."
+  status: investigating
+  reason: "User suspects the off-page page number is related to the drag misalignment — both pointing to a coordinate-system / wrapper-positioning regression."
+  severity: minor
+  test: 1
+  artifacts:
+    - src/features/notebooks/components/LessonPage.tsx
+  missing: []
+  fix_applied: 2026-04-30
+  fix_commit: pending
+  notes: |
+    Treated as cosmetic for now (text-center fix above). If the
+    drag-math investigation proves the wrapper is wrongly stretched
+    beyond the page bounds, the page-number alignment will be revisited
+    as part of that fix.
+
 
 
 

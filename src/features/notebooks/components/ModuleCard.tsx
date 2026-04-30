@@ -195,6 +195,13 @@ export const ModuleCard = memo(function ModuleCard({
       top: `${gridUnitsToPixels(module.gridY, zoom)}px`,
       width: `${gridUnitsToPixels(module.gridWidth, zoom)}px`,
       height: `${gridUnitsToPixels(module.gridHeight, zoom)}px`,
+      // Edit mode pops the card open to a usable minimum so the editor
+      // toolbar (Add Block / Bold / Undo / Redo / Save / Cancel) and at
+      // least one block row are reachable in modules that were saved at
+      // their grid-minimum size. Saved gridHeight is unaffected; this is
+      // a purely visual expansion (bug audit 2026-04-30).
+      minWidth: isEditing ? '320px' : undefined,
+      minHeight: isEditing ? '200px' : undefined,
       zIndex: module.zIndex,
       // Keep the original module card visible in its saved position even
       // during a drag; the snapped ghost lives in `ModuleDragOverlay`.
@@ -208,6 +215,7 @@ export const ModuleCard = memo(function ModuleCard({
       module.zIndex,
       zoom,
       isDragging,
+      isEditing,
     ],
   );
 

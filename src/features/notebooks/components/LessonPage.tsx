@@ -197,9 +197,11 @@ export function LessonPage() {
         onCommitLayout={handleCommitLayout}
       />
 
-      {/* Global page number */}
+      {/* Global page number — centered so it sits under the centered
+          DottedPaper rather than glued to the right edge of the wider
+          flex column (bug audit 2026-04-30). */}
       {pageNav.globalPageNumber != null && (
-        <div className="text-right text-xs opacity-50">
+        <div className="text-center text-xs opacity-50">
           {t('notebooks.shell.index.pageNumber', {
             number: pageNav.globalPageNumber,
           })}
