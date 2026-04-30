@@ -48,6 +48,21 @@ function readSpansFromDom(root: HTMLElement, prev: readonly TextSpan[]): TextSpa
   const spanEls = Array.from(
     root.querySelectorAll<HTMLElement>('[data-span-index]'),
   );
+  // Fast path: when the editor is freshly empty (value=[]) we render a single
+  // zero-width <span data-span-index="0" />, but browsers don't reliably place
+  // the caret INSIDE an empty inline; the first typed character lands as a
+  // sibling text node of the placeholder span. Without this recovery the
+  // typed text never enters state — placeholder stays visible, save persists
+  // nothing. Detect "stray text outside spans" and synthesize a single span
+  // from root.textContent.
+  const aggregateSpanText = spanEls
+    .map((el) => el.textContent ?? '')
+    .join('');
+  const rootText = root.textContent ?? '';
+  if (rootText.length > aggregateSpanText.length) {
+    if (rootText.length === 0) return [];
+    return [{ text: rootText, bold: prev[0]?.bold ?? false }];
+  }
   if (spanEls.length === 0) return [];
   // Map by current data-span-index so we can recover bold flag from `prev`.
   const out: TextSpan[] = [];
