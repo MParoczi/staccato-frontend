@@ -98,7 +98,7 @@ result: [pending]
 
 total: 14
 passed: 0
-issues: 1
+issues: 3
 pending: 13
 skipped: 0
 
@@ -114,11 +114,44 @@ skipped: 0
     - src/features/notebooks/hooks/usePageNavigation.test.tsx
   missing: []
   fix_applied: 2026-04-30
-  fix_commit: pending
+  fix_commit: 7093b55
   notes: |
     Out of phase-1 scope (lessons API client predates phase 1) but blocks
     every UAT test because the LessonPage route can't hydrate. Fix is a
     surgical re-pathing of three calls + verb change for update; hook
     callers untouched.
+
+- truth: "Add Module modal renders translated module-type labels."
+  status: failed
+  reason: "User reported: Add Module dialog shows raw i18n keys (e.g. 'notebooks.styling.moduleTypes.title') instead of translated text. AddModulePicker.tsx requested keys with a wrong 'notebooks.' prefix; canonical path used everywhere else (StyleEditorForm, StylePreview, StyleEditorDrawer) is 'styling.moduleTypes.*'."
+  severity: blocker
+  test: 1
+  artifacts:
+    - src/features/notebooks/components/AddModulePicker.tsx
+  missing: []
+  fix_applied: 2026-04-30
+  fix_commit: pending
+  notes: |
+    Pre-existing pre-phase-1 bug (AddModulePicker is from feature 8). Drop
+    'notebooks.' prefix on all 12 labelKey entries. Both en.json and
+    hu.json already have the strings under styling.moduleTypes.
+
+- truth: "Toolbar plus-icons are visually distinguishable (zoom-in / add-module / add-page)."
+  status: failed
+  reason: "User reported: three identical bare '+' icons in the per-page toolbar (zoom-in, add-module, add-page) — no way to tell them apart at a glance; user wants icon+text labels."
+  severity: minor
+  test: 1
+  artifacts:
+    - src/features/notebooks/components/AddModulePicker.tsx
+    - src/features/notebooks/components/LessonPage.tsx
+  missing: []
+  fix_applied: 2026-04-30
+  fix_commit: pending
+  notes: |
+    Converted Add Module trigger and floating Add Page button from
+    icon-only (size="icon-sm") to labeled (size="sm" with Plus icon +
+    text). Zoom +/- controls (CanvasViewportControls) kept icon-only as
+    the "100%" indicator between them disambiguates them clearly.
+
 
 

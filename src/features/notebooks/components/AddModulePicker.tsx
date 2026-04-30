@@ -28,7 +28,7 @@ import type { ModuleType } from '@/lib/types';
 
 /**
  * Twelve module types in display order. Each entry maps to a Lucide icon
- * and a `notebooks.styling.moduleTypes.*` translation key so labels stay
+ * and a `styling.moduleTypes.*` translation key so labels stay
  * consistent with the styling drawer.
  */
 const MODULE_TYPE_ENTRIES: ReadonlyArray<{
@@ -36,18 +36,18 @@ const MODULE_TYPE_ENTRIES: ReadonlyArray<{
   Icon: React.ComponentType<{ className?: string; 'aria-hidden'?: boolean | 'true' | 'false' }>;
   labelKey: string;
 }> = [
-  { moduleType: 'Title', Icon: Heading, labelKey: 'notebooks.styling.moduleTypes.title' },
-  { moduleType: 'Breadcrumb', Icon: Navigation, labelKey: 'notebooks.styling.moduleTypes.breadcrumb' },
-  { moduleType: 'Subtitle', Icon: Type, labelKey: 'notebooks.styling.moduleTypes.subtitle' },
-  { moduleType: 'Theory', Icon: BookOpen, labelKey: 'notebooks.styling.moduleTypes.theory' },
-  { moduleType: 'Practice', Icon: Music, labelKey: 'notebooks.styling.moduleTypes.practice' },
-  { moduleType: 'Example', Icon: Lightbulb, labelKey: 'notebooks.styling.moduleTypes.example' },
-  { moduleType: 'Important', Icon: CircleAlert, labelKey: 'notebooks.styling.moduleTypes.important' },
-  { moduleType: 'Tip', Icon: Info, labelKey: 'notebooks.styling.moduleTypes.tip' },
-  { moduleType: 'Homework', Icon: ClipboardList, labelKey: 'notebooks.styling.moduleTypes.homework' },
-  { moduleType: 'Question', Icon: CircleQuestionMark, labelKey: 'notebooks.styling.moduleTypes.question' },
-  { moduleType: 'ChordTablature', Icon: Guitar, labelKey: 'notebooks.styling.moduleTypes.chordTablature' },
-  { moduleType: 'FreeText', Icon: Pencil, labelKey: 'notebooks.styling.moduleTypes.freeText' },
+  { moduleType: 'Title', Icon: Heading, labelKey: 'styling.moduleTypes.title' },
+  { moduleType: 'Breadcrumb', Icon: Navigation, labelKey: 'styling.moduleTypes.breadcrumb' },
+  { moduleType: 'Subtitle', Icon: Type, labelKey: 'styling.moduleTypes.subtitle' },
+  { moduleType: 'Theory', Icon: BookOpen, labelKey: 'styling.moduleTypes.theory' },
+  { moduleType: 'Practice', Icon: Music, labelKey: 'styling.moduleTypes.practice' },
+  { moduleType: 'Example', Icon: Lightbulb, labelKey: 'styling.moduleTypes.example' },
+  { moduleType: 'Important', Icon: CircleAlert, labelKey: 'styling.moduleTypes.important' },
+  { moduleType: 'Tip', Icon: Info, labelKey: 'styling.moduleTypes.tip' },
+  { moduleType: 'Homework', Icon: ClipboardList, labelKey: 'styling.moduleTypes.homework' },
+  { moduleType: 'Question', Icon: CircleQuestionMark, labelKey: 'styling.moduleTypes.question' },
+  { moduleType: 'ChordTablature', Icon: Guitar, labelKey: 'styling.moduleTypes.chordTablature' },
+  { moduleType: 'FreeText', Icon: Pencil, labelKey: 'styling.moduleTypes.freeText' },
 ];
 
 interface AddModulePickerProps {
@@ -92,12 +92,13 @@ export function AddModulePicker({
       <DialogTrigger asChild>
         <Button
           variant="ghost"
-          size="icon-sm"
+          size="sm"
           disabled={disabled}
           aria-label={t('notebooks.canvas.addModule.trigger')}
           data-testid="add-module-trigger"
         >
-          <Plus className="size-3.5" aria-hidden="true" />
+          <Plus className="mr-1 size-4" aria-hidden="true" />
+          {t('notebooks.canvas.addModule.trigger')}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">

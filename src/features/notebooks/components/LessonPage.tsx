@@ -171,12 +171,13 @@ export function LessonPage() {
           {/* Floating Add Page button */}
           <Button
             variant="ghost"
-            size="icon-sm"
+            size="sm"
             onClick={() => createPageMutation.mutate()}
             disabled={createPageMutation.isPending}
             aria-label={t('notebooks.shell.page.addPage')}
           >
-            <Plus className="size-3.5" aria-hidden="true" />
+            <Plus className="mr-1 size-4" aria-hidden="true" />
+            {t('notebooks.shell.page.addPage')}
           </Button>
           {/* Delete Page button */}
           <DeletePageButton
