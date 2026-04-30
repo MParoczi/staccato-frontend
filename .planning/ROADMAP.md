@@ -216,17 +216,19 @@
 - **Phases 2 → 3 → 4 → 5 → 6 → 7 → 8** are otherwise independent enough to reorder if motivation dictates, but the listed order minimizes context-switching cost (text → table → music notes → chord ecosystem → misc).
 - **Stabilization** is continuous; revisit between phases.
 
-## Phase Lifecycle
+## Phase Lifecycle (GSD-native)
 
-For each phase, the per-feature flow is:
+For each phase the standard flow is:
 
-1. `/gsd-discuss-phase N` (optional) — clarify approach.
-2. `/speckit.specify` using the Speckit prompt block from `frontend-speckit-prompts.md`.
-3. `/speckit.plan` using the matching plan prompt from the same file.
-4. `/speckit.tasks` to generate `tasks.md`.
-5. `/gsd-plan-phase N` — write a *thin* `.planning/phases/NN-<slug>/plan.md` that **references** the Speckit `plan.md` and only adds GSD-side decisions (commits, deviation handling, checkpoints).
-6. `/speckit.implement` (or `/gsd-execute-phase N`) to build.
-7. `/gsd-transition` — update `PROJECT.md` (move REQ from Active → Validated), `STATE.md`, and tick the requirement in `REQUIREMENTS.md`.
+1. `/gsd-spec-phase N` *(optional)* — Socratic spec refinement; produces `.planning/phases/NN-<slug>/SPEC.md` with falsifiable requirements. Skip if the PRD prompt block from `frontend-speckit-prompts.md` is already concrete enough.
+2. `/gsd-discuss-phase N` — gather context, surface assumptions and gray areas. Feed the matching PRD prompt block from `frontend-speckit-prompts.md` as initial context.
+3. `/gsd-ui-phase N` *(frontend phases)* — produces `UI-SPEC.md` design contract.
+4. `/gsd-plan-phase N` — produces `PLAN.md` with task breakdown, dependencies, threat model, and goal-backward verification. Plan-check agent runs (per `config.json`).
+5. `/gsd-execute-phase N` — wave-based execution with atomic commits.
+6. `/gsd-verify-work` and/or `/gsd-validate-phase` — confirm goals achieved and tests cover requirements (per `config.json`).
+7. `/gsd-transition` — move REQ from Active → Validated in `PROJECT.md`, tick `REQUIREMENTS.md`, advance `STATE.md`.
+
+Optional gates between steps: `/gsd-code-review` → `/gsd-code-review-fix`, `/gsd-secure-phase`, `/gsd-ui-review`.
 
 ## Coverage Validation
 

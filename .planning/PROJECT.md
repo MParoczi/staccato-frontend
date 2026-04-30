@@ -44,7 +44,7 @@ The ONE thing Staccato must do better than alternatives is give a musician a per
 - 13 co-located test files; `src/features/*` test coverage is a known gap.
 - `@microsoft/signalr` and `msw` are installed but not yet wired (SignalR lands in Speckit Feature 17; MSW is for future test infra).
 
-**Speckit relationship:** Speckit (`specs/NNN-<slug>/`) remains the system of record for per-feature `spec.md`, `plan.md`, `tasks.md`, `contracts/`, `checklists/`. GSD operates as an **umbrella** above it — each GSD phase wraps exactly one Speckit feature and references its plan rather than duplicating it.
+**Speckit relationship:** Speckit was used to ship Features 1–8. As of 2026-04-28, **GSD is the primary planning system for all remaining work** (phases 1–9 below). The existing `specs/001..008/` directories are kept read-only as historical record of delivered features. `frontend-speckit-prompts.md` is retained as a **PRD source** — its F9–F17 prompt blocks are well-formed feature briefs that feed into `/gsd-discuss-phase` as initial context, but GSD owns spec → plan → execute → verify from here on.
 
 ## Constraints
 
@@ -102,10 +102,11 @@ The ONE thing Staccato must do better than alternatives is give a musician a per
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Speckit remains system-of-record; GSD wraps it as umbrella | Avoid dual-track planning; Speckit's `spec.md`/`plan.md`/`tasks.md` are already complete per feature | — Pending validation (will be confirmed once Phase 1 wraps) |
-| One GSD phase = one Speckit feature | 1:1 mapping keeps traceability trivial; future merges/forks are easy | — Pending |
-| Workflow agents (research / plan_check / verifier) disabled | Speckit constitution + checklists already enforce these gates; doubling up is waste for a solo dev | — Pending |
-| Token in memory only (Zustand, no `persist`) | Constitution principle III; XSS-safe; refresh cookie + silent refresh handles reload | ✓ Validated (`src/stores/authStore.ts`, `src/api/client.ts`) |
+| **Migrate from Speckit to GSD** as primary planning system (2026-04-28) | Single planning track is simpler than dual-track umbrella; GSD's discuss/plan/execute/verify loop fits a solo dev better than Speckit's spec-first ceremony for the remaining 9 features | — Pending validation |
+| Keep `specs/001..008/` as read-only historical record | Documents what shipped without forcing future work to maintain Speckit format | ✓ Decided |
+| Keep `frontend-speckit-prompts.md` as a PRD source | The F9-F17 prompt blocks are well-formed feature briefs; feed them into `/gsd-discuss-phase` as initial context | ✓ Decided |
+| Workflow agents enabled (research / plan_check / verifier) | With Speckit gone, these gates are no longer duplicated; quality > speed for a solo passion project | — Pending |
+| Token in memory only (Zustand, no `persist`) | XSS-safe; refresh cookie + silent refresh handles reload | ✓ Validated (`src/stores/authStore.ts`, `src/api/client.ts`) |
 | Hungarian as first-class locale alongside English | Solo dev's home locale; cheaper to keep parity than retrofit later | ✓ Validated (`src/i18n/{en,hu}.json`) |
 | Standard granularity, sequential execution | Solo dev, no parallel hands; standard slice fits a "1 feature ≈ 1 phase" cadence | — Pending |
 
