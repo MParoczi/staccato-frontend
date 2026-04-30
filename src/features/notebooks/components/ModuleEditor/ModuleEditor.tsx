@@ -51,6 +51,12 @@ export interface ModuleEditorProps {
   module: Module;
   /** Called when the editor wishes to exit edit mode (Save/Cancel/Esc). */
   onExitEditMode: () => void;
+  /**
+   * Optional observer invoked whenever the underlying mutation status
+   * changes. Used by the host (plan 01-06) to power the dirty-nav guard
+   * without prop drilling the mutation hook.
+   */
+  onSaveStatusChange?: (status: ContentSaveStatus) => void;
 }
 
 const TYPING_BURST_MS = 150;
@@ -150,7 +156,7 @@ function SortableRow({ id, index, block, onChange, onDelete }: SortableRowProps)
  * follow-up.
  */
 export const ModuleEditor = forwardRef<ModuleEditorHandle, ModuleEditorProps>(
-  function ModuleEditor({ module, onExitEditMode }, ref) {
+  function ModuleEditor({ module, onExitEditMode, onSaveStatusChange }, ref) {
     const { t } = useTranslation();
     const isBreadcrumb = module.moduleType === 'Breadcrumb';
 
@@ -368,6 +374,10 @@ export const ModuleEditor = forwardRef<ModuleEditorHandle, ModuleEditorProps>(
     );
 
     const saveStatus: ContentSaveStatus = mutation.status;
+
+    useEffect(() => {
+      onSaveStatusChange?.(saveStatus);
+    }, [saveStatus, onSaveStatusChange]);
 
     return (
       <div

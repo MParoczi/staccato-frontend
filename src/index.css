@@ -181,7 +181,7 @@
 }
 
 @layer components {
-  /* TextSpanEditor placeholder (Plan 01-04 — UI-SPEC ง4.8 / ง2.2). */
+  /* TextSpanEditor placeholder (Plan 01-04 โ€” UI-SPEC ยง4.8 / ยง2.2). */
   [data-text-span-editor][data-empty="true"]:before {
     content: attr(data-placeholder);
     color: var(--color-muted-foreground);
@@ -189,7 +189,7 @@
     pointer-events: none;
   }
 
-  /* Edit-mode glow on the host module wrapper (UI-SPEC ง3). */
+  /* Edit-mode glow on the host module wrapper (UI-SPEC ยง3). */
   .module-edit-glow {
     outline: 2px solid var(--editor-edit-glow-ring);
     outline-offset: 2px;
