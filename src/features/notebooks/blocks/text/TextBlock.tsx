@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { BuildingBlock, TextSpan } from '@/lib/types';
 import { isTextSpan } from '@/lib/types';
 import { TextSpanEditor } from '../text-span-editor/TextSpanEditor';
@@ -54,7 +54,13 @@ export interface TextBlockEditorProps {
  */
 export function TextBlockEditor({ block, onChange }: TextBlockEditorProps) {
   const [isBoldActive, setBoldActive] = useState(false);
-  const spans = readSpans(block);
+  // Memoize spans by `block` reference: readSpans creates a fresh array on
+  // each call, which would otherwise hand TextSpanEditor a new `value` prop
+  // reference on every parent re-render — including the cache-driven
+  // re-renders fired by useModuleContentMutation.schedule on every
+  // keystroke. A stable ref lets the editor short-circuit DOM rebuilds
+  // when nothing actually changed.
+  const spans = useMemo(() => readSpans(block), [block]);
   return (
     <TextSpanEditor
       value={spans}

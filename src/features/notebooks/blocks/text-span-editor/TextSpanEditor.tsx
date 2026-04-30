@@ -55,6 +55,53 @@ function stripAnchor(s: string): string {
   return s.replace(/\u200B/g, '');
 }
 
+/** Structural equality on span arrays — used to short-circuit DOM rebuilds. */
+function spansEqual(
+  a: readonly TextSpan[],
+  b: readonly TextSpan[],
+): boolean {
+  if (a === b) return true;
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i].text !== b[i].text || a[i].bold !== b[i].bold) return false;
+  }
+  return true;
+}
+
+/**
+ * Imperatively (re)build `root`'s children to mirror `spans`. Always wipes
+ * existing children first — caller is responsible for capturing/restoring
+ * caret position around this. Banned from using innerHTML/dangerouslySet*
+ * per the editor's XSS-safety contract; uses createElement/createTextNode.
+ *
+ * Empty `spans` is rendered as a single span carrying a ZERO WIDTH SPACE
+ * so contentEditable can anchor the caret inside it on focus.
+ */
+function buildDomFromSpans(
+  root: HTMLElement,
+  spans: readonly TextSpan[],
+): void {
+  while (root.firstChild) root.removeChild(root.firstChild);
+  const doc = root.ownerDocument;
+  if (!doc) return;
+  if (spans.length === 0) {
+    const span = doc.createElement('span');
+    span.setAttribute('data-span-index', '0');
+    span.setAttribute('data-bold', 'false');
+    span.appendChild(doc.createTextNode(EMPTY_ANCHOR));
+    root.appendChild(span);
+    return;
+  }
+  spans.forEach((s, i) => {
+    const span = doc.createElement('span');
+    span.setAttribute('data-span-index', String(i));
+    span.setAttribute('data-bold', s.bold ? 'true' : 'false');
+    if (s.bold) span.style.fontWeight = '700';
+    span.appendChild(doc.createTextNode(s.text));
+    root.appendChild(span);
+  });
+}
+
 function readSpansFromDom(root: HTMLElement, prev: readonly TextSpan[]): TextSpan[] {
   const spanEls = Array.from(
     root.querySelectorAll<HTMLElement>('[data-span-index]'),
@@ -107,6 +154,15 @@ export function TextSpanEditor({
   const valueRef = useRef(value);
   const onChangeRef = useRef(onChange);
   const onBoldStateChangeRef = useRef(onBoldStateChange);
+  /**
+   * Mirror of the spans currently realised in the DOM. The layout effect
+   * compares incoming `value` against this ref to decide whether to wipe
+   * and rebuild the contentEditable subtree. Imperative span mutations
+   * (toggleBold, paste, undo/redo) and `handleInput` (which trusts the
+   * browser-mutated DOM) keep this in sync so React's reconciler never
+   * touches the contentEditable's children directly.
+   */
+  const domValueRef = useRef<readonly TextSpan[]>(value);
 
   useEffect(() => {
     valueRef.current = value;
@@ -175,6 +231,12 @@ export function TextSpanEditor({
     restoreRef.current = absRangeToCoords(merged, absStart, absEnd);
     pendingBoldRef.current = target;
     onBoldStateChangeRef.current(target);
+    // Bold toggle is a programmatic span mutation — rebuild DOM so the
+    // updated bold attributes/styles land before selection restore.
+    if (rootRef.current) {
+      buildDomFromSpans(rootRef.current, merged);
+      domValueRef.current = merged;
+    }
     onChangeRef.current(merged);
   }, [computeTargetBold]);
 
@@ -187,16 +249,6 @@ export function TextSpanEditor({
     onReadyRef.current?.({ toggleBold });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  /** Restore selection after every render that requested it. */
-  useLayoutEffect(() => {
-    const root = rootRef.current;
-    if (!root) return;
-    if (restoreRef.current) {
-      restoreSelection(root, restoreRef.current);
-      restoreRef.current = null;
-    }
-  });
 
   const handleBeforeInput = useCallback((e: FormEvent<HTMLDivElement>) => {
     // React's beforeInput synthetic event surfaces inputType.
@@ -219,13 +271,27 @@ export function TextSpanEditor({
     const merged = mergeAdjacentSpans(projected);
     if (coords) {
       // Map captured coords (in pre-merge index space) onto merged spans.
-      const abs = coordToAbs(projected, coords.anchor);
-      const absFocus = coordToAbs(projected, coords.focus);
+      // Subtract any ZWSP characters that precede the captured offset so
+      // the absolute position reflects post-strip text, matching `merged`.
+      const stripBeforeAnchor = countAnchorsBefore(root, coords.anchor);
+      const stripBeforeFocus = countAnchorsBefore(root, coords.focus);
+      const abs = Math.max(
+        0,
+        coordToAbs(projected, coords.anchor) - stripBeforeAnchor,
+      );
+      const absFocus = Math.max(
+        0,
+        coordToAbs(projected, coords.focus) - stripBeforeFocus,
+      );
       restoreRef.current = {
         anchor: absToCoord(merged, abs),
         focus: absToCoord(merged, absFocus),
       };
     }
+    // Mark DOM as in-sync with `merged` BEFORE calling onChange so the
+    // layoutEffect on the resulting parent re-render skips the rebuild
+    // (the user's typed DOM is already correct — we mustn't wipe it).
+    domValueRef.current = merged;
     onChangeRef.current(merged);
   }, []);
 
@@ -283,6 +349,11 @@ export function TextSpanEditor({
         anchor: absToCoord(merged, absInsertEnd),
         focus: absToCoord(merged, absInsertEnd),
       };
+      // Paste replaces a selection — rebuild DOM imperatively so the
+      // browser's native paste DOM (which we just suppressed via
+      // preventDefault) isn't carried into our span structure.
+      buildDomFromSpans(root, merged);
+      domValueRef.current = merged;
       onChangeRef.current(merged);
     },
     [],
@@ -334,6 +405,44 @@ export function TextSpanEditor({
   const labelText = ariaLabel ?? t('editor.textSpanLabel');
   const placeholderText = placeholder ?? t('editor.textSpanPlaceholder');
 
+  // ─── Imperative DOM management ───────────────────────────────────────
+  // Render NO React children inside the contentEditable root. The
+  // children are constructed and updated imperatively from `value` via
+  // `buildDomFromSpans` so React's reconciler never tries to diff against
+  // a browser-mutated DOM (which causes text duplication, lost typed
+  // characters, and `removeChild: not a child` crashes when the user
+  // types or deletes). `domValueRef` (declared at top of component) is
+  // the truthful mirror of what's in the DOM. Imperative span mutations
+  // (toggleBold, paste) and `handleInput` (which trusts the
+  // browser-mutated DOM after typing) keep the ref in sync. The
+  // layoutEffect below rebuilds DOM ONLY when `value` differs
+  // structurally from `domValueRef` — i.e., genuine external changes
+  // (undo/redo, parent-driven resets). For typing, `value` will
+  // eventually equal `domValueRef` once history.push catches up; until
+  // then the in-DOM content is the truth and is preserved.
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    if (!spansEqual(value, domValueRef.current)) {
+      // External (programmatic) value change — rebuild DOM.
+      buildDomFromSpans(root, value);
+      domValueRef.current = value;
+    }
+    if (restoreRef.current) {
+      restoreSelection(root, restoreRef.current);
+      restoreRef.current = null;
+    }
+  }, [value]);
+
+  // Build initial DOM on mount (covers the very first render).
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root || root.childNodes.length > 0) return;
+    buildDomFromSpans(root, value);
+    domValueRef.current = value;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const editorStyle: CSSProperties = {
     caretColor: 'var(--color-primary)',
     minHeight: '1.5em',
@@ -360,31 +469,7 @@ export function TextSpanEditor({
       onCompositionStart={handleCompositionStart}
       onCompositionEnd={handleCompositionEnd}
       onSelect={handleSelect}
-    >
-      {value.length === 0 ? (
-        // Render a single span containing a ZERO WIDTH SPACE so the caret
-        // reliably lands INSIDE this span on focus. Without the ZWSP a truly
-        // empty inline element has no text node for the caret to anchor to,
-        // and the browser inserts the first typed character as a sibling
-        // text node — orphaning it from React's owned subtree and corrupting
-        // subsequent renders (duplicated text, removeChild crashes).
-        // The ZWSP is invisible to the user and stripped on read.
-        <span data-span-index="0" data-bold="false">
-          {EMPTY_ANCHOR}
-        </span>
-      ) : (
-        value.map((span, i) => (
-          <span
-            key={i}
-            data-span-index={i}
-            data-bold={span.bold ? 'true' : 'false'}
-            style={{ fontWeight: span.bold ? 700 : 'inherit' }}
-          >
-            {span.text}
-          </span>
-        ))
-      )}
-    </div>
+    />
   );
 }
 
@@ -423,6 +508,30 @@ function absRangeToCoords(
   end: number,
 ): SelectionCoords {
   return { anchor: absToCoord(spans, start), focus: absToCoord(spans, end) };
+}
+
+/**
+ * Count ZERO WIDTH SPACE characters that precede the captured DOM
+ * coord, summed across all earlier spans plus the in-span prefix. Used
+ * by `handleInput` to translate a DOM-relative caret offset (which can
+ * include ZWSPs) into a stripped-text-relative absolute offset.
+ */
+function countAnchorsBefore(root: HTMLElement, coord: SpanCoord): number {
+  const spanEls = Array.from(
+    root.querySelectorAll<HTMLElement>('[data-span-index]'),
+  );
+  let count = 0;
+  for (let i = 0; i < spanEls.length; i++) {
+    const text = spanEls[i].textContent ?? '';
+    if (i < coord.spanIndex) {
+      count += (text.match(/\u200B/g) ?? []).length;
+    } else if (i === coord.spanIndex) {
+      const prefix = text.slice(0, coord.charOffset);
+      count += (prefix.match(/\u200B/g) ?? []).length;
+      break;
+    }
+  }
+  return count;
 }
 
 
