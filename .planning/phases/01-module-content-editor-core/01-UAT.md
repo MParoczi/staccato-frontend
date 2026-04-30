@@ -9,37 +9,36 @@ source:
   - 01-05-editor-shell-SUMMARY.md
   - 01-06-integration-SUMMARY.md
 started: 2026-04-30T00:00:00Z
-updated: 2026-04-30T20:30:00Z
+updated: 2026-04-30T21:00:00Z
 ---
 
 ## Current Test
 <!-- OVERWRITE each test - shows where we are -->
 
-number: 1
-name: Enter edit mode on a Title/Theory module
+number: 2
+name: Add Block popover lists allowed types
 expected: |
-  Select a non-Breadcrumb module on the canvas. An "Edit" chip appears
-  on the module. Clicking it (or double-clicking the module body) enters
-  edit mode: a soft glow ring frames the module, and a sticky editor
-  toolbar appears at the top with: Add Block · | · Bold · Undo · Redo · …
-  · save indicator · Cancel · Save. Grid layout (position, size) of the
-  module does not visibly shift.
-awaiting: re-test after lessons-API endpoint fix
+  In edit mode on a Theory module, clicking "Add Block" opens a popover
+  listing the allowed block types (Heading, Date, Text, List,
+  OrderedList, Checklist, Table, Note, Chord, Tab). On a Title module
+  the popover shows exactly Date and Text — nothing else.
+awaiting: user response
 
 ## Tests
 
 ### 1. Enter edit mode on a Title/Theory module
 expected: Select a non-Breadcrumb module → "Edit" chip visible → clicking it (or double-clicking the body) shows edit-mode glow ring + sticky toolbar (Add Block · Bold · Undo · Redo · save indicator · Cancel · Save). Module's grid position/size does not jump.
-result: issue
-reported: "Cannot open a created lesson — frontend calls non-existing endpoint /notebooks/{notebookId}/lessons/{lessonId}; correct endpoint per Swagger is /lessons/{lessonId}. Same wrong shape on update (PATCH /notebooks/.../lessons/{id}, should be PUT /lessons/{id}) and delete (DELETE /notebooks/.../lessons/{id}, should be DELETE /lessons/{id})."
-severity: blocker
-fix_applied: |
-  src/api/lessons.ts — getLesson/updateLesson/deleteLesson now call the
-  flat /lessons/{id} routes per OpenAPI; updateLesson switched from PATCH
-  to PUT; getLessons + createLesson unchanged (their notebook-scoped
-  collection routes are correct). Hook signatures preserved (notebookId
-  prefixed `_` to satisfy noUnusedParameters). MSW handler in
-  usePageNavigation.test.tsx updated to match.
+result: pass
+notes: |
+  Passed after fixing 7 stacked bugs uncovered during this single test
+  (logged below as separate gaps with their own commits): wrong lessons
+  API path, missing content:[] on module create, wrong i18n prefix on
+  module-type labels, ambiguous bare-+ icons, low-contrast/misplaced
+  edit chip, small-module editor cropping, off-page page number. Drag
+  cursor misalignment + red-on-valid-position remain DEFERRED to a
+  dedicated F8 bug-fix phase; UAT proceeds without exercising module
+  drag (Test 7 only covers in-editor block-row reordering, which is a
+  different dnd-kit/sortable code path).
 
 
 ### 2. Add Block popover lists allowed types
@@ -97,8 +96,8 @@ result: [pending]
 ## Summary
 
 total: 14
-passed: 0
-issues: 7
+passed: 1
+issues: 0
 pending: 13
 skipped: 0
 
