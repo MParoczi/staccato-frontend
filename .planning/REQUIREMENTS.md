@@ -59,7 +59,7 @@
 
 #### Module Content Editor (Core)
 
-- [ ] **EDIT-01** — *(F9)* Inline rich-text/structured editor mounted inside a placed module, with save/cancel, autosave, undo/redo, and dirty-state guards. Uses RHF for the form layer, integrates with the existing module styling system.
+- [x] **EDIT-01** — *(F9)* Inline rich-text/structured editor mounted inside a placed module, with save/cancel, autosave, undo/redo, and dirty-state guards. Uses RHF for the form layer, integrates with the existing module styling system. ✓ **Shipped 2026-04-30 in Phase 1.**
   - Mapped to: **Phase 1**
 
 #### Building Blocks (Phase A)
@@ -129,7 +129,7 @@
 | STYLE-01..02 | F7 — Styling System                                        | ✓ Validated | —     |
 | CANVAS-01..02 | F8 — Grid Canvas & Module Placement                       | ✓ Validated | —     |
 | STAB-01      | (none — internal stabilization)                            | ✓ Validated | —     |
-| EDIT-01      | F9 — Module Content Editor (Core)                          | Active     | 1      |
+| EDIT-01      | F9 — Module Content Editor (Core)                          | ✓ Validated | 1      |
 | BLOCK-01     | F10 — Text & List Building Blocks                          | Active     | 2      |
 | BLOCK-02     | F11 — Table Building Block                                 | Active     | 3      |
 | BLOCK-03     | F12 — Musical Notes Building Block                         | Active     | 4      |

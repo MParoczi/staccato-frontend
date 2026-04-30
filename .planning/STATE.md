@@ -1,6 +1,6 @@
 # Staccato Frontend — STATE.md
 
-*Last updated: 2026-04-30 after Phase 1 plan 01-05 complete (5/6 plans done; Wave 2 done)*
+*Last updated: 2026-04-30 after Phase 1 complete (6/6 plans shipped; all waves done)*
 
 ## Active Milestone
 
@@ -12,20 +12,21 @@
 
 ## Current Phase
 
-**Phase 1 — Module Content Editor (Core)** *(executing — 5/6 plans complete; Waves 1+2 done)*
+**Phase 1 — Module Content Editor (Core)** *(✓ complete — 6/6 plans shipped; all waves done)*
 
 - REQ: `EDIT-01` (+ `Text` block as registry seed; remainder of `BLOCK-01` stays in Phase 2)
 - PRD source: `frontend-speckit-prompts.md` lines ~1402–1547 (Feature 9 prompt block)
 - Context: `.planning/phases/01-module-content-editor-core/01-CONTEXT.md`
 - UI-SPEC: `.planning/phases/01-module-content-editor-core/01-UI-SPEC.md`
 - Research: `.planning/phases/01-module-content-editor-core/01-RESEARCH.md`
-- Plans: 6 plans across 3 waves
+- Verification: `.planning/phases/01-module-content-editor-core/01-VERIFICATION.md`
+- Plans: 6 plans across 3 waves — **all complete**
   - Wave 1: `01-01-foundation` ✓ done · `01-02-pure-utils` ✓ done · `01-03-block-registry` ✓ done
   - Wave 2: `01-04-text-block` ✓ done · `01-05-editor-shell` ✓ done
-  - Wave 3: `01-06-integration`
-- Codebase touchpoints: `src/features/styling/`, `src/features/notebooks/`, `src/api/modules.ts`, `src/i18n/{en,hu}.json`, `src/index.css`, `src/components/ui/*` (reuse-only)
-- Status: **In progress — resume from `01-06-integration` (Wave 3)**
-- Resume command: `/skill:gsd-execute-phase 1` (auto-skips 01-01 / 01-02 / 01-03 / 01-04 / 01-05 because their SUMMARY.md exist)
+  - Wave 3: `01-06-integration` ✓ done
+- Codebase touchpoints: `src/features/notebooks/` (ModuleCard, ModuleEditor, hooks, blocks), `src/features/styling/utils/`, `src/api/modules.ts`, `src/i18n/{en,hu}.json`, `src/index.css`, `src/components/ui/*` (reuse-only)
+- Status: **Complete — ready for Phase 2.**
+- Next command: `/skill:gsd-discuss-phase 2` (Text & List Blocks)
 
 ### Plan-by-plan progress
 
@@ -36,14 +37,14 @@
 | 01-03-block-registry | 1 | ✓ Complete (2026-04-28) | BlockDescriptor contract + PlaceholderBlock + camelCaseLabelKeyFor helper + BLOCK_REGISTRY (10/10 BuildingBlockTypes seeded as placeholder descriptors with Lucide icons per UI-SPEC §8); 69/69 new tests pass |
 | 01-04-text-block     | 2 | ✓ Complete (2026-04-28) | TextSpanEditor (contentEditable, no innerHTML/execCommand) + Text block + BLOCK_REGISTRY.Text upgraded; 72/72 new tests pass |
 | 01-05-editor-shell   | 2 | ✓ Complete (2026-04-30) | useModuleContentMutation hook + 7 leaf components + ModuleEditor orchestrator (forwardRef, dnd-kit/sortable, useEditHistory, debounced PUT, glow chrome). 9 files / 48 new tests pass. Deps added: @dnd-kit/sortable@10.0.0, @dnd-kit/utilities@3.2.2. Bold ↔ TextSpanEditor cross-wiring deferred to 01-06. |
-| 01-06-integration    | 3 | Pending | Resume here — wires ModuleEditor into ModuleCard via React.lazy + click-outside flush + useBlocker dirty-nav guard |
+| 01-06-integration    | 3 | ✓ Complete (2026-04-30) | EditButton + useEditModeEntry + useDirtyNavBlocker + UnsavedChangesDialog + EditModeOverlay + BlockListRenderer + ModuleCard surgery (React.lazy + Suspense, F8 contracts preserved) + round-trip test. 25/25 ModuleCard-surface tests pass; vite chunk-split verified (`ModuleEditor-*.js` ~30 kB / 10 kB gzip). |
 
 ## Phase Status Snapshot
 
 | # | Phase                        | REQ        | Status              |
 |---|------------------------------|-----------|---------------------|
 | — | (8 prior features delivered) | various    | ✓ Validated (specs/001..008 historical) |
-| 1 | Module Content Editor (Core) | EDIT-01    | Pending              |
+| 1 | Module Content Editor (Core) | EDIT-01    | ✓ Complete (2026-04-30) |
 | 2 | Text & List Blocks           | BLOCK-01   | Blocked on Phase 1   |
 | 3 | Table Block                  | BLOCK-02   | Blocked on Phase 1   |
 | 4 | Musical Notes Block          | BLOCK-03   | Blocked on Phase 1   |
@@ -60,6 +61,7 @@
 
 ## Recent Events
 
+- **2026-04-30** — **Phase 1 complete (6/6 plans shipped).** Plan 01-06-integration delivered: `EditButton` (4 tests; keyboard-activatable edit-entry chip), `useEditModeEntry` (6 tests; selection-aware single/double-click gestures with `data-prevent-edit-entry` guard), `useDirtyNavBlocker` (≥6 tests; `react-router` `useBlocker` wrapper that fires on `isEditing && isDirty`, attempts one `flushPendingSave()` retry, exposes `isBlocked` on reject), `UnsavedChangesDialog` (shadcn AlertDialog wrapping locked UI-SPEC §4.11 copy via `editor.unsaved*` keys), `EditModeOverlay` (click-outside `mousedown` listener + Escape keydown + dirty-nav guard in one place), `BlockListRenderer` (view-mode dispatcher through `BLOCK_REGISTRY[type].Renderer`; unimplemented types fall through to `PlaceholderBlock`), and the **ModuleCard surgery** — surgical insertion of `useState` edit-mode flag, `React.lazy(() => import('./ModuleEditor/ModuleEditor'))` (deep path silences rolldown's `INEFFECTIVE_DYNAMIC_IMPORT`; chunk-split verified as `dist/assets/ModuleEditor-*.js` ≈30 kB / 10 kB gzip), `<Suspense fallback={<EditorLoadingShell />}>` boundary, `onSaveStatusChange` observer prop on ModuleEditor, EditButton render branch — **all F8 contracts preserved** (`data-testid`, `data-selected`, `data-conflicting`, `data-dragging`, `aria-pressed`, header drag listeners, `ModuleResizeHandles`); 10/10 existing F8 ModuleCard tests pass unchanged. **Round-trip integration test** (`ModuleCard.roundtrip.test.tsx`, 5 tests) covers all 9 locked acceptance criteria with inline `// AC #N:` markers (Theory edit-mode round-trip, Breadcrumb auto-gen + disabled controls, Title `MODULE_ALLOWED_BLOCKS` UI gate, unimplemented-type placeholder, failed-save dirty-nav dialog). Also fixed pre-existing CP1252 bytes in `src/index.css` comments (0x97 → 0xE2 0x80 0x94, 0xA7 → 0xC2 0xA7) so rolldown 1.0-rc.12 vite build succeeds. Toolbar Bold ↔ active TextSpanEditor cross-wiring deferred to a polish phase (the 9 acceptance criteria do not require toolbar Bold reflectivity). 25/25 ModuleCard-surface tests pass; tsc clean; lint clean for plan-06 surface; full-suite pre-existing failures unchanged from main. 4 commits (`33f37f3`, `d5849ef`, `83ccb2a`, `ef1f6a8`). Phase 1 totals: 6 plans / 27+ commits / 191+ tests across the editor surface.
 - **2026-04-30** — **Phase 1, Plan 01-05-editor-shell complete (5/6, Wave 2 done).** Inline interactive execution. Delivered: `useModuleContentMutation` hook (9 tests; CONTENT_SAVE_DEBOUNCE_MS=1000, lazy snapshot on first schedule, optimistic `setQueryData<Module[]>`, no-rollback-on-error per F9 prompt, INVALID_BUILDING_BLOCK / BREADCRUMB_CONTENT_NOT_EMPTY translation, explicit `revertOptimistic` for Cancel, unmount cleanup); 7 leaf components — `SaveIndicator` (role=status/alert, 1500ms auto-fade, motion-safe spinner), `AddBlockPopover` (shadcn Popover + listbox of MODULE_ALLOWED_BLOCKS[moduleType], disabled+tooltip variant for Breadcrumb), `BlockRow` (24px gutter handle + top-right delete; reveal on hover/focus-within), `DeleteBlockDialog` (shadcn AlertDialog, locked copy, destructive Confirm), `BreadcrumbEmptyState` (role=note + Info), `EditorToolbar` (sticky 40px; Add Block + divider + Bold[aria-pressed] + Undo/Redo + spacer + SaveIndicator + Cancel + Save; Breadcrumb branch disables AddBlock+Save with tooltips), `EditorLoadingShell` (React.lazy fallback skeleton); `ModuleEditor` orchestrator (`forwardRef<{flush,cancel}>`, dnd-kit/sortable PointerSensor+KeyboardSensor reorder, `useEditHistory` w/ 150ms typing-burst coalescing, defense-in-depth `enforceAllowedBlocks` filter throwing in DEV, Esc/Ctrl+Z/Ctrl+Shift+Z keyboard shortcuts, edit-mode glow chrome via `--editor-edit-glow*` CSS vars). 9 test files / 48/48 new tests pass. Deps added: `@dnd-kit/sortable@10.0.0`, `@dnd-kit/utilities@3.2.2` (plan said pre-installed but only `@dnd-kit/core@6.3.1` was vendored). Toolbar Bold ↔ active TextSpanEditor cross-wiring deferred to plan 01-06 (BlockEditorProps needs widening with onReady/onBoldStateChange; Ctrl+B inside contentEditable still works). 4 commits (`8fcf675`, `17e498d`, `304a0b7`, `137d934`).
 - **2026-04-30** — **State sync.** Reconciled STATE.md against on-disk artifacts and git history. Plan 01-04 SUMMARY.md exists and 4 commits landed (`344b998`, `0b56759`, `13c9684`, `7ba549c`, plus docs `8163b5a`) — promoted to ✓ complete. Plan 01-05 was mid-execution: task 5.1 (`8fcf675`) and task 5.2 (`17e498d`) committed; task 5.3 had 4 of 7 leaf components staged uncommitted. Drift in `.planning/PROJECT.md`, `.planning/ROADMAP.md`, `.planning/config.json` remains unstaged for separate review.
 - **2026-04-28** — **Phase 1, Plan 01-04-text-block complete (4/6, Wave 2 partial).** Inline interactive execution. Delivered: `selection-utils.ts` (DOM ↔ TextSpan coord helpers, 13 tests); `TextSpanEditor.tsx` controlled contentEditable (UI-SPEC §4.8) — bold via `splitSpansAtSelection` + `mergeAdjacentSpans`, paste reads `text/plain` only with `preventDefault`, IME composition guard, `onReady` imperative API, no `innerHTML`/`execCommand`/`dangerouslySetInnerHTML` (8 tests incl. XSS regression `<b>HTML</b>` → literal text); `TextBlockRenderer` + `TextBlockEditor` (6 tests incl. round-trip); `BLOCK_REGISTRY.Text` upgraded to `implemented: true` with real Renderer/Editor/create (`{type:'Text',spans:[{text:'',bold:false}]}`) — 45 registry tests pass. Total 72/72 new tests. Added `@testing-library/user-event@^14` devDep. 4 feat commits (`344b998`, `0b56759`, `13c9684`, `7ba549c`) + SUMMARY (`8163b5a`).

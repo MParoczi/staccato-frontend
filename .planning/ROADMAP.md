@@ -25,9 +25,11 @@
 
 ## Phase Details
 
-### Phase 1: Module Content Editor (Core)
+### Phase 1: Module Content Editor (Core) ✓ Complete (2026-04-30)
 
 **Goal:** A user can open a placed module, edit its content inline with autosave, undo/redo, dirty-state guards, and a save/cancel affordance — without disturbing the grid placement system.
+
+**Status:** Shipped 2026-04-30 across 6 plans / 27+ commits on branch `009-module-content-editor`. All 9 locked acceptance criteria covered by `ModuleCard.roundtrip.test.tsx`. SUMMARY.md exists for every plan; phase verification at `.planning/phases/01-module-content-editor-core/01-VERIFICATION.md`.
 
 **Requirements:** EDIT-01
 
