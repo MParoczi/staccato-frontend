@@ -417,33 +417,6 @@ skipped: 0
         wired against `useBlocker` from `react-router`.
       • whether `beforeunload` is registered for the hard-nav case.
 
-- truth: "Long text inside a Text block wraps within the module's content width."
-  status: failed
-  reason: |
-    User reported (surfaced during Test 14): when the module is sized
-    small and the Text block contains long content, the text does not
-    wrap — it overflows and most of the text becomes invisible (clipped
-    by the module's overflow-hidden box).
-  severity: minor
-  test: 14
-  artifacts: []
-  missing:
-    - confirm CSS rule (likely missing `overflow-wrap: anywhere` /
-      `word-break: break-word` on the rendered Text block container)
-    - reproduction snapshot in narrow module
-  fix_applied: null
-  fix_commit: null
-  notes: |
-    Almost certainly a one-line CSS fix in TextBlock view + edit
-    rendering: add `overflow-wrap: anywhere` (or Tailwind
-    `break-words` / `[overflow-wrap:anywhere]`) on the block content
-    element. Long URLs / unbroken strings need `anywhere` rather than
-    `break-word`. Apply to:
-      • src/features/notebooks/components/blocks/TextBlock.tsx
-        (view-mode wrapper and the contenteditable element)
-    Module's overflow-hidden clip rect stays as-is — the fix is to let
-    the text reflow inside it, not to remove the clip.
-
 
 
 
