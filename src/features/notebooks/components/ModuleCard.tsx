@@ -282,6 +282,11 @@ export const ModuleCard = memo(function ModuleCard({
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
+      // Only activate the role=button when focus is on the wrapper itself.
+      // Keystrokes inside descendant widgets (e.g. the contentEditable
+      // TextSpanEditor) must NOT be hijacked — otherwise typing Space inside
+      // a Text block calls preventDefault and the space is swallowed.
+      if (event.target !== event.currentTarget) return;
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
         onSelect(module.id);

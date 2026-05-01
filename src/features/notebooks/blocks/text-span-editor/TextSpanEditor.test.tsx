@@ -224,6 +224,76 @@ describe('TextSpanEditor', () => {
     expect(editor.getAttribute('contenteditable')).toBe('true');
     expect(editor.getAttribute('aria-label')).toBeTruthy();
   });
+
+  it('inserts a literal space when user presses Spacebar (gap 01-08-A)', () => {
+    // Reproduces the ModuleCard wrapper's onKeyDown handler that intercepts
+    // Space/Enter for "select module". Pre-fix that handler called
+    // preventDefault on every Space — including those bubbling up from a
+    // descendant contentEditable — so typing Space inside a Text block
+    // produced no character. Post-fix the handler bails out when
+    // event.target !== event.currentTarget, so the contentEditable receives
+    // the keystroke and the browser inserts a space.
+    const wrapperKeyDown = vi.fn((event: React.KeyboardEvent<HTMLDivElement>) => {
+      // Mirror of ModuleCard's post-fix guard.
+      if (event.target !== event.currentTarget) return;
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+      }
+    });
+    function ModuleCardLike({ children }: { children: React.ReactNode }) {
+      return (
+        <div role="button" tabIndex={0} onKeyDown={wrapperKeyDown}>
+          {children}
+        </div>
+      );
+    }
+    const onChangeCb = vi.fn();
+    render(
+      <ModuleCardLike>
+        <Host initial={[{ text: 'hi', bold: false }]} onChangeCb={onChangeCb} />
+      </ModuleCardLike>,
+    );
+    const root = document.querySelector('[data-text-span-editor]') as HTMLElement;
+    const span = root.querySelector('[data-span-index="0"]') as HTMLElement;
+
+    // Place caret at end of "hi".
+    const sel = window.getSelection()!;
+    const range = document.createRange();
+    range.setStart(span.firstChild!, 2);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    // Dispatch the Space keydown that bubbles to the wrapper. Post-fix the
+    // wrapper does NOT preventDefault, so we then simulate the browser-level
+    // text insertion + the input event the contentEditable would emit.
+    const keyEvent = fireEvent.keyDown(root, { key: ' ', code: 'Space' });
+    expect(keyEvent).toBe(true); // not preventDefaulted
+
+    // Simulate browser inserting the space char into the DOM and firing input.
+    span.firstChild!.textContent = 'hi ';
+    range.setStart(span.firstChild!, 3);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+    fireEvent.input(root);
+
+    expect(onChangeCb).toHaveBeenCalled();
+    const last = onChangeCb.mock.calls.at(-1)![0] as TextSpan[];
+    const fullText = last.map((s) => s.text).join('');
+    expect(fullText).toBe('hi ');
+  });
+
+  it('applies overflow-wrap:anywhere to the editable root (gap 01-08-B)', () => {
+    render(<Host initial={[{ text: 'x', bold: false }]} />);
+    const root = document.querySelector('[data-text-span-editor]') as HTMLElement;
+    // Long unbroken strings (URLs, hashes) must reflow within the module's
+    // overflow-hidden clip rect. `whitespace: pre-wrap` alone wraps only at
+    // soft break opportunities; `overflow-wrap: anywhere` is required to
+    // break inside non-word strings.
+    expect(root.style.overflowWrap).toBe('anywhere');
+    expect(root.style.whiteSpace).toBe('pre-wrap');
+  });
 });
 
 

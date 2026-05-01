@@ -448,6 +448,11 @@ export function TextSpanEditor({
     minHeight: '1.5em',
     outline: 'none',
     whiteSpace: 'pre-wrap',
+    // Break long unbroken strings (URLs, hashes) so the contentEditable
+    // reflows inside the module's overflow-hidden clip rect instead of
+    // overflowing horizontally. `anywhere` is required (rather than
+    // `break-word`) because `break-word` only breaks at word boundaries.
+    overflowWrap: 'anywhere',
   };
 
   return (
