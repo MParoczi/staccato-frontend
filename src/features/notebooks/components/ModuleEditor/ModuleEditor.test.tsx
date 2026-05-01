@@ -330,7 +330,104 @@ describe('ModuleEditor', () => {
     expect(inline.outlineColor).toContain('--editor-edit-glow-ring');
     expect(inline.boxShadow).toContain('--editor-edit-glow');
   });
+
+  describe('fresh-block typing (gap 01-07)', () => {
+    /**
+     * UAT Test 3 reported: picking "Text" from the Add Block popover and
+     * typing immediately produced no characters and no save (paste worked,
+     * existing blocks worked). Root cause: focus stayed on the popover
+     * trigger / option button after the popover closed, so the very first
+     * keystroke never reached the freshly-mounted contentEditable.
+     *
+     * Fix: AddBlockPopover closes itself on selection and prevents Radix's
+     * default focus-restore-to-trigger; ModuleEditor focuses the new row's
+     * contentEditable + places a caret at offset 0 after the React commit.
+     */
+
+    it('focuses the freshly-appended Text block and parks a caret inside it', async () => {
+      const user = userEvent.setup();
+      const m = makeModule({ content: [] });
+      const qc = makeQc([m]);
+      render(
+        <Wrapper qc={qc}>
+          <ModuleEditor module={m} onExitEditMode={() => undefined} />
+        </Wrapper>,
+      );
+
+      await user.click(screen.getByRole('button', { name: 'editor.addBlock' }));
+      await user.click(
+        await screen.findByRole('option', { name: /editor\.blockType\.text/i }),
+      );
+
+      // requestAnimationFrame is queued in the post-commit effect — flush it.
+      await waitFor(() => {
+        const editable = document.querySelector(
+          '[data-block-row][data-block-index="0"] [data-text-span-editor][contenteditable="true"]',
+        );
+        expect(editable).not.toBeNull();
+        expect(document.activeElement).toBe(editable);
+      });
+
+      // Caret is collapsed at offset 0 inside the editor.
+      const sel = window.getSelection();
+      expect(sel).not.toBeNull();
+      expect(sel!.rangeCount).toBeGreaterThan(0);
+      const range = sel!.getRangeAt(0);
+      expect(range.collapsed).toBe(true);
+      const editable = document.querySelector(
+        '[data-block-row][data-block-index="0"] [data-text-span-editor][contenteditable="true"]',
+      );
+      expect(editable!.contains(range.startContainer)).toBe(true);
+    });
+
+    it('typing into a freshly-added Text block updates the cache on the first keystroke', async () => {
+      const user = userEvent.setup();
+      const m = makeModule({ content: [] });
+      const qc = makeQc([m]);
+      render(
+        <Wrapper qc={qc}>
+          <ModuleEditor module={m} onExitEditMode={() => undefined} />
+        </Wrapper>,
+      );
+
+      await user.click(screen.getByRole('button', { name: 'editor.addBlock' }));
+      await user.click(
+        await screen.findByRole('option', { name: /editor\.blockType\.text/i }),
+      );
+
+      // Wait for autofocus to land before simulating input.
+      const editable = await waitFor(() => {
+        const el = document.querySelector(
+          '[data-block-row][data-block-index="0"] [data-text-span-editor][contenteditable="true"]',
+        );
+        if (!el) throw new Error('editor not mounted yet');
+        if (document.activeElement !== el) throw new Error('not focused yet');
+        return el as HTMLElement;
+      });
+
+      // Simulate the browser's response to a keystroke: it mutates the
+      // span text node, then fires `input`. (jsdom doesn't drive
+      // contentEditable for us, so we replicate exactly the DOM mutation
+      // a real browser would perform — single 'h' inserted at caret.)
+      const span = editable.querySelector('[data-span-index="0"]') as HTMLElement;
+      const textNode = span.firstChild as Text;
+      textNode.textContent = 'h';
+      const sel = window.getSelection()!;
+      const range = document.createRange();
+      range.setStart(textNode, 1);
+      range.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(range);
+      await act(async () => {
+        editable.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+
+      // The optimistic cache reflects the typed character on the FIRST try.
+      const cached = qc.getQueryData<Module[]>(pageModulesQueryKey(PAGE_ID));
+      expect(cached?.[0].content).toHaveLength(1);
+      const block = cached?.[0].content[0] as { type: 'Text'; spans: { text: string }[] };
+      expect(block.type).toBe('Text');
+      expect(block.spans.map((s) => s.text).join('')).toBe('h');
+    });
+  });
 });
-
-
-

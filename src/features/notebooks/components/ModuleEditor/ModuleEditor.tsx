@@ -230,10 +230,21 @@ export const ModuleEditor = forwardRef<ModuleEditorHandle, ModuleEditorProps>(
     }, []);
 
     // ─── Add Block flow ──────────────────────────────────────────────────
+    /**
+     * Index of the most-recently-appended block. After the React commit,
+     * a layout effect focuses that row's contentEditable and places the
+     * caret at offset 0 so the user's very first keystroke lands inside
+     * the new block (gap 01-07). Without this, Radix's PopoverContent
+     * unmount + browser focus default leaves focus on the (now-removed)
+     * Add Block trigger and the first keystroke is dropped.
+     */
+    const pendingAutoFocusIndexRef = useRef<number | null>(null);
+
     const handleAddBlock = useCallback(
       (type: BuildingBlockType) => {
         const desc = BLOCK_REGISTRY[type];
         const next = [...content, desc.create()];
+        pendingAutoFocusIndexRef.current = content.length;
         pushContent(next, { immediateHistory: true });
       },
       [content, pushContent],
@@ -354,6 +365,63 @@ export const ModuleEditor = forwardRef<ModuleEditorHandle, ModuleEditorProps>(
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [history.present]);
+
+    /**
+     * After a freshly-appended block lands in the DOM, move focus into
+     * its editable surface and place a caret at offset 0 so the user's
+     * very first keystroke is captured (gap 01-07).
+     *
+     * Implementation notes:
+     * - We query within `rootRef` to scope the lookup to this editor.
+     * - For Text blocks we focus the contentEditable and set a Range at
+     *   the start of the placeholder span (which contains a ZWSP anchor —
+     *   `TextSpanEditor` strips it on first input).
+     * - For unimplemented placeholder blocks the row has nothing
+     *   focusable; we silently no-op.
+     * - Wrapped in `requestAnimationFrame` to outlive Radix Popover's
+     *   teardown microtasks. `onCloseAutoFocus` on the popover already
+     *   prevents Radix's default focus-restore, but the rAF gives the
+     *   browser one frame to settle before we grab focus.
+     */
+    useEffect(() => {
+      const idx = pendingAutoFocusIndexRef.current;
+      if (idx === null) return;
+      pendingAutoFocusIndexRef.current = null;
+      const root = rootRef.current;
+      if (!root) return;
+      const target = content[idx];
+      if (!target) return;
+      const raf = requestAnimationFrame(() => {
+        const row = root.querySelector<HTMLElement>(
+          `[data-block-row][data-block-index="${idx}"]`,
+        );
+        if (!row) return;
+        const editable = row.querySelector<HTMLElement>(
+          '[data-text-span-editor][contenteditable="true"]',
+        );
+        if (!editable) return;
+        editable.focus();
+        // Place a collapsed caret inside the first child so the next
+        // typed character lands inside the React-owned span structure
+        // rather than as a stray text node sibling.
+        const sel = root.ownerDocument?.defaultView?.getSelection();
+        const firstChild = editable.firstChild;
+        if (sel && firstChild) {
+          const range = root.ownerDocument!.createRange();
+          // Anchor inside the placeholder span if present, else at the
+          // editor root start (fallback for non-empty initial content).
+          const anchorNode =
+            firstChild.firstChild ?? firstChild;
+          range.setStart(anchorNode, 0);
+          range.collapse(true);
+          sel.removeAllRanges();
+          sel.addRange(range);
+        }
+      });
+      return () => cancelAnimationFrame(raf);
+      // Re-run whenever the block list changes — the post-append commit
+      // is the moment we need to act.
+    }, [content]);
 
     // ─── Imperative handle for host (click-outside flush) ────────────────
     useImperativeHandle(
