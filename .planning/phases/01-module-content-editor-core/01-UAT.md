@@ -1,5 +1,5 @@
 ---
-status: testing
+status: complete
 phase: 01-module-content-editor-core
 source:
   - 01-01-foundation-SUMMARY.md
@@ -9,20 +9,13 @@ source:
   - 01-05-editor-shell-SUMMARY.md
   - 01-06-integration-SUMMARY.md
 started: 2026-04-30T00:00:00Z
-updated: 2026-04-30T21:00:00Z
+updated: 2026-05-01T00:00:00Z
 ---
 
 ## Current Test
 <!-- OVERWRITE each test - shows where we are -->
 
-number: 2
-name: Add Block popover lists allowed types
-  In edit mode on a Theory module, clicking "Add Block" opens a popover
-  listing the allowed block types (Heading, Date, Text, List,
-  OrderedList, Checklist, Table, Note, Chord, Tab). On a Title module
-  the popover shows exactly Date and Text — nothing else.
-awaiting: user response
-awaiting: re-test after Radix portal click-outside fix
+[testing complete]
 
 ## Tests
 
@@ -42,63 +35,83 @@ notes: |
 
 
 ### 2. Add Block popover lists allowed types
-result: [pending]
-  the module wrapper. Logged as a separate gap and fixed.
+expected: In edit mode on a Theory module, clicking "Add Block" opens a popover listing the allowed block types (Heading, Date, Text, List, OrderedList, Checklist, Table, Note, Chord, Tab). On a Title module the popover shows exactly Date and Text — nothing else.
+result: pass
+notes: Re-test passed after EditModeOverlay portal-aware click-outside bail-out (gap below resolved).
 
 ### 3. Add a Text block and type into it
 expected: Pick "Text" from the Add Block popover. A new empty Text block is appended; focus lands inside it. Typing renders the characters live in the same block. Pasting rich content (e.g. copied bold HTML) pastes as plain text only — no markup leaks.
-result: [pending]
+result: issue
+reported: |
+  When I add a new text block to Theory module it appears in the block
+  list. When I type the 'Start typing...' placeholder doesn't disappear.
+  The typed text is not saved. However: When I edit the already existing
+  text block the 'Start typing...' disappears on typing and the text is
+  saved. So on the second try (editing the already existing text block
+  the first time) it works correctly but not on the first try.
+
+  When I add a new text block to Theory module and paste a rich text
+  into it (or any text) the 'Start typing...' placeholder disappears
+  immediately (correct behaviour) and the text gets saved on the first
+  try correctly. Rich text is converted to simple text (works correctly).
+severity: major
 
 ### 4. Bold via Ctrl+B inside a Text block
 expected: Select a portion of typed text and press Ctrl+B. The selected portion renders bold in place. Pressing Ctrl+B again on the bolded selection un-bolds it. Adjacent identically-styled spans merge cleanly (no visual seams).
-result: [pending]
+result: pass
 
 ### 5. Save indicator + ~1s debounce
 expected: After typing stops in a Text block, within ~1 second the save indicator transitions Idle → "Saving…" → "Saved", then the "Saved" badge auto-fades after ~1.5s. No save fires while you're still typing continuously.
-result: [pending]
+result: pass
 
 ### 6. Undo / Redo
 expected: After making an edit, Ctrl+Z (or the toolbar Undo button) reverts the last change. Ctrl+Shift+Z (or Redo) re-applies it. Undo/Redo toolbar buttons enable/disable to reflect history availability.
-result: [pending]
+result: pass
 
 ### 7. Reorder blocks via drag handle
 expected: Add a second Text block. A drag handle appears in the left gutter on hover/focus of each block row. Dragging block #2 above block #1 (pointer or keyboard: Space to grab, arrows to move, Space to drop) reorders them. The new order persists through the next autosave.
-result: [pending]
+result: pass
 
 ### 8. Delete block with confirm dialog
 expected: Hover a block row → a delete icon appears top-right. Clicking it opens an AlertDialog ("Delete block?" with locked copy). Cancel keeps the block; Confirm removes it. The remaining blocks reflow without layout glitch.
-result: [pending]
+result: pass
 
 ### 9. Cancel reverts edits
 expected: Make an edit (e.g. type into a Text block), then click "Cancel" in the toolbar. Edit mode exits and the module's view content is restored to the pre-edit snapshot — your unsaved typing is gone.
-result: [pending]
+result: pass
+notes: User flagged a separate keystroke-handling defect in passing — Space cannot be typed in a Text block (paste works, every other key works). Logged as its own gap.
 
 ### 10. Click-outside / Escape exits edit mode (clean)
 expected: With no unsaved changes, pressing Escape (or clicking outside the module) exits edit mode silently — no dialog, no save indicator flash, view content unchanged.
-result: [pending]
+result: pass
 
 ### 11. Dirty-nav guard dialog
 expected: Make an edit so the save indicator shows "Saving…", then immediately try to navigate away (e.g. click a sidebar link, browser back). If the in-flight save fails (or you navigate before debounce flush), an "Unsaved changes" AlertDialog appears with "Keep editing" / "Discard" buttons. Keep editing returns to the editor; Discard navigates and abandons the edit.
-result: [pending]
+result: issue
+reported: |
+  It doesn't work as intended. When I navigate it executes the
+  navigation and no dialog appears. The state is not saved of the edit.
+severity: major
 
 ### 12. Breadcrumb module: auto-generated note + disabled controls
 expected: Enter edit mode on a Breadcrumb module. An info note appears explaining the content is auto-generated. The "Add Block" button is **disabled** (tooltip on hover) and the "Save" button is **disabled**. Cancel/Escape still works to exit.
-result: [pending]
+result: pass
 
 ### 13. Unimplemented block type renders placeholder
 expected: A module that contains a not-yet-implemented block (e.g. Table, Note, Chord, Tab, List, OrderedList, Checklist, Heading) renders that block in view mode as a dashed-bordered placeholder card with italic muted text identifying the block type. The placeholder is announced as a note (role="note") to assistive tech and does not crash the surrounding module.
-result: [pending]
+result: pass
 
 ### 14. Round-trip persistence
 expected: Add a Text block with bolded text, wait for "Saved", exit edit mode, then reload the page. The same Text block with the same bold spans renders in view mode after reload — content survived the optimistic-update → debounced PUT → cache-reconciliation cycle.
-result: [pending]
+result: pass
+notes: User flagged a separate text-overflow defect in passing — long text in a Text block does not wrap when the module is narrow, hiding most of the content. Logged as its own gap.
 
 ## Summary
 
 total: 14
-passed: 2
-issues: 0
-pending: 12
+passed: 12
+issues: 2
+pending: 0
 skipped: 0
 
 ## Gaps
@@ -112,13 +125,12 @@ skipped: 0
     - src/api/lessons.ts
     - src/features/notebooks/hooks/usePageNavigation.test.tsx
   missing: []
-passed: 1
+  fix_applied: 2026-04-30
   fix_commit: 7093b55
   notes: |
-pending: 13
-    every UAT test because the LessonPage route can't hydrate. Fix is a
-    surgical re-pathing of three calls + verb change for update; hook
-    callers untouched.
+    Was a hard blocker for every UAT test because the LessonPage route
+    can't hydrate. Fix is a surgical re-pathing of three calls + verb
+    change for update; hook callers untouched.
 
 - truth: "Add Module modal renders translated module-type labels."
   status: failed
@@ -263,7 +275,7 @@ pending: 13
     as part of that fix.
 
 - truth: "Picking a block type from the Add Block popover adds the block (rather than collapsing the editor with no effect)."
-  status: failed
+  status: resolved
   reason: "User reported: clicking a type in the Add Block popover does nothing AND the module collapses to its saved size. Caused by EditModeOverlay's mousedown click-outside handler — Radix Popover content renders into a document.body portal that lives outside the module's wrapperRef, so the click is treated as 'outside the module' and triggers exit-edit-mode before the popover's onSelect fires."
   severity: major
   test: 2
@@ -280,6 +292,157 @@ pending: 13
     covers the AddBlockPopover, the DeleteBlockDialog (test 8), the
     UnsavedChangesDialog (test 11), and any future Radix-portaled
     surface the editor opens.
+
+- truth: "Typing into a freshly-added Text block updates the block content and persists."
+  status: failed
+  reason: |
+    User reported: after picking "Text" from the Add Block popover, the
+    new block appears in the list but typing does NOT replace the
+    'Start typing...' placeholder and the typed characters are not
+    saved. Same module/same block works correctly on the SECOND edit
+    (editing the already-existing text block), and pasting (rich or
+    plain) into the freshly-added block ALSO works correctly on the
+    first try. Bug is specific to keyboard input on a just-inserted
+    Text block.
+  severity: major
+  test: 3
+  artifacts: []
+  missing:
+    - root cause (suspected: focus/selection lost between block append
+      and first keystroke; placeholder element may be intercepting
+      keystrokes; or contenteditable hasn't received focus yet so input
+      is lost; or onInput vs. onBeforeInput handler not bound on first
+      mount)
+    - reproduction in vitest + jsdom or Playwright
+  fix_applied: null
+  fix_commit: null
+  notes: |
+    Asymmetry is the diagnostic clue:
+      • type into NEW block → broken
+      • paste into NEW block → works
+      • type into EXISTING block → works
+    Paste fires `paste` / `beforeinput` synchronously and likely
+    triggers a re-render that re-binds the keystroke path; plain
+    `keydown`/`input` on a fresh block hits a stale handler or unfocused
+    target. Likely culprits to inspect:
+      • src/features/notebooks/components/blocks/TextBlock.tsx (focus
+        management, useEffect autofocus on mount, contenteditable ref)
+      • src/features/notebooks/components/EditModeOverlay.tsx (the
+        portal-aware click-outside fix from gap above may be stealing
+        focus on the click that selected the popover item)
+      • the block-append handler in the editor shell — does it call
+        `block.ref.current?.focus()` after the new block mounts?
+
+- truth: "Space character can be typed into a Text block via keyboard."
+  status: failed
+  reason: |
+    User reported (surfaced during Test 9): cannot insert a space by
+    pressing the Spacebar inside a Text block. Pasting whitespace works
+    fine; every other character (letters, digits, punctuation) types
+    correctly. So `keydown`/`beforeinput` for Space specifically is
+    being intercepted/cancelled before reaching the block's input path.
+  severity: major
+  test: 9
+  artifacts: []
+  missing:
+    - confirm dnd-kit Sortable keyboard sensor scope
+    - confirm Tab/keyboard-undo handler isn't swallowing Space
+    - reproduction in Playwright (KeyboardEvent { key: ' ' })
+  fix_applied: null
+  fix_commit: null
+  notes: |
+    Strong suspicion: dnd-kit's KeyboardSensor uses Space as the default
+    grab activator for sortable items (Test 7's keyboard reorder uses
+    Space to grab). If the sortable wrapper's keyboard listener is
+    attached to a parent that contains the contenteditable (instead of
+    only to the drag handle), Space inside the editable region triggers
+    `event.preventDefault()` to start dragging instead of inserting a
+    space character.
+
+    Likely fix locations:
+      • the BlockRow / Sortable wrapper that wires `useSortable` —
+        restrict the keyboard activator to only fire when focus is on
+        the drag handle button itself, not anywhere inside the row.
+        dnd-kit supports this via a custom KeyboardSensor activator
+        constraint or by attaching `{ ...listeners }` only to the
+        handle element rather than spreading them on the whole row.
+      • alternatively, configure `KeyboardSensor` with
+        `coordinateGetter: sortableKeyboardCoordinates` AND ensure the
+        sensor's activator predicate returns false when
+        `event.target` is inside a `[contenteditable="true"]`.
+    Cross-references the Test 3 fresh-block-typing bug (also a
+    keystroke-vs-paste asymmetry) — both may share fix surface in
+    TextBlock.tsx or the block-row wrapper.
+
+- truth: "Navigating with unsaved/in-flight edits triggers the dirty-nav guard dialog."
+  status: failed
+  reason: |
+    User reported: navigation proceeds immediately when there are
+    unsaved or in-flight edits — no "Unsaved changes" AlertDialog
+    appears, and the unsaved typing is silently lost.
+  severity: major
+  test: 11
+  artifacts: []
+  missing:
+    - confirm whether the unsaved-changes guard is actually wired to
+      React Router v7's `useBlocker` / `unstable_useBlocker`
+    - confirm whether the editor exposes a `dirty` flag that the route
+      blocker reads (and whether it's stale due to closure capture)
+    - reproduction in Playwright: type → click sidebar link → assert
+      AlertDialog opens
+  fix_applied: null
+  fix_commit: null
+  notes: |
+    Likely causes (any one of these can produce silent navigation):
+      1. The guard hook is registered only when `dirty === true`, but
+         the dirty flag is set on the debounced save tick instead of
+         on the first keystroke — so the user-perceived "dirty" window
+         (typing then immediately clicking away) doesn't have a
+         blocker installed yet.
+      2. React Router's `useBlocker` is conditional on
+         `when: dirty` and the closure captures the initial `false`
+         value — needs to be a stable selector or use the
+         `useBlocker(shouldBlock)` callback form.
+      3. The blocker IS installed but `confirm()` / dialog open is
+         non-blocking and the navigation proceeds before the user
+         clicks anything.
+      4. Sidebar links are full `<a href>` rather than React Router
+         `<Link>` — RR's blocker only intercepts router navigations,
+         not browser-level link clicks. Browser-back / hard nav also
+         needs `beforeunload` for in-flight requests.
+    Likely files to inspect:
+      • src/features/notebooks/components/EditModeOverlay.tsx (or the
+        edit shell hook) for the dirty-state source.
+      • a hook like useBlockNavigationOnDirty / useUnsavedChangesGuard
+        wired against `useBlocker` from `react-router`.
+      • whether `beforeunload` is registered for the hard-nav case.
+
+- truth: "Long text inside a Text block wraps within the module's content width."
+  status: failed
+  reason: |
+    User reported (surfaced during Test 14): when the module is sized
+    small and the Text block contains long content, the text does not
+    wrap — it overflows and most of the text becomes invisible (clipped
+    by the module's overflow-hidden box).
+  severity: minor
+  test: 14
+  artifacts: []
+  missing:
+    - confirm CSS rule (likely missing `overflow-wrap: anywhere` /
+      `word-break: break-word` on the rendered Text block container)
+    - reproduction snapshot in narrow module
+  fix_applied: null
+  fix_commit: null
+  notes: |
+    Almost certainly a one-line CSS fix in TextBlock view + edit
+    rendering: add `overflow-wrap: anywhere` (or Tailwind
+    `break-words` / `[overflow-wrap:anywhere]`) on the block content
+    element. Long URLs / unbroken strings need `anywhere` rather than
+    `break-word`. Apply to:
+      • src/features/notebooks/components/blocks/TextBlock.tsx
+        (view-mode wrapper and the contenteditable element)
+    Module's overflow-hidden clip rect stays as-is — the fix is to let
+    the text reflow inside it, not to remove the clip.
 
 
 
