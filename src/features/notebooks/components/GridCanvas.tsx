@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import {
@@ -240,16 +241,29 @@ export function GridCanvas({
           </div>
         </DottedPaper>
       </div>
-      <DragOverlay dropAnimation={null}>
-        {dragPreview && activeModule ? (
-          <ModuleDragOverlay
-            layout={dragPreview.previewLayout}
-            style={stylesByType[activeModule.moduleType]}
-            zoom={zoom}
-            isValid={dragPreview.isValid}
-          />
-        ) : null}
-      </DragOverlay>
+      {/*
+       * Portal the DragOverlay to <body> so its `position: fixed` element
+       * is anchored to the viewport, NOT to the transformed ancestor in
+       * `notebook-layout.tsx` (`transform: scale(${zoom})`). A CSS
+       * transform on an ancestor establishes a containing block for fixed
+       * descendants, which would otherwise offset the dnd-kit ghost by
+       * the ancestor's viewport position (and double-scale it at
+       * zoom !== 1) — causing the ghost to appear "totally disconnected
+       * from the cursor" reported in the 2026-05-02 drag bug.
+       */}
+      {createPortal(
+        <DragOverlay dropAnimation={null}>
+          {dragPreview && activeModule ? (
+            <ModuleDragOverlay
+              layout={dragPreview.previewLayout}
+              style={stylesByType[activeModule.moduleType]}
+              zoom={zoom}
+              isValid={dragPreview.isValid}
+            />
+          ) : null}
+        </DragOverlay>,
+        document.body,
+      )}
     </DndContext>
   );
 }

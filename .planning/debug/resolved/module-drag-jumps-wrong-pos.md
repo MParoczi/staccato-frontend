@@ -115,3 +115,82 @@ updated: 2026-05-02
     - `src/features/notebooks/components/GridCanvas.tsx` (import +
       memoized modifier array + `<DndContext modifiers={...}>`)
 
+## Cycle 2 — snap-modifier alone was insufficient
+
+User retest 2026-05-02: "It behaves exactly the same. The ghost of the
+module is totally disconnected from the cursor."
+
+- **Cycle-1 hypothesis miss:** the snap divergence (≤ ½ grid unit) was
+  too small to explain "totally disconnected from cursor". The actual
+  offset is much larger and constant per drag.
+
+- **Cycle-2 evidence:** searched for any CSS transform on a parent of
+  the canvas. Found `src/routes/notebook-layout.tsx` line 131:
+  ```tsx
+  <div className="w-full" style={{
+    transform: `scale(${zoom})`,
+    transformOrigin: 'top center',
+    width: `${100 / zoom}%`,
+  }}>
+    <Outlet />
+  </div>
+  ```
+  The `<Outlet />` renders `LessonPage` → `GridCanvas` → `<DndContext>`
+  → `<DragOverlay>`. dnd-kit's `<DragOverlay>` uses `position: fixed`
+  internally. **A CSS `transform` on an ancestor establishes a new
+  containing block for `position: fixed` descendants** (CSS
+  Transforms 1, §6). Even at zoom=1, `transform: scale(1)` creates the
+  containing block, so the overlay's `transform: translate3d(rect.left
+  + delta.x, rect.top + delta.y, 0)` is now interpreted relative to
+  the transformed div instead of the viewport — offsetting the ghost
+  by the transformed div's viewport position (and at zoom !== 1 also
+  visually re-scaling the already-zoom-scaled `DottedPaper` content,
+  i.e. double-scaling). The `<DragOverlay>` was effectively trapped
+  inside the page-canvas coordinate space instead of being a
+  viewport-anchored ghost.
+
+- **Cycle-2 fix:** portal the `<DragOverlay>` to `document.body` via
+  `createPortal` so it lives outside the transformed ancestor and its
+  `position: fixed` resolves against the viewport again. Implemented
+  in `GridCanvas.tsx`:
+  ```tsx
+  {createPortal(
+    <DragOverlay dropAnimation={null}>
+      {dragPreview && activeModule ? (
+        <ModuleDragOverlay … />
+      ) : null}
+    </DragOverlay>,
+    document.body,
+  )}
+  ```
+  The earlier snap-to-grid modifier from Cycle 1 is retained — together
+  they give a viewport-anchored ghost that snaps in whole grid units
+  in lock-step with the validity check.
+
+- **Cycle-2 verification:**
+    - `pnpm vitest run` for `GridCanvas.test.tsx`,
+      `useCanvasInteractions.test.tsx`,
+      `snap-to-grid-modifier.test.ts` → 25/25 pass.
+    - `pnpm run lint` → 0 errors (pre-existing GSD-tooling warning
+      only).
+
+- **Known related defect (out-of-scope for this session):** the canvas
+  is *double-scaled* at zoom !== 1 — `DottedPaper` already multiplies
+  page width by `zoom`, and the parent layout *also* applies
+  `transform: scale(zoom)`. Visual size = `840 * zoom * zoom`. At the
+  user's reported zoom = 1.0 this is invisible (1 × 1 = 1) but the
+  zoom-shortcut path (50 %–200 %) will mis-render and the
+  `pixelsToGridUnits(delta, zoom)` math will mis-snap by a factor of
+  `zoom`. Recommended follow-up: either pass a constant `zoom = 1` to
+  `DottedPaper` / `ModuleCard` / drag math (let the parent transform do
+  all visual scaling), or remove the parent transform and keep only
+  the internal scaling. Tracked here for the user to file when they
+  hit it; explicitly NOT changed in this fix to keep the cycle-2 patch
+  minimal and avoid touching the `notebook-layout.test.tsx`
+  cross-browser-zoom assertion.
+
+- **Cycle-2 files_changed:**
+    - `src/features/notebooks/components/GridCanvas.tsx` (added
+      `createPortal` import; wrapped `<DragOverlay>` in `createPortal(
+      …, document.body)`).
+
