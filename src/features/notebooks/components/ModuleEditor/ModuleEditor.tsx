@@ -57,6 +57,14 @@ export interface ModuleEditorProps {
    * without prop drilling the mutation hook.
    */
   onSaveStatusChange?: (status: ContentSaveStatus) => void;
+  /**
+   * Optional observer invoked whenever the editor's dirty flag changes.
+   * Mirrors `useModuleContentMutation`'s `isDirty`. Powers the dirty-nav
+   * guard's broadened block condition (gap 01-09) — the host needs to
+   * know about unsaved edits during the pre-debounce window AND while a
+   * PUT is in flight, not just on `saveStatus === 'failed'`.
+   */
+  onDirtyChange?: (isDirty: boolean) => void;
 }
 
 const TYPING_BURST_MS = 150;
@@ -156,7 +164,7 @@ function SortableRow({ id, index, block, onChange, onDelete }: SortableRowProps)
  * follow-up.
  */
 export const ModuleEditor = forwardRef<ModuleEditorHandle, ModuleEditorProps>(
-  function ModuleEditor({ module, onExitEditMode, onSaveStatusChange }, ref) {
+  function ModuleEditor({ module, onExitEditMode, onSaveStatusChange, onDirtyChange }, ref) {
     const { t } = useTranslation();
     const isBreadcrumb = module.moduleType === 'Breadcrumb';
 
@@ -446,6 +454,10 @@ export const ModuleEditor = forwardRef<ModuleEditorHandle, ModuleEditorProps>(
     useEffect(() => {
       onSaveStatusChange?.(saveStatus);
     }, [saveStatus, onSaveStatusChange]);
+
+    useEffect(() => {
+      onDirtyChange?.(mutation.isDirty);
+    }, [mutation.isDirty, onDirtyChange]);
 
     return (
       <div

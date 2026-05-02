@@ -47,6 +47,7 @@ export function EditModeOverlay({
   LazyEditor,
 }: EditModeOverlayProps) {
   const [saveStatus, setSaveStatus] = useState<ContentSaveStatus>('idle');
+  const [isDirty, setIsDirty] = useState<boolean>(false);
 
   const flushPendingSave = useCallback(
     () => editorRef.current?.flush(),
@@ -56,6 +57,7 @@ export function EditModeOverlay({
   const blocker = useDirtyNavBlocker({
     isEditing: true,
     saveStatus,
+    isDirty,
     flushPendingSave,
   });
 
@@ -112,6 +114,7 @@ export function EditModeOverlay({
         module={module}
         onExitEditMode={onExit}
         onSaveStatusChange={setSaveStatus}
+        onDirtyChange={setIsDirty}
       />
       <UnsavedChangesDialog
         open={blocker.isBlocked}

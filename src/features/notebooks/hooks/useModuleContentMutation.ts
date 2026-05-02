@@ -28,6 +28,15 @@ export interface UseModuleContentMutationResult {
   cancel: () => void;
   revertOptimistic: () => void;
   status: ContentSaveStatus;
+  /**
+   * True iff the editor has unpersisted edits the user could lose. Flips
+   * synchronously on the first `schedule()` call (debounce window opens),
+   * stays true while the PUT is in flight, and clears when the server
+   * confirms or the caller explicitly cancels / reverts. Distinct from
+   * `status` because the `idle → idle` transition during the 1000 ms
+   * debounce window is invisible to status alone (gap 01-09).
+   */
+  isDirty: boolean;
   lastError: unknown;
 }
 
@@ -101,6 +110,7 @@ export function useModuleContentMutation({
 
   const [status, setStatus] = useState<ContentSaveStatus>('idle');
   const [lastError, setLastError] = useState<unknown>(null);
+  const [isDirty, setIsDirty] = useState<boolean>(false);
 
   const clearTimer = () => {
     if (timerRef.current !== null) {
@@ -177,6 +187,7 @@ export function useModuleContentMutation({
           );
           setStatus('saved');
           setLastError(null);
+          setIsDirty(false);
           clearSavedTimer();
           savedTimerRef.current = setTimeout(() => {
             setStatus('idle');
@@ -210,6 +221,10 @@ export function useModuleContentMutation({
       captureSnapshot();
       applyOptimisticContent(nextContent);
       pendingContentRef.current = nextContent;
+      // Flip the dirty flag SYNCHRONOUSLY so the dirty-nav guard
+      // (useDirtyNavBlocker) sees unsaved edits the moment the user types,
+      // not 1000 ms later when the debounced PUT fires (gap 01-09).
+      setIsDirty(true);
       clearTimer();
       timerRef.current = setTimeout(() => {
         timerRef.current = null;
@@ -235,12 +250,14 @@ export function useModuleContentMutation({
   const cancel = useCallback(() => {
     clearTimer();
     pendingContentRef.current = null;
+    setIsDirty(false);
   }, []);
 
   const revertOptimistic = useCallback(() => {
     clearTimer();
     clearSavedTimer();
     pendingContentRef.current = null;
+    setIsDirty(false);
     if (snapshotRef.current) {
       const snap = snapshotRef.current;
       queryClient.setQueryData<Module[]>(queryKey, (old) =>
@@ -261,6 +278,6 @@ export function useModuleContentMutation({
     };
   }, []);
 
-  return { schedule, flush, cancel, revertOptimistic, status, lastError };
+  return { schedule, flush, cancel, revertOptimistic, status, isDirty, lastError };
 }
 

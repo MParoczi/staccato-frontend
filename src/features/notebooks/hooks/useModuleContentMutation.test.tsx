@@ -257,5 +257,77 @@ describe('useModuleContentMutation', () => {
     });
     expect(result.current.status).toBe('idle');
   });
-});
 
+  describe('isDirty (gap 01-09)', () => {
+    it('flips synchronously to true on the first schedule (pre-debounce window)', () => {
+      const { result } = renderHook(
+        () => useModuleContentMutation({ pageId: PAGE_ID, moduleId: MODULE_ID }),
+        { wrapper: makeWrapper(client) },
+      );
+      expect(result.current.isDirty).toBe(false);
+      act(() => result.current.schedule(nextContent('typed')));
+      // Synchronously after schedule — no timers advanced — dirty must
+      // already be true so the dirty-nav guard sees it on the very next
+      // re-render.
+      expect(result.current.isDirty).toBe(true);
+    });
+
+    it('clears to false after a successful PUT', async () => {
+      mockedUpdate.mockResolvedValueOnce(makeModule({ content: nextContent('ok') }));
+      const { result } = renderHook(
+        () => useModuleContentMutation({ pageId: PAGE_ID, moduleId: MODULE_ID }),
+        { wrapper: makeWrapper(client) },
+      );
+      act(() => result.current.schedule(nextContent('ok')));
+      expect(result.current.isDirty).toBe(true);
+      await act(async () => {
+        vi.advanceTimersByTime(CONTENT_SAVE_DEBOUNCE_MS);
+        await Promise.resolve();
+        await Promise.resolve();
+      });
+      expect(result.current.isDirty).toBe(false);
+    });
+
+    it('stays true after a failed PUT (user retains unsaved edits)', async () => {
+      mockedUpdate.mockRejectedValueOnce({
+        response: { data: { code: 'INVALID_BUILDING_BLOCK' } },
+      });
+      const { result } = renderHook(
+        () => useModuleContentMutation({ pageId: PAGE_ID, moduleId: MODULE_ID }),
+        { wrapper: makeWrapper(client) },
+      );
+      act(() => result.current.schedule(nextContent('boom')));
+      await act(async () => {
+        vi.advanceTimersByTime(CONTENT_SAVE_DEBOUNCE_MS);
+        await Promise.resolve();
+        await Promise.resolve();
+      });
+      expect(result.current.status).toBe('failed');
+      expect(result.current.isDirty).toBe(true);
+    });
+
+    it('cancel() clears dirty without saving', () => {
+      const { result } = renderHook(
+        () => useModuleContentMutation({ pageId: PAGE_ID, moduleId: MODULE_ID }),
+        { wrapper: makeWrapper(client) },
+      );
+      act(() => result.current.schedule(nextContent('discard me')));
+      expect(result.current.isDirty).toBe(true);
+      act(() => result.current.cancel());
+      expect(result.current.isDirty).toBe(false);
+    });
+
+    it('revertOptimistic() clears dirty', () => {
+      // Seed cache so revertOptimistic has a snapshot to restore against.
+      client.setQueryData<Module[]>(pageModulesQueryKey(PAGE_ID), [makeModule()]);
+      const { result } = renderHook(
+        () => useModuleContentMutation({ pageId: PAGE_ID, moduleId: MODULE_ID }),
+        { wrapper: makeWrapper(client) },
+      );
+      act(() => result.current.schedule(nextContent('cancel-me')));
+      expect(result.current.isDirty).toBe(true);
+      act(() => result.current.revertOptimistic());
+      expect(result.current.isDirty).toBe(false);
+    });
+  });
+});

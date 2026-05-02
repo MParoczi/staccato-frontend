@@ -158,5 +158,151 @@ describe('useDirtyNavBlocker', () => {
     );
     expect(screen.queryByTestId('other')).toBeNull();
   });
-});
 
+  describe('dirty-nav guard (gap 01-09)', () => {
+    /**
+     * Pre-fix the blocker only fired on `saveStatus === 'failed'`. UAT
+     * Test 11 reported that navigating during an *unfailed-but-dirty*
+     * window (the 1000 ms debounce gap, OR an in-flight PUT that hasn't
+     * resolved yet) lost the user's edits silently. Post-fix the blocker
+     * also fires when `isDirty === true`, attempts a flush retry, and
+     * either auto-proceeds on success or surfaces the dialog on failure.
+     */
+
+    it('editing + isDirty + flush succeeds → blocker auto-proceeds (no dialog)', async () => {
+      const flush = vi.fn(() => Promise.resolve({ ok: true }));
+      renderHarness({
+        isEditing: true,
+        saveStatus: 'idle',
+        isDirty: true,
+        flushPendingSave: flush,
+      });
+      fireEvent.click(screen.getByTestId('nav'));
+      await screen.findByTestId('other');
+      expect(flush).toHaveBeenCalledTimes(1);
+      // After navigation completes the harness is unmounted; absence of
+      // the dialog (which would block the URL change) is the assertion.
+    });
+
+    it('editing + isDirty + flush rejects → dialog surfaces, navigation deferred', async () => {
+      const flush = vi.fn(() => Promise.reject(new Error('server 500')));
+      renderHarness({
+        isEditing: true,
+        saveStatus: 'idle',
+        isDirty: true,
+        flushPendingSave: flush,
+      });
+      fireEvent.click(screen.getByTestId('nav'));
+      await waitFor(() =>
+        expect(screen.getByTestId('blocked').textContent).toBe('true'),
+      );
+      expect(flush).toHaveBeenCalledTimes(1);
+      expect(screen.queryByTestId('other')).toBeNull();
+    });
+
+    it('editing + isDirty + nothing pending (flush returns undefined) → dialog surfaces', async () => {
+      const flush = vi.fn(() => undefined);
+      renderHarness({
+        isEditing: true,
+        saveStatus: 'idle',
+        isDirty: true,
+        flushPendingSave: flush,
+      });
+      fireEvent.click(screen.getByTestId('nav'));
+      await waitFor(() =>
+        expect(screen.getByTestId('blocked').textContent).toBe('true'),
+      );
+      expect(screen.queryByTestId('other')).toBeNull();
+    });
+
+    it('editing + isDirty=false + saveStatus=idle → blocker does NOT fire (clean path)', async () => {
+      renderHarness({
+        isEditing: true,
+        saveStatus: 'idle',
+        isDirty: false,
+        flushPendingSave: () => undefined,
+      });
+      fireEvent.click(screen.getByTestId('nav'));
+      await screen.findByTestId('other');
+      // After navigation the harness is gone; reaching '/other' is itself
+      // the proof the blocker did not fire.
+    });
+
+    it('editing + isDirty + Discard (proceed) → navigation completes, dialog closes', async () => {
+      const flush = vi.fn(() => Promise.reject(new Error('server 500')));
+      renderHarness({
+        isEditing: true,
+        saveStatus: 'idle',
+        isDirty: true,
+        flushPendingSave: flush,
+      });
+      fireEvent.click(screen.getByTestId('nav'));
+      await waitFor(() =>
+        expect(screen.getByTestId('blocked').textContent).toBe('true'),
+      );
+      act(() => {
+        fireEvent.click(screen.getByTestId('proceed'));
+      });
+      await screen.findByTestId('other');
+    });
+
+    it('editing + isDirty + Keep Editing (reset) → URL unchanged, dialog closes', async () => {
+      const flush = vi.fn(() => Promise.reject(new Error('server 500')));
+      const { router } = renderHarness({
+        isEditing: true,
+        saveStatus: 'idle',
+        isDirty: true,
+        flushPendingSave: flush,
+      });
+      fireEvent.click(screen.getByTestId('nav'));
+      await waitFor(() =>
+        expect(screen.getByTestId('blocked').textContent).toBe('true'),
+      );
+      act(() => {
+        fireEvent.click(screen.getByTestId('reset'));
+      });
+      await waitFor(() =>
+        expect(screen.getByTestId('blocked').textContent).toBe('false'),
+      );
+      expect(screen.queryByTestId('other')).toBeNull();
+      expect(router.state.location.pathname).toBe('/');
+    });
+
+    it('beforeunload while dirty → preventDefault called, returnValue set', () => {
+      renderHarness({
+        isEditing: true,
+        saveStatus: 'idle',
+        isDirty: true,
+        flushPendingSave: () => undefined,
+      });
+      const event = new Event('beforeunload', { cancelable: true }) as BeforeUnloadEvent;
+      // jsdom's Event doesn't initialize returnValue — set the field so we
+      // can observe the listener writing to it.
+      Object.defineProperty(event, 'returnValue', {
+        configurable: true,
+        writable: true,
+        value: undefined,
+      });
+      const prevented = !window.dispatchEvent(event);
+      expect(prevented).toBe(true);
+      expect(event.returnValue).toBe('');
+    });
+
+    it('beforeunload while clean → listener no-ops (navigation not blocked)', () => {
+      renderHarness({
+        isEditing: true,
+        saveStatus: 'idle',
+        isDirty: false,
+        flushPendingSave: () => undefined,
+      });
+      const event = new Event('beforeunload', { cancelable: true }) as BeforeUnloadEvent;
+      Object.defineProperty(event, 'returnValue', {
+        configurable: true,
+        writable: true,
+        value: undefined,
+      });
+      const prevented = !window.dispatchEvent(event);
+      expect(prevented).toBe(false);
+    });
+  });
+});

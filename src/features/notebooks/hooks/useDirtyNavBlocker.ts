@@ -7,6 +7,13 @@ export interface UseDirtyNavBlockerArgs {
   isEditing: boolean;
   /** Most-recent save status from `useModuleContentMutation`. */
   saveStatus: ContentSaveStatus;
+  /**
+   * True iff the editor has unpersisted edits. Includes the post-keystroke
+   * pre-debounce window AND the in-flight PUT window (gap 01-09). Defaults
+   * to `false` when not supplied so legacy call sites keep the original
+   * "fail-only" semantics.
+   */
+  isDirty?: boolean;
   /** Imperative flush (best-effort retry of the pending PUT). */
   flushPendingSave: () => Promise<unknown> | undefined;
 }
@@ -23,25 +30,50 @@ export interface UseDirtyNavBlockerResult {
 /**
  * React Router v7 navigation guard for the in-flight Phase 1 module editor.
  *
- * Per CONTEXT.md decision 4 the dialog only fires when there are *actually*
- * unsaved changes the server rejected — i.e. `isEditing && saveStatus ===
- * 'failed'`. Successful debounced saves never trigger.
+ * Per gap 01-09 the dialog fires whenever the editor has unpersisted edits
+ * — i.e. `isEditing && (isDirty || saveStatus === 'failed')`. The "dirty"
+ * window covers both the post-keystroke pre-debounce gap (the original
+ * UAT T11 failure mode) and the in-flight PUT. When blocked we attempt
+ * one last `flushPendingSave()` retry; on resolve we auto-`proceed()`
+ * (silent recovery) and on reject we surface `isBlocked = true` so the
+ * host can render `<UnsavedChangesDialog />`.
  *
- * When the blocker fires we attempt one final `flushPendingSave()` retry; on
- * resolve we auto-`proceed()` (silent recovery) and on reject we surface
- * `isBlocked = true` so the host can render `<UnsavedChangesDialog />`.
+ * Also installs a `beforeunload` listener while dirty so browser-back /
+ * Cmd+R / tab close trigger the browser's native confirmation prompt.
  *
  * Requires the data router (`createBrowserRouter`) — see `src/routes/index.tsx`.
  */
 export function useDirtyNavBlocker({
   isEditing,
   saveStatus,
+  isDirty = false,
   flushPendingSave,
 }: UseDirtyNavBlockerArgs): UseDirtyNavBlockerResult {
-  const shouldBlock = isEditing && saveStatus === 'failed';
+  const shouldBlock = isEditing && (isDirty || saveStatus === 'failed');
   const blocker = useBlocker(shouldBlock);
   const [isBlocked, setIsBlocked] = useState(false);
   const retryingRef = useRef(false);
+
+  // ─── beforeunload (hard navigation: tab close, reload, browser back) ──
+  // The router blocker only covers in-app SPA navigation; for hard
+  // navigations the only safety net is `beforeunload`. We track dirtiness
+  // through a ref so the listener (registered once on mount) always reads
+  // the live value without re-binding.
+  const dirtyRef = useRef(shouldBlock);
+  useEffect(() => {
+    dirtyRef.current = shouldBlock;
+  }, [shouldBlock]);
+  useEffect(() => {
+    const handler = (event: BeforeUnloadEvent) => {
+      if (!dirtyRef.current) return;
+      // Both calls are required — Chrome respects preventDefault, others
+      // need returnValue set (deprecated but still mandatory in 2026).
+      event.preventDefault();
+      event.returnValue = '';
+    };
+    window.addEventListener('beforeunload', handler);
+    return () => window.removeEventListener('beforeunload', handler);
+  }, []);
 
   useEffect(() => {
     if (blocker.state !== 'blocked') {
