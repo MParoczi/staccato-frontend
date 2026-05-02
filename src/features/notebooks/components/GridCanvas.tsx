@@ -19,6 +19,7 @@ import { DottedPaper } from '@/components/common/DottedPaper';
 import { useUIStore } from '@/stores/uiStore';
 import { useCanvasInteractions } from '../hooks/useCanvasInteractions';
 import { useCanvasZoomShortcuts } from '../hooks/useCanvasZoomShortcuts';
+import { createSnapToGridModifier } from '../utils/snap-to-grid-modifier';
 import { ModuleCard } from './ModuleCard';
 import { ModuleDragOverlay } from './ModuleDragOverlay';
 
@@ -118,6 +119,20 @@ export function GridCanvas({
     }),
   );
 
+  /**
+   * Snap the drag overlay's visual transform to whole grid units at the
+   * current zoom so the ghost cannot drift past a snap boundary while
+   * `useCanvasInteractions` is still validating the previous cell. Without
+   * this, the pixel-accurate dnd-kit transform and the
+   * `pixelsToGridUnits`-rounded preview layout diverge by up to half a
+   * grid unit, which surfaces as a ghost rendered in the "wrong" cell vs.
+   * its validity color (bug 2026-05-02).
+   */
+  const dragModifiers = useMemo(
+    () => [createSnapToGridModifier(zoom)],
+    [zoom],
+  );
+
   const stylesByType = useMemo(
     () => buildStylesByType(styles),
     [styles],
@@ -186,6 +201,7 @@ export function GridCanvas({
   return (
     <DndContext
       sensors={sensors}
+      modifiers={dragModifiers}
       onDragStart={handleDragStart}
       onDragMove={handleDragMove}
       onDragEnd={handleDragEnd}
