@@ -294,6 +294,56 @@ describe('TextSpanEditor', () => {
     expect(root.style.overflowWrap).toBe('anywhere');
     expect(root.style.whiteSpace).toBe('pre-wrap');
   });
+
+  it('rebuilds empty-state anchor span after select-all-delete so next keystroke is captured (text-block-empty-not-saving)', () => {
+    // Repro of the "Start writing… doesn't disappear and text isn't saved on
+    // first keystroke after deleting the whole text" bug. Browsers (notably
+    // Chrome) strip all `[data-span-index]` spans from the contentEditable
+    // when the user select-all-deletes, leaving a bare `<br>` or empty root.
+    // Without recovery the next keystroke lands in an orphan text node and
+    // is silently dropped on reconciliation.
+    const onChangeCb = vi.fn();
+    render(<Host initial={[{ text: 'adso', bold: false }]} onChangeCb={onChangeCb} />);
+    const root = document.querySelector('[data-text-span-editor]') as HTMLElement;
+    expect(root.querySelector('[data-span-index]')).toBeTruthy();
+
+    // Simulate browser-side select-all-delete: wipe the editable subtree,
+    // optionally leaving a stray <br> (mirrors Chrome behaviour).
+    while (root.firstChild) root.removeChild(root.firstChild);
+    root.appendChild(document.createElement('br'));
+    // Caret sits on the root after deletion.
+    const sel = window.getSelection()!;
+    const range = document.createRange();
+    range.setStart(root, 0);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    // Fire the input event the browser would emit after deletion.
+    fireEvent.input(root);
+
+    // Editor must have rebuilt the empty-state anchor span so the very next
+    // keystroke types into a tracked [data-span-index] element.
+    const anchor = root.querySelector('[data-span-index="0"]') as HTMLElement;
+    expect(anchor).toBeTruthy();
+
+    // onChange should have been called with [] for the deletion.
+    const lastDeletion = onChangeCb.mock.calls.at(-1)![0] as TextSpan[];
+    expect(lastDeletion).toEqual([]);
+
+    // Now simulate the user typing "x" — browser inserts the char into the
+    // (now-restored) anchor span's text node, replacing the ZWSP-only
+    // content with "xZWSP" or "ZWSPx" (we use append for simplicity).
+    const textNode = anchor.firstChild as Text;
+    expect(textNode).toBeTruthy();
+    textNode.textContent = (textNode.textContent ?? '') + 'x';
+    fireEvent.input(root);
+
+    // The typed char must be captured (ZWSP stripped on read).
+    const lastTyped = onChangeCb.mock.calls.at(-1)![0] as TextSpan[];
+    const fullText = lastTyped.map((s) => s.text).join('');
+    expect(fullText).toBe('x');
+  });
 });
 
 

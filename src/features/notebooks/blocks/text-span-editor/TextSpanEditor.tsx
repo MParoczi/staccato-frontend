@@ -288,6 +288,29 @@ export function TextSpanEditor({
         focus: absToCoord(merged, absFocus),
       };
     }
+    // Empty-state recovery: when the user deletes all content, browsers
+    // (notably Chrome) strip the `[data-span-index]` spans out of the
+    // contentEditable and leave a bare `<br>` or an empty root. Without
+    // intervention the layoutEffect won't restore the anchor span
+    // (because `value` will already equal `domValueRef.current = []`),
+    // so the next keystroke lands in an orphan text node and is silently
+    // dropped — only on a later re-render does the DOM realign. Rebuild
+    // the empty-state span now and re-anchor the caret inside it so the
+    // very next keystroke types into a tracked span.
+    if (
+      merged.length === 0 &&
+      !root.querySelector('[data-span-index]')
+    ) {
+      buildDomFromSpans(root, merged);
+      // Place caret at start of the freshly-rebuilt empty-anchor span.
+      restoreSelection(root, {
+        anchor: { spanIndex: 0, charOffset: 0 },
+        focus: { spanIndex: 0, charOffset: 0 },
+      });
+      // The selection we just restored is authoritative — drop any stale
+      // restoreRef set above so the layoutEffect doesn't overwrite it.
+      restoreRef.current = null;
+    }
     // Mark DOM as in-sync with `merged` BEFORE calling onChange so the
     // layoutEffect on the resulting parent re-render skips the rebuild
     // (the user's typed DOM is already correct — we mustn't wipe it).
