@@ -153,21 +153,72 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01–06 | Phase 1 | Pending |
-| USER-01–04 | Phase 2 | Pending |
-| NB-01–05 | Phase 3 | Pending |
-| LES-01–04 | Phase 4 | Pending |
-| PAGE-01–02 | Phase 4 | Pending |
-| CANVAS-01–06 | Phase 5 | Pending |
-| MOD-01–05 | Phase 5 | Pending |
-| BB-01–06 | Phase 6 | Pending |
-| BB-07–11 | Phase 7 | Pending |
-| CHORD-01–03 | Phase 8 | Pending |
-| STYLE-01–06 | Phase 9 | Pending |
-| IDX-01–02 | Phase 10 | Pending |
-| PDF-01–05 | Phase 11 | Pending |
-| I18N-01–03 | Cross-cutting | Pending |
-| ERR-01–04 | Cross-cutting | Pending |
+| AUTH-01 | Phase 2 — Authentication | Pending |
+| AUTH-02 | Phase 2 — Authentication | Pending |
+| AUTH-03 | Phase 2 — Authentication | Pending |
+| AUTH-04 | Phase 2 — Authentication | Pending |
+| AUTH-05 | Phase 2 — Authentication | Pending |
+| AUTH-06 | Phase 2 — Authentication | Pending |
+| USER-01 | Phase 3 — User Profile & Account | Pending |
+| USER-02 | Phase 3 — User Profile & Account | Pending |
+| USER-03 | Phase 3 — User Profile & Account | Pending |
+| USER-04 | Phase 3 — User Profile & Account | Pending |
+| NB-01 | Phase 4 — Notebook Management | Pending |
+| NB-02 | Phase 4 — Notebook Management | Pending |
+| NB-03 | Phase 4 — Notebook Management | Pending |
+| NB-04 | Phase 4 — Notebook Management | Pending |
+| NB-05 | Phase 4 — Notebook Management | Pending |
+| LES-01 | Phase 5 — Lessons & Pages | Pending |
+| LES-02 | Phase 5 — Lessons & Pages | Pending |
+| LES-03 | Phase 5 — Lessons & Pages | Pending |
+| LES-04 | Phase 5 — Lessons & Pages | Pending |
+| PAGE-01 | Phase 5 — Lessons & Pages | Pending |
+| PAGE-02 | Phase 5 — Lessons & Pages | Pending |
+| CANVAS-01 | Phase 6 — Canvas & Module Placement | Pending |
+| CANVAS-02 | Phase 6 — Canvas & Module Placement | Pending |
+| CANVAS-03 | Phase 6 — Canvas & Module Placement | Pending |
+| CANVAS-04 | Phase 6 — Canvas & Module Placement | Pending |
+| CANVAS-05 | Phase 6 — Canvas & Module Placement | Pending |
+| CANVAS-06 | Phase 6 — Canvas & Module Placement | Pending |
+| MOD-01 | Phase 6 — Canvas & Module Placement | Pending |
+| MOD-02 | Phase 6 — Canvas & Module Placement | Pending |
+| MOD-03 | Phase 6 — Canvas & Module Placement | Pending |
+| MOD-04 | Phase 6 — Canvas & Module Placement | Pending |
+| MOD-05 | Phase 6 — Canvas & Module Placement | Pending |
+| BB-01 | Phase 7 — Text Building Blocks | Pending |
+| BB-02 | Phase 7 — Text Building Blocks | Pending |
+| BB-03 | Phase 7 — Text Building Blocks | Pending |
+| BB-04 | Phase 7 — Text Building Blocks | Pending |
+| BB-05 | Phase 7 — Text Building Blocks | Pending |
+| BB-06 | Phase 7 — Text Building Blocks | Pending |
+| BB-10 | Phase 7 — Text Building Blocks | Pending |
+| BB-11 | Phase 7 — Text Building Blocks | Pending |
+| CHORD-01 | Phase 8 — Chord Library | Pending |
+| CHORD-02 | Phase 8 — Chord Library | Pending |
+| CHORD-03 | Phase 8 — Chord Library | Pending |
+| BB-07 | Phase 9 — Rich Building Blocks | Pending |
+| BB-08 | Phase 9 — Rich Building Blocks | Pending |
+| BB-09 | Phase 9 — Rich Building Blocks | Pending |
+| STYLE-01 | Phase 10 — Styling System | Pending |
+| STYLE-02 | Phase 10 — Styling System | Pending |
+| STYLE-03 | Phase 10 — Styling System | Pending |
+| STYLE-04 | Phase 10 — Styling System | Pending |
+| STYLE-05 | Phase 10 — Styling System | Pending |
+| STYLE-06 | Phase 10 — Styling System | Pending |
+| IDX-01 | Phase 11 — Index & PDF Export | Pending |
+| IDX-02 | Phase 11 — Index & PDF Export | Pending |
+| PDF-01 | Phase 11 — Index & PDF Export | Pending |
+| PDF-02 | Phase 11 — Index & PDF Export | Pending |
+| PDF-03 | Phase 11 — Index & PDF Export | Pending |
+| PDF-04 | Phase 11 — Index & PDF Export | Pending |
+| PDF-05 | Phase 11 — Index & PDF Export | Pending |
+| I18N-01 | Phase 12 — Localization & Polish | Pending |
+| I18N-02 | Phase 12 — Localization & Polish | Pending |
+| I18N-03 | Phase 2 — Authentication | Pending |
+| ERR-01 | Phase 4 — Notebook Management | Pending |
+| ERR-02 | Phase 4 — Notebook Management | Pending |
+| ERR-03 | Phase 2 — Authentication | Pending |
+| ERR-04 | Phase 2 — Authentication | Pending |
 
 **Coverage:**
 - v1 requirements: 57 total
