@@ -1,3 +1,18 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+status: in_progress
+last_updated: "2026-05-15T10:30:00.000Z"
+last_activity: 2026-05-15 — 01-01-PLAN.md complete (Foundation scaffold)
+progress:
+  total_phases: 12
+  completed_phases: 0
+  total_plans: 5
+  completed_plans: 1
+  percent: 2
+---
+
 # Project State
 
 ## Project Reference
@@ -11,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-05-15)
 
 **Phase:** 1 of 12
 **Phase name:** Foundation
-**Phase status:** Ready to execute
-**Plans completed:** 0 of 5
-**Last activity:** 2026-05-15 — planning complete (5 plans, 4 waves)
+**Phase status:** In progress
+**Plans completed:** 1 of 5
+**Last activity:** 2026-05-15 — 01-PLAN-01.md complete (Vite 8 + shadcn + Zod env validation)
 
 ## Phase Progress
 
@@ -32,9 +47,17 @@ See: .planning/PROJECT.md (updated 2026-05-15)
 | 11 | Notebook Index & PDF Export | ○ Pending |
 | 12 | Localization & Polish | ○ Pending |
 
+## Decisions
+
+- 01-01: Used shadcn@4.6.0 for init (latest had workspace config bug); form.tsx created manually (not in radix-nova registry)
+- 01-01: radix-nova style uses unified radix-ui package, not @radix-ui/* individual packages
+- 01-01: TypeScript pinned to 5.9.3 (Vite scaffold installs 6.0.3 by default)
+- 01-01: tsconfig.json root given compilerOptions.paths to satisfy shadcn CLI alias validation
+
 ## Notes
 
 - Research and roadmapper agents not installed — roadmap created inline from spec document
 - Spec document: Staccato Frontend Documentation v2.1 (2026-05-15) — authoritative source for all API contracts, architectural decisions, and business rules
 - pnpm is the only accepted package manager
 - Backend is a separate repository (ASP.NET Core 10 WebAPI); frontend is a greenfield React 19 + TypeScript 5.9 SPA
+- Stopped at: Completed 01-PLAN-01.md; resume with 01-PLAN-02.md

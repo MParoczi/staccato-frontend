@@ -38,7 +38,7 @@
 Plans:
 
 **Wave 1**
-- [ ] 01-PLAN-01.md — Project scaffold: Vite 8 + TypeScript config + Tailwind v4 + shadcn init (17 components) + Zod env validation
+- [x] 01-PLAN-01.md — Project scaffold: Vite 8 + TypeScript config + Tailwind v4 + shadcn init (17 components) + Zod env validation
 
 **Wave 2** *(blocked on Wave 1 completion)*
 - [ ] 01-PLAN-02.md — State and HTTP: Zustand authStore (no persist) + Axios client.ts (interceptors) + rawClient.ts
