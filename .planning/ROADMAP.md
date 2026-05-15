@@ -33,6 +33,28 @@
 **Goal:** Bootable app skeleton — Vite project, TypeScript config, Tailwind v4 CSS-first setup, shadcn primitives, routing structure, i18n bootstrap, Axios instance with interceptors, Zustand stores, QueryClient, ProtectedRoute, environment variable validation
 **Mode:** mvp
 **Requirements:** Infrastructure (enables all subsequent phases; no explicit REQ-IDs, but unlocks all phases)
+**Plans:** 5 plans
+
+Plans:
+
+**Wave 1**
+- [ ] 01-PLAN-01.md — Project scaffold: Vite 8 + TypeScript config + Tailwind v4 + shadcn init (17 components) + Zod env validation
+
+**Wave 2** *(blocked on Wave 1 completion)*
+- [ ] 01-PLAN-02.md — State and HTTP: Zustand authStore (no persist) + Axios client.ts (interceptors) + rawClient.ts
+- [ ] 01-PLAN-03.md — i18n: i18next v26 init module + 16 translation JSON files (8 namespaces × en + hu)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+- [ ] 01-PLAN-04.md — Walking skeleton: createBrowserRouter + ProtectedRoute (spinner) + main.tsx boot sequence
+
+**Wave 4** *(blocked on Wave 3 completion)*
+- [ ] 01-PLAN-05.md — Test suite: Vitest setup + unit tests (authStore, env, ProtectedRoute, Axios) + smoke test
+
+**Cross-cutting constraints:**
+- `pnpm tsc --noEmit` must exit 0 after every plan wave
+- Access token must never appear in localStorage, sessionStorage, or any persist middleware
+- All page navigation via React Router `<Navigate>` — never `window.location.href`
+- pnpm only — no npm or yarn commands anywhere
 
 **Success Criteria:**
 1. `pnpm dev` starts without errors; `pnpm build` completes with zero TypeScript errors and zero lint errors
