@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -76,6 +76,7 @@ function formatDate(isoString: string): string {
 
 export default function ProfilePage() {
   const { t } = useTranslation('profile')
+  const queryClient = useQueryClient()
   const user = useAuthStore((s) => s.user)
   const updateUser = useAuthStore((s) => s.updateUser)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
@@ -114,6 +115,7 @@ export default function ProfilePage() {
     mutationFn: (payload: UpdateProfilePayload) => updateMe(payload),
     onSuccess: (updated) => {
       updateUser(updated)
+      queryClient.setQueryData(['user', 'me'], updated)
       void i18next.changeLanguage(updated.language)
       toast.success(t('saveSuccess'))
     },
@@ -123,7 +125,11 @@ export default function ProfilePage() {
   const avatarMutation = useMutation({
     mutationFn: (file: File) => uploadAvatar(file),
     onSuccess: (result) => {
-      if (profile) updateUser({ ...profile, avatarUrl: result.avatarUrl })
+      if (profile) {
+        const updated = { ...profile, avatarUrl: result.avatarUrl }
+        updateUser(updated)
+        queryClient.setQueryData(['user', 'me'], updated)
+      }
       toast.success(t('avatarSuccess'))
     },
     onError: () => toast.error(t('avatarError')),
@@ -131,8 +137,8 @@ export default function ProfilePage() {
 
   const deletionMutation = useMutation({
     mutationFn: requestDeletion,
-    onSuccess: (updated) => {
-      updateUser(updated)
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['user', 'me'] })
       setDeleteDialogOpen(false)
     },
     onError: () => toast.error(t('deleteAccount.error')),
@@ -140,8 +146,8 @@ export default function ProfilePage() {
 
   const cancelDeletionMutation = useMutation({
     mutationFn: cancelDeletion,
-    onSuccess: (updated) => {
-      updateUser(updated)
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['user', 'me'] })
       toast.success(t('deleteAccount.cancelSuccess'))
     },
     onError: () => toast.error(t('deleteAccount.cancelError')),

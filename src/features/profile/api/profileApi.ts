@@ -20,27 +20,25 @@ export async function getMe(): Promise<UserProfile> {
 }
 
 export async function updateMe(payload: UpdateProfilePayload): Promise<UserProfile> {
-  const { data } = await client.patch<UserProfile>('/users/me', payload)
+  const { data } = await client.put<UserProfile>('/users/me', payload)
   return data
 }
 
 export async function uploadAvatar(file: File): Promise<{ avatarUrl: string }> {
   const formData = new FormData()
-  formData.append('file', file)
-  const { data } = await client.post<{ avatarUrl: string }>('/users/me/avatar', formData, {
+  formData.append('File', file)
+  const { data } = await client.put<{ avatarUrl: string }>('/users/me/avatar', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   })
   return data
 }
 
-export async function requestDeletion(): Promise<UserProfile> {
-  const { data } = await client.post<UserProfile>('/users/me/deletion')
-  return data
+export async function requestDeletion(): Promise<void> {
+  await client.delete('/users/me')
 }
 
-export async function cancelDeletion(): Promise<UserProfile> {
-  const { data } = await client.delete<UserProfile>('/users/me/deletion')
-  return data
+export async function cancelDeletion(): Promise<void> {
+  await client.post('/users/me/cancel-deletion')
 }
 
 export async function getInstruments(): Promise<InstrumentOption[]> {
