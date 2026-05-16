@@ -8,62 +8,43 @@
 
 ---
 
-## Phase Overview
+## Milestones
 
-| # | Phase | Goal | Requirements | Success Criteria |
-|---|-------|------|--------------|------------------|
-| 1 | Foundation | Bootable, routed, observable app skeleton | Infrastructure | 5 |
-| 2 | Authentication | Full auth flows; users can log in and stay logged in | AUTH-01–06, ERR-03–04, I18N-03 | 5 |
-| 3 | User Profile & Account | Profile, avatar, account deletion cycle | USER-01–04 | 4 |
-| 4 | Notebook Management | Notebook CRUD, dashboard, book navigation | NB-01–05, ERR-01–02 | 5 |
-| 5 | Lessons & Pages | Lesson CRUD, multi-page lessons, page numbering | LES-01–04, PAGE-01–02 | 5 |
-| 6 | Canvas & Module Placement | Dotted-grid canvas; place/drag/resize all 12 module types | CANVAS-01–06, MOD-01–05 | 5 |
-| 7 | Text Building Blocks | All text/structured block editors, undo/redo, dirty guard | BB-01–06, BB-10–11 | 5 |
-| 8 | Chord Library | Browse chords, fretboard diagrams, reusable chord selector | CHORD-01–03 | 3 |
-| 9 | Rich Building Blocks | MusicalNotes, ChordProgression, ChordTablatureGroup editors | BB-07–09 | 3 |
-| 10 | Styling System | Per-type module styles, system presets, user presets, StyleEditorDrawer | STYLE-01–06 | 5 |
-| 11 | Notebook Index & PDF Export | Index page, nav drawer, async export pipeline, SignalR | IDX-01–02, PDF-01–05 | 5 |
-| 12 | Localization & Polish | Full i18n coverage (en + hu), locale dates, language sync | I18N-01–02 | 5 |
+- ✅ **v0.1 Foundation** — Phase 1 (shipped 2026-05-16)
+- 📋 **v0.2+** — Phases 2–12 (to be planned via `/gsd:new-milestone`)
 
 ---
 
-## Phase Details
+## Phases
 
-### Phase 1: Foundation
-**Goal:** Bootable app skeleton — Vite project, TypeScript config, Tailwind v4 CSS-first setup, shadcn primitives, routing structure, i18n bootstrap, Axios instance with interceptors, Zustand stores, QueryClient, ProtectedRoute, environment variable validation
-**Mode:** mvp
-**Requirements:** Infrastructure (enables all subsequent phases; no explicit REQ-IDs, but unlocks all phases)
-**Plans:** 5 plans
+<details>
+<summary>✅ v0.1 Foundation (Phase 1) — SHIPPED 2026-05-16</summary>
 
-Plans:
+- [x] Phase 1: Foundation (5/5 plans) — completed 2026-05-16
 
-**Wave 1**
-- [x] 01-PLAN-01.md — Project scaffold: Vite 8 + TypeScript config + Tailwind v4 + shadcn init (17 components) + Zod env validation
+See archive: `.planning/milestones/v0.1-ROADMAP.md`
 
-**Wave 2** *(blocked on Wave 1 completion)*
-- [ ] 01-PLAN-02.md — State and HTTP: Zustand authStore (no persist) + Axios client.ts (interceptors) + rawClient.ts
-- [ ] 01-PLAN-03.md — i18n: i18next v26 init module + 16 translation JSON files (8 namespaces × en + hu)
+</details>
 
-**Wave 3** *(blocked on Wave 2 completion)*
-- [ ] 01-PLAN-04.md — Walking skeleton: createBrowserRouter + ProtectedRoute (spinner) + main.tsx boot sequence
+### 📋 Phases 2–12 (Planned)
 
-**Wave 4** *(blocked on Wave 3 completion)*
-- [ ] 01-PLAN-05.md — Test suite: Vitest setup + unit tests (authStore, env, ProtectedRoute, Axios) + smoke test
-
-**Cross-cutting constraints:**
-- `pnpm tsc --noEmit` must exit 0 after every plan wave
-- Access token must never appear in localStorage, sessionStorage, or any persist middleware
-- All page navigation via React Router `<Navigate>` — never `window.location.href`
-- pnpm only — no npm or yarn commands anywhere
-
-**Success Criteria:**
-1. `pnpm dev` starts without errors; `pnpm build` completes with zero TypeScript errors and zero lint errors
-2. Navigating to `/` redirects unauthenticated users to `/login`; navigating to `/login` or `/register` on an authenticated session redirects to `/app/notebooks`
-3. All route paths resolve to their correct page shells (no 404s on valid paths, all pages render without crashing)
-4. `useAuthStore` has no `persist` middleware; the store resets to null on page reload
-5. i18n initialises with English as default; `t('common.appName')` resolves without error; `Accept-Language: en` header present on every API request
+| # | Phase | Goal | Requirements | Plans |
+|---|-------|------|--------------|-------|
+| 2 | Authentication | Full auth flows; users can log in and stay logged in | AUTH-01–06, ERR-03–04, I18N-03 | TBD |
+| 3 | User Profile & Account | Profile, avatar, account deletion cycle | USER-01–04 | TBD |
+| 4 | Notebook Management | Notebook CRUD, dashboard, book navigation | NB-01–05, ERR-01–02 | TBD |
+| 5 | Lessons & Pages | Lesson CRUD, multi-page lessons, page numbering | LES-01–04, PAGE-01–02 | TBD |
+| 6 | Canvas & Module Placement | Dotted-grid canvas; place/drag/resize all 12 module types | CANVAS-01–06, MOD-01–05 | TBD |
+| 7 | Text Building Blocks | All text/structured block editors, undo/redo, dirty guard | BB-01–06, BB-10–11 | TBD |
+| 8 | Chord Library | Browse chords, fretboard diagrams, reusable chord selector | CHORD-01–03 | TBD |
+| 9 | Rich Building Blocks | MusicalNotes, ChordProgression, ChordTablatureGroup editors | BB-07–09 | TBD |
+| 10 | Styling System | Per-type module styles, system presets, user presets, StyleEditorDrawer | STYLE-01–06 | TBD |
+| 11 | Notebook Index & PDF Export | Index page, nav drawer, async export pipeline, SignalR | IDX-01–02, PDF-01–05 | TBD |
+| 12 | Localization & Polish | Full i18n coverage (en + hu), locale dates, language sync | I18N-01–02 | TBD |
 
 ---
+
+## Phase Details (Phases 2–12)
 
 ### Phase 2: Authentication
 **Goal:** Users can register, log in (email/password + Google), and the app silently restores auth state on page reload using the HttpOnly refresh cookie
@@ -213,6 +194,23 @@ Plans:
 5. No hardcoded visible strings remain in JSX (grep for common English UI phrases returns no source matches outside of i18n files)
 
 ---
+
+## Progress
+
+| Phase | Name | Milestone | Plans | Status | Completed |
+|-------|------|-----------|-------|--------|-----------|
+| 1 | Foundation | v0.1 | 5/5 | ✅ Complete | 2026-05-16 |
+| 2 | Authentication | v0.2+ | TBD | ○ Pending | — |
+| 3 | User Profile & Account | v0.2+ | TBD | ○ Pending | — |
+| 4 | Notebook Management | v0.2+ | TBD | ○ Pending | — |
+| 5 | Lessons & Pages | v0.2+ | TBD | ○ Pending | — |
+| 6 | Canvas & Module Placement | v0.2+ | TBD | ○ Pending | — |
+| 7 | Text Building Blocks | v0.2+ | TBD | ○ Pending | — |
+| 8 | Chord Library | v0.2+ | TBD | ○ Pending | — |
+| 9 | Rich Building Blocks | v0.2+ | TBD | ○ Pending | — |
+| 10 | Styling System | v0.2+ | TBD | ○ Pending | — |
+| 11 | Notebook Index & PDF Export | v0.2+ | TBD | ○ Pending | — |
+| 12 | Localization & Polish | v0.2+ | TBD | ○ Pending | — |
 
 ## Requirement → Phase Index
 

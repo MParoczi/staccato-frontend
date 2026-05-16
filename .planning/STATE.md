@@ -1,10 +1,10 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: milestone
+milestone: v0.2
+milestone_name: TBD
 status: in_progress
 last_updated: "2026-05-16T00:00:00.000Z"
-last_activity: 2026-05-16 — Phase 1 shipped — commits 93d8b49–d631ee9 on main
+last_activity: 2026-05-16 — v0.1 milestone archived; Phase 2 next
 progress:
   total_phases: 12
   completed_phases: 1
@@ -17,24 +17,24 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-05-15)
+See: .planning/PROJECT.md (updated 2026-05-16)
 
 **Core value:** A musician can open a notebook, navigate to any lesson, add and arrange content on the dotted-paper canvas, and find exactly what they practiced.
-**Current focus:** Phase 2 — Authentication
+**Current focus:** Planning v0.2 milestone — run `/gsd:new-milestone` to define requirements and roadmap
 
 ## Current Status
 
-**Phase:** 1 of 12 (complete — shipped directly to main)
-**Phase name:** Foundation
-**Phase status:** Shipped
+**Milestone:** v0.1 ✅ shipped; v0.2 not yet defined
+**Phase:** 1 of 12 complete; Phase 2 (Authentication) is next
+**Phase status:** Milestone v0.1 archived
 **Plans completed:** 5 of 5
-**Last activity:** 2026-05-16 — Phase 1 shipped — commits 93d8b49–d631ee9 on main
+**Last activity:** 2026-05-16 — v0.1 milestone archived; REQUIREMENTS.md deleted; ready for `/gsd:new-milestone`
 
 ## Phase Progress
 
 | Phase | Name | Status |
 |-------|------|--------|
-| 1 | Foundation | ✓ Complete |
+| 1 | Foundation | ✅ Shipped (v0.1) |
 | 2 | Authentication | ○ Pending |
 | 3 | User Profile & Account | ○ Pending |
 | 4 | Notebook Management | ○ Pending |
@@ -64,3 +64,4 @@ See: .planning/PROJECT.md (updated 2026-05-15)
 - pnpm is the only accepted package manager
 - Backend is a separate repository (ASP.NET Core 10 WebAPI); frontend is a greenfield React 19 + TypeScript 5.9 SPA
 - Phase 1 shipped 2026-05-16: commits 93d8b49–d631ee9 merged directly to main (branching_strategy: none); no PR opened
+- v0.1 milestone archived 2026-05-16: milestones/v0.1-ROADMAP.md + milestones/v0.1-REQUIREMENTS.md; REQUIREMENTS.md deleted; RETROSPECTIVE.md created

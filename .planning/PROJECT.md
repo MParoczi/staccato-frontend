@@ -10,11 +10,31 @@ The frontend is a React 19 + TypeScript SPA consuming an ASP.NET Core 10 WebAPI 
 
 A musician can open a notebook, navigate to any lesson, add and arrange content on the dotted-paper canvas, and find exactly what they practiced — organized the way they think, not the way software thinks.
 
+## Current State
+
+**Shipped:** v0.1 Foundation (2026-05-16)
+**Next milestone:** v0.2 (Authentication + Profile, Phases 2–3) — requirements to be defined via `/gsd:new-milestone`
+
+The technical platform is in place. The application boots, routes, and validates the environment. The auth infrastructure (store, Axios client, ProtectedRoute) is wired but the actual login/register UI and API calls are stubs. No user-facing feature has shipped yet.
+
+**Tech stack as shipped:**
+- Vite 8.0.13 + React 19.2.6 + TypeScript 5.9.3
+- Tailwind v4 CSS-first (no tailwind.config.js)
+- shadcn radix-nova (17 UI components)
+- Zustand 5.0.13, TanStack Query 5.100.10, Axios 1.16.1
+- React Router 7.15.1, i18next 26.2.0 (http-backend, 8 namespaces)
+- Vitest + Testing Library (19 tests)
+
 ## Requirements
 
 ### Validated
 
-(None yet — ship to validate)
+- ✓ Infrastructure platform (Vite, TypeScript strict, Tailwind v4, shadcn) — v0.1
+- ✓ authStore in-memory only (no persist, no localStorage) — v0.1, confirmed by tests
+- ✓ Single Axios instance with single-flight 401 refresh — v0.1
+- ✓ i18n bootstrap with Accept-Language header on every request — v0.1, confirmed by tests
+- ✓ ProtectedRoute with loading spinner (no flash-of-login) — v0.1, confirmed by tests
+- ✓ pnpm-only package management enforced — v0.1
 
 ### Active
 
@@ -44,7 +64,7 @@ A musician can open a notebook, navigate to any lesson, add and arrange content 
 - [ ] Export scoping: whole notebook / single lesson / selected lessons
 - [ ] User profile management: name, language, default page size, default instrument, avatar
 - [ ] Account deletion with 30-day grace period and cancellation
-- [ ] English and Hungarian localization (all strings via i18next)
+- [ ] English and Hungarian localization (all strings via i18next, HU stubs in place)
 - [ ] Error handling: RFC 7807 infrastructure errors + business rule error codes
 
 ### Out of Scope
@@ -63,9 +83,9 @@ A musician can open a notebook, navigate to any lesson, add and arrange content 
 
 The backend (ASP.NET Core 10 WebAPI) is a separate repository and already defined. The frontend consumes it via a fully documented REST API. No backend changes are in scope — all decisions must adapt to the existing API contracts.
 
-The specification (v2.1, 2026-05-15) is the authoritative source. It covers every API endpoint, request/response shape, enum value, business rule, error code, and architectural decision in detail. The GSD agents should treat it as ground truth.
+The specification (v2.1, 2026-05-15) is the authoritative source. It covers every API endpoint, request/response shape, enum value, business rule, error code, and architectural decision in detail. GSD agents treat it as ground truth.
 
-Tech environment: React 19 + TypeScript 5.9 (strict + erasableSyntaxOnly), Vite 8, pnpm only, Tailwind v4 CSS-first (no `tailwind.config.js`), shadcn radix-nova style, TanStack Query v5, Zustand 5, React Router v7, Axios, dnd-kit, SignalR, i18next.
+**Codebase as of v0.1:** ~450 files (including node_modules), ~2,500 LOC of hand-written source (TypeScript + JSON locales).
 
 ## Constraints
 
@@ -86,22 +106,27 @@ Tech environment: React 19 + TypeScript 5.9 (strict + erasableSyntaxOnly), Vite 
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Token in Zustand memory, no persist | XSS posture — token not accessible via script injection | — Pending |
-| HttpOnly cookie for refresh token | Cookie not accessible to JS; SameSite=Strict prevents CSRF | — Pending |
-| Single-flight refresh pattern | Concurrent 401s share one refresh request — no stampede | — Pending |
-| rawClient for auth/refresh | Prevents circular refresh loop in response interceptor | — Pending |
-| TanStack Query for all server state | Avoids duplicating server collections in Zustand | — Pending |
-| dnd-kit for canvas drag/drop | Required for free-form 2D module placement and block reorder | — Pending |
-| ModuleEditor lazy-loaded via React.lazy | Editor chunk ~30 kB; silences rolldown INEFFECTIVE_DYNAMIC_IMPORT | — Pending |
-| Content save debounced 1000ms | Reduces API calls during active editing | — Pending |
-| Undo/redo at whole-module granularity | Simpler than per-block; 50-step cap, 150ms coalescing | — Pending |
-| TextSpanEditor: contentEditable, no innerHTML | XSS prevention; paste text/plain only | — Pending |
-| No barrel files except curated type/constant barrels | Prevents accidental coupling; keeps tree-shaking clean | — Pending |
-| shadcn radix-nova style + neutral base | Matches design system; cssVariables: true for theming | — Pending |
-| erasableSyntaxOnly: true | Ensures TypeScript compiles to clean ESM without runtime enum objects | — Pending |
+| Token in Zustand memory, no persist | XSS posture — token not accessible via script injection | ✓ Good — confirmed by authStore.test.ts |
+| HttpOnly cookie for refresh token | Cookie not accessible to JS; SameSite=Strict prevents CSRF | ✓ Good — architecture in place |
+| Single-flight refresh pattern | Concurrent 401s share one refresh request — no stampede | ✓ Good — module-level Promise in client.ts |
+| rawClient for auth/refresh | Prevents circular refresh loop in response interceptor | ✓ Good — implemented + tested |
+| TanStack Query for all server state | Avoids duplicating server collections in Zustand | — Pending (Phase 4+) |
+| dnd-kit for canvas drag/drop | Required for free-form 2D module placement and block reorder | — Pending (Phase 6+) |
+| ModuleEditor lazy-loaded via React.lazy | Editor chunk ~30 kB; silences rolldown INEFFECTIVE_DYNAMIC_IMPORT | — Pending (Phase 6+) |
+| Content save debounced 1000ms | Reduces API calls during active editing | — Pending (Phase 7+) |
+| Undo/redo at whole-module granularity | Simpler than per-block; 50-step cap, 150ms coalescing | — Pending (Phase 7+) |
+| TextSpanEditor: contentEditable, no innerHTML | XSS prevention; paste text/plain only | — Pending (Phase 7+) |
+| No barrel files except curated type/constant barrels | Prevents accidental coupling; keeps tree-shaking clean | ✓ Good — established in Phase 1 |
+| shadcn radix-nova style + neutral base | Matches design system; cssVariables: true for theming | ✓ Good — 17 components installed |
+| erasableSyntaxOnly: true | Ensures TypeScript compiles to clean ESM without runtime enum objects | ✓ Good — enforced |
+| shadcn@4.6.0 for init (not latest) | Latest version had workspace config bug | ✓ Good — workaround documented |
+| TypeScript pinned to 5.9.3 | Vite scaffold installs 6.0.3 by default; 5.9.3 is stable | ✓ Good — no compatibility issues |
+| vitest.config.ts separate from vite.config.ts | @tailwindcss/vite plugin incompatible with jsdom | ✓ Good — test isolation |
+| i18n translation files via http-backend | NOT bundled inline — loaded on demand from public/locales/ | ✓ Good — tree-shaking friendly |
+| Boot refresh before ReactDOM.render | Prevents login-page flash; authStore drives initial render | ✓ Good — confirmed by ProtectedRoute tests |
 
 ---
-*Last updated: 2026-05-15 after initialization*
+*Last updated: 2026-05-16 after v0.1 Foundation milestone*
 
 ## Evolution
 
