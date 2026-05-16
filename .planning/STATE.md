@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v0.2
 milestone_name: Authentication
-status: verified
-last_updated: "2026-05-16T13:22:30.000Z"
-last_activity: 2026-05-16 — Phase 2 verified; 10/10 UAT passed; VERIFICATION.md status:passed
+status: shipped
+last_updated: "2026-05-16T13:25:00.000Z"
+last_activity: 2026-05-16 — Phase 2 shipped on main (b9d80f2–14a9b41)
 progress:
   total_phases: 1
   completed_phases: 1
@@ -26,8 +26,8 @@ See: .planning/PROJECT.md (updated 2026-05-16)
 
 Phase: 2 — Authentication
 Plan: All 4 plans complete
-Status: Verified ✓ — ready to ship (`/gsd:ship 2`) or plan Phase 3
-Last activity: 2026-05-16 — Phase 2 verified; 10/10 UAT passed; 25 tests passing; VERIFICATION.md status:passed
+Status: ✅ Shipped — merged directly to main (no PR, branching_strategy: none)
+Last activity: 2026-05-16 — Phase 2 shipped on main (b9d80f2–14a9b41); 10/10 UAT, VERIFICATION status:passed
 
 ## Phase Progress
 
@@ -63,4 +63,5 @@ Last activity: 2026-05-16 — Phase 2 verified; 10/10 UAT passed; 25 tests passi
 - pnpm is the only accepted package manager
 - Backend is a separate repository (ASP.NET Core 10 WebAPI); frontend is a greenfield React 19 + TypeScript 5.9 SPA
 - Phase 1 shipped 2026-05-16: commits 93d8b49–d631ee9 merged directly to main (branching_strategy: none); no PR opened
+- Phase 2 shipped 2026-05-16: commits b9d80f2–14a9b41 merged directly to main (branching_strategy: none); no PR opened
 - v0.1 milestone archived 2026-05-16: milestones/v0.1-ROADMAP.md + milestones/v0.1-REQUIREMENTS.md; REQUIREMENTS.md deleted; RETROSPECTIVE.md created
