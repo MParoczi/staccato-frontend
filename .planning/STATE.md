@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v0.2
 milestone_name: Authentication
-status: shipped
-last_updated: "2026-05-16T13:25:00.000Z"
-last_activity: 2026-05-16 — Phase 2 shipped on main (b9d80f2–14a9b41)
+status: milestone_complete
+last_updated: "2026-05-16T13:30:00.000Z"
+last_activity: 2026-05-16 — v0.2 milestone archived; ready for /gsd:new-milestone
 progress:
   total_phases: 1
   completed_phases: 1
@@ -20,7 +20,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-16)
 
 **Core value:** A musician can open a notebook, navigate to any lesson, add and arrange content on the dotted-paper canvas, and find exactly what they practiced.
-**Current focus:** v0.2 Authentication — Phase 2
+**Current focus:** v0.3+ — planning next milestone (Phase 3: User Profile & Account)
 
 ## Current Position
 

@@ -11,7 +11,8 @@
 ## Milestones
 
 - ✅ **v0.1 Foundation** — Phase 1 (shipped 2026-05-16)
-- 📋 **v0.2+** — Phases 2–12 (to be planned via `/gsd:new-milestone`)
+- ✅ **v0.2 Authentication** — Phase 2 (shipped 2026-05-16)
+- 📋 **v0.3+** — Phases 3–12 (to be planned via `/gsd:new-milestone`)
 
 ---
 
@@ -35,7 +36,7 @@ See archive: `.planning/milestones/v0.1-ROADMAP.md`
 
 </details>
 
-### 📋 Phases 3–12 (Planned)
+### 📋 v0.3+ — Phases 3–12 (Planned)
 
 | # | Phase | Goal | Requirements | Plans |
 |---|-------|------|--------------|-------|
@@ -208,7 +209,7 @@ See archive: `.planning/milestones/v0.1-ROADMAP.md`
 | Phase | Name | Milestone | Plans | Status | Completed |
 |-------|------|-----------|-------|--------|-----------|
 | 1 | Foundation | v0.1 | 5/5 | ✅ Complete | 2026-05-16 |
-| 2 | Authentication | v0.2+ | 4/4 | ✅ Shipped | 2026-05-16 |
+| 2 | Authentication | v0.2 | 4/4 | ✅ Shipped | 2026-05-16 |
 | 3 | User Profile & Account | v0.2+ | TBD | ○ Pending | — |
 | 4 | Notebook Management | v0.2+ | TBD | ○ Pending | — |
 | 5 | Lessons & Pages | v0.2+ | TBD | ○ Pending | — |

@@ -53,15 +53,67 @@
 
 ---
 
+---
+
+## Milestone: v0.2 — Authentication
+
+**Shipped:** 2026-05-16
+**Phases:** 1 (Phase 2) | **Plans:** 4
+
+### What Was Built
+
+1. Auth API layer: login, register, loginWithGoogle, logout — all via rawClient; proactive JWT refresh hook decodes exp, schedules refresh at exp−60s, cancels on unmount
+2. LoginPage: email/password + Google OAuth button + "or" separator + Remember Me checkbox + blur-triggered validation + Sonner toast server errors + authenticated redirect
+3. RegisterPage: displayName/email/password + Google OAuth + blur validation (password ≥8 chars, displayName ≤50 chars) + Sonner toasts + authenticated redirect
+4. GoogleOAuthProvider wrapped at app root in main.tsx with VITE_GOOGLE_CLIENT_ID
+5. Test suite: 25 tests — 5 new for useProactiveRefresh, 4 updated redirect tests (real component mocks), 16 carried from v0.1
+
+### What Worked
+
+- **Parallel wave execution:** Plans 02 (LoginPage) and 03 (RegisterPage) ran in parallel — independent files, no conflicts.
+- **must_haves in PLAN frontmatter:** Explicit truths + artifacts + key_links made verification mechanical — grep patterns confirmed wiring without manual inspection.
+- **onBlur validation mode:** Choosing `mode: 'onBlur'` upfront avoided the "validates while typing" UX trap and was testable in UAT immediately.
+- **Sonner toast for all server errors:** Centralizing error UX to toast.error (not inline form errors) made the error pattern consistent and easy to UAT (one visual check vs. DOM assertion).
+- **ResizeObserver polyfill pattern:** Adding it once in test-setup.ts fixes all Radix-dependent component tests — established as the project pattern.
+
+### What Was Inefficient
+
+- **UAT-then-fix loop on logout:** The logout issue (test 10) required a second pass — fix commit after UAT revealed the missing navigate() call. Could have been caught during verify-phase if the verifier had been triggered by execute-phase.
+- **@hookform/resolvers version mismatch:** Discovered at runtime (startup note in UAT.md). A dependency compatibility check during plan-phase research would have caught this.
+- **verify-work doesn't generate VERIFICATION.md:** Had to spawn gsd-verifier separately after UAT completion — the workflow boundary between verify-work (UAT) and verify-phase (VERIFICATION.md) wasn't obvious upfront.
+- **ship flow blocked by branching_strategy: none:** Needed a manual "mark as shipped on main" path since all work was on main. Fine for solo, but worth setting up a branching strategy before Phase 3.
+
+### Patterns Established
+
+- **useMemo + t for Zod schemas:** Zod schemas with i18n messages are wrapped in `useMemo` with `t` as a dependency — schemas rebuild on language change without creating a new schema on every render
+- **Navigate redirect placed after all hook calls:** React Rules of Hooks — conditional returns (redirect) placed after all hook calls regardless of whether the hook result is used before the redirect
+- **toast.error in GoogleLogin.onError:** The onError callback on GoogleLogin must also toast — it covers silent SDK failures that onSuccess never fires for
+- **rawClient for all auth/* calls:** `/auth/refresh` and `/auth/logout` use rawClient to avoid the response interceptor's refresh loop; production pattern established
+
+### Key Lessons
+
+1. **Run verify-phase during execute-phase, not after.** The verifier produces VERIFICATION.md which ship requires — currently it's only triggered by execute-phase, not verify-work. Run /gsd:validate-phase or equivalent during execution to avoid the gap.
+2. **Check dependency compatibility in research phase.** @hookform/resolvers and zod have tight version coupling. Pin resolver version explicitly in PLAN frontmatter rather than discovering at runtime.
+3. **UAT is the right gate, not just the last step.** Test 10 (logout) revealed a real regression. The UAT-to-fix loop is working as intended — the gap was the navigate() call, not the pattern.
+4. **For solo projects on main, the "ship" step is a STATE.md update.** Accept this and document it clearly; don't fight the workflow by retroactively creating branches.
+
+### Cost Observations
+
+- Model mix: ~100% Sonnet 4.6 (no Opus or Haiku used)
+- Sessions: 1 full session (Phase 2, all 4 plans + UAT + ship + milestone close)
+- Notable: UAT found 1 major issue; fix was 3-line change; total rework cost was minimal
+
+---
+
 ## Cross-Milestone Trends
 
-| Metric | v0.1 |
-|--------|------|
-| Phases | 1 |
-| Plans | 5 |
-| Tasks completed | 11 |
-| Tests added | 19 |
-| Files created | ~50 source files |
-| Timeline | 2 days |
-| Deviations from plan | 7 auto-fixed |
-| Blocking issues | 3 (shadcn bug, tsconfig, env) |
+| Metric | v0.1 | v0.2 |
+|--------|------|------|
+| Phases | 1 | 1 |
+| Plans | 5 | 4 |
+| Tasks completed | 11 | ~12 |
+| Tests added | 19 | +6 (total 25) |
+| Files created | ~50 source files | ~10 source files |
+| Timeline | 2 days | 1 day |
+| Deviations from plan | 7 auto-fixed | 2 (resolver version, logout fix) |
+| Blocking issues | 3 (shadcn bug, tsconfig, env) | 1 (resolver compat) |

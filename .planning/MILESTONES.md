@@ -26,3 +26,31 @@
 **Archive:** `.planning/milestones/v0.1-ROADMAP.md`
 
 ---
+
+## v0.2 — Authentication
+
+**Shipped:** 2026-05-16
+**Phases:** 1 (Phase 2: Authentication)
+**Plans:** 4
+**Tests:** 25 (up from 19)
+
+**Delivered:** Full auth flows — email/password login + registration, Google OAuth, silent session restore via HttpOnly refresh cookie, proactive token refresh 60s before expiry, logout with back-button guard, Sonner toast error handling. LoginPage and RegisterPage fully implemented (replacing stubs from v0.1).
+
+**Commits:** b9d80f2 → f5dcae5 (6 commits, 30 files, 2821 insertions)
+**Timeline:** 2026-05-16 (1 day)
+
+**Key accomplishments:**
+1. Auth API layer (login, register, loginWithGoogle, logout) using rawClient + proactive JWT refresh hook
+2. LoginPage: email/password form + Google OAuth + Remember Me + blur validation + Sonner toast errors
+3. RegisterPage: displayName/email/password form + Google OAuth + blur validation (≥8 char password, ≤50 char displayName)
+4. useProactiveRefresh hook: JWT exp decode → schedules refresh at exp−60s → cancels on unmount
+5. Logout: clearAuth() + navigate('/login', { replace: true }) — back button blocked
+6. Test suite: 25/25 passing (added useProactiveRefresh unit tests + redirect integration tests)
+
+**Known deferred items at close:** 2
+- Backend httpOnly cookie not invalidated on logout (requires backend PR)
+- /gsd:secure-phase 2 not run (auth security review deferred)
+
+**Archive:** `.planning/milestones/v0.2-ROADMAP.md`
+
+---
