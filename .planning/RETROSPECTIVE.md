@@ -105,15 +105,65 @@
 
 ---
 
+## Milestone: v0.3 — User Profile & Account
+
+**Shipped:** 2026-05-16
+**Phases:** 1 (Phase 3) | **Plans:** 4
+
+### What Was Built
+
+1. `UserProfile` type reconciliation — `defaultInstrumentId: string | null`, `scheduledDeletionAt: string | null`; `authStore.updateUser` action added
+2. AppLayout + Navbar: persistent sticky header wrapping all `/app/*` routes; avatar button with initials fallback; dropdown ("My Profile" / "Sign out")
+3. profileApi.ts: 6 async functions using shared Axios instance — getMe, updateMe, uploadAvatar, requestDeletion, cancelDeletion, getInstruments
+4. ProfilePage: full USER-01–04 — react-hook-form + Zod; avatar click-to-upload with loading spinner; language/pageSize/instrument selects; account deletion dialog + 30-day banner + cancellation
+
+### What Worked
+
+- **Type-first planning:** PLAN-01 reconciling the type before the API layer (PLAN-03) and UI (PLAN-04) prevented cascading type errors downstream. Zero TypeScript errors across all 4 plans.
+- **Explicit UAT as the verification gate:** 13 specific tests with expected behavior descriptions caught real issues (405 errors, 404 on deletion, initials not rendering) before ship.
+- **Feature-scoped API module pattern:** `features/profile/api/profileApi.ts` is clean, isolated, and easy to test — reinforces the cross-feature import constraint.
+- **authStore.updateUser as the single source of truth:** Profile mutations update the store; the navbar avatar re-renders automatically via Zustand subscription. No TanStack Query invalidation needed for user state.
+- **Locale expansion strategy (25 keys):** Expanding EN + HU stubs in PLAN-03 before the UI (PLAN-04) meant zero missing-key errors during implementation.
+
+### What Was Inefficient
+
+- **UAT-then-fix loop (x5 issues):** The initial execute-phase produced 405s on all PATCH/POST endpoints and a 404 on deletion. A fix commit (382246b) was required after UAT. Root cause: profileApi.ts methods and URLs didn't match the spec. Earlier spec consultation during planning would have prevented this.
+- **Avatar initials bug:** The `getInitials` helper in Navbar.tsx showed `?` instead of initials — a minor logic issue that should have been caught in PLAN-02's verification step with a more thorough grep pattern.
+- **No unit tests for ProfilePage/profileApi:** The profile feature relies entirely on UAT for coverage. PLAN-04 had no `pnpm test` verification step — only TypeScript checking. This is tech debt.
+- **Open question Q1/Q2 answered at implementation time:** The avatar endpoint method and instruments endpoint shape were unclear in planning; they were discovered at implementation (and then caused 405 issues). Spec lookups during plan-phase research would eliminate this.
+
+### Patterns Established
+
+- **Feature-scoped API module:** `src/features/{feature}/api/{feature}Api.ts` — all calls use shared `client`; interfaces co-located in the same file
+- **authStore.updateUser for profile mutations:** All profile PATCH/POST responses call `updateUser(returned UserResponse)` to sync in-memory state
+- **react-hook-form `values` prop for server-driven defaults:** `useForm({ values: serverData })` re-populates form when query data loads — no manual `reset()` needed
+- **Custom avatar size via className:** shadcn `Avatar` only accepts `"default"/"sm"/"lg"` as size prop; use `className="size-N"` for custom dimensions
+
+### Key Lessons
+
+1. **Consult the spec during plan-phase, not just during execution.** The 405 errors were caused by endpoint mismatches that the spec documented — a 10-minute spec read during research would have prevented a fix commit.
+2. **Add a `pnpm test` verification step to every plan that touches behavior.** TypeScript clean ≠ behavior correct. PLAN-04's verification only ran `tsc --noEmit`; a component smoke test would have caught the initials bug.
+3. **UAT found 7 issues across 13 tests — ~54% issue rate is high for an executed phase.** This reflects an execution-heavy milestone with insufficient spec-grounding at plan time. Target <2 UAT issues per phase.
+4. **The AppLayout pattern is foundational.** Every future phase (4–12) will render inside AppLayout. Getting it right here (sticky, z-indexed, Outlet-based) prevents rework.
+
+### Cost Observations
+
+- Model mix: ~100% Sonnet 4.6
+- Sessions: 1 full session (Phase 3, all 4 plans + UAT + fix + verify + ship + milestone close)
+- Notable: Fix commit required after UAT (7 issues); iteration cost was low but avoidable with better spec lookup at plan time
+
+---
+
 ## Cross-Milestone Trends
 
-| Metric | v0.1 | v0.2 |
-|--------|------|------|
-| Phases | 1 | 1 |
-| Plans | 5 | 4 |
-| Tasks completed | 11 | ~12 |
-| Tests added | 19 | +6 (total 25) |
-| Files created | ~50 source files | ~10 source files |
-| Timeline | 2 days | 1 day |
-| Deviations from plan | 7 auto-fixed | 2 (resolver version, logout fix) |
-| Blocking issues | 3 (shadcn bug, tsconfig, env) | 1 (resolver compat) |
+| Metric | v0.1 | v0.2 | v0.3 |
+|--------|------|------|------|
+| Phases | 1 | 1 | 1 |
+| Plans | 5 | 4 | 4 |
+| Tests added | 19 | +6 (25 total) | 0 (25 still) |
+| Files created | ~50 source | ~10 source | ~15 source |
+| Timeline | 2 days | 1 day | 1 day |
+| UAT issues found | — | 1 | 7 |
+| Fix commits required | 3 | 1 | 1 |
+| Blocking issues | 3 | 1 | 0 (only spec mismatches) |
+| HU stubs deferred | 16 keys | 22 keys | +25 keys (now ~63 total) |

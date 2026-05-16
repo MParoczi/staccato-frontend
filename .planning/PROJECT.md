@@ -10,34 +10,29 @@ The frontend is a React 19 + TypeScript SPA consuming an ASP.NET Core 10 WebAPI 
 
 A musician can open a notebook, navigate to any lesson, add and arrange content on the dotted-paper canvas, and find exactly what they practiced — organized the way they think, not the way software thinks.
 
-## Current Milestone: v0.3 User Profile & Account
-
-**Goal:** Persistent AppLayout with navbar; users can manage their profile, upload an avatar, and exercise the 30-day account deletion grace period.
-
-**Target features:**
-- AppLayout component wrapping all `/app/*` routes with a top navbar
-- Navbar avatar button (image or initials fallback) → dropdown: "My Profile" / "Sign out"
-- `/app/profile` route: view and edit firstName, lastName, language, defaultPageSize, defaultInstrumentId
-- Avatar upload (JPG/PNG/WebP ≤ 2 MB) via `POST /users/me/avatar`; URL stored in `UserResponse.avatarUrl`
-- Language change immediately calls `i18next.changeLanguage()`
-- Account deletion request with confirmation dialog → 30-day grace period banner
-- Account deletion cancellation from the warning banner
-
 ## Current State
 
-**Shipped:** v0.1 Foundation (2026-05-16)
-**Verified:** v0.2 Authentication — Phase 2 (2026-05-16)
+**Shipped:** v0.3 User Profile & Account (2026-05-16)
 
-The authentication flows are fully implemented and user-tested. Users can register, log in via email/password or Google OAuth, stay logged in across page reloads via HttpOnly refresh cookie, and log out cleanly with a proactive token refresh hook. 25 tests pass.
+Users can now register, log in, manage their profile (name, avatar, language, preferences), and request or cancel account deletion. The persistent AppLayout + Navbar is in place — all authenticated routes have consistent navigation chrome. The foundation, auth, and identity layers are complete and fully tested.
 
-**Tech stack as of Phase 2:**
+**Tech stack as of Phase 3:**
 - Vite 8.0.13 + React 19.2.6 + TypeScript 5.9.3
 - Tailwind v4 CSS-first (no tailwind.config.js)
 - shadcn radix-nova (17 UI components)
 - Zustand 5.0.13, TanStack Query 5.100.10, Axios 1.16.1
-- React Router 7.15.1, i18next 26.2.0 (http-backend, 8 namespaces)
+- React Router 7.15.1, i18next 26.2.0 (http-backend, 8 namespaces, 25 profile keys added)
 - @react-oauth/google, @hookform/resolvers 3.10.0, zod 3.24.4
 - Vitest + Testing Library (25 tests)
+- react-hook-form 7.75.0 (added for ProfilePage)
+
+## Next Milestone
+
+**v0.4 — Notebook Management**
+
+Goal: Users can create, browse, configure, and delete notebooks; open a notebook and navigate it as a book (cover → index → lessons).
+
+Key phases: Phase 4 (Notebook Management), Phase 5 (Lessons & Pages)
 
 ## Requirements
 
@@ -45,13 +40,18 @@ The authentication flows are fully implemented and user-tested. Users can regist
 
 - ✓ Infrastructure platform (Vite, TypeScript strict, Tailwind v4, shadcn) — v0.1
 - ✓ authStore in-memory only (no persist, no localStorage) — v0.1, confirmed by tests
-- ✓ Single Axios instance with single-flight 401 refresh — v0.1
+- ✓ Single Axios instance with single-flight 401 refresh — v0.1, confirmed by tests
 - ✓ i18n bootstrap with Accept-Language header on every request — v0.1, confirmed by tests
 - ✓ ProtectedRoute with loading spinner (no flash-of-login) — v0.1, confirmed by tests
 - ✓ pnpm-only package management enforced — v0.1
 - ✓ Authentication: local email/password registration and login with JWT + HttpOnly refresh cookie strategy — Phase 2
 - ✓ Google OAuth login via `@react-oauth/google` — Phase 2
 - ✓ Silent token refresh on page load and proactive refresh before expiry — Phase 2
+- ✓ Persistent AppLayout + Navbar on all `/app/*` routes with avatar dropdown — Phase 3 (NAV-01)
+- ✓ User profile edit: firstName, lastName, language, defaultPageSize, defaultInstrumentId — Phase 3 (USER-01)
+- ✓ Avatar upload (JPG/PNG/WebP ≤ 2 MB) with initials fallback — Phase 3 (USER-02)
+- ✓ Account deletion request with 30-day grace period and banner — Phase 3 (USER-03)
+- ✓ Cancel scheduled account deletion from banner — Phase 3 (USER-04)
 
 ### Active
 
@@ -76,8 +76,6 @@ The authentication flows are fully implemented and user-tested. Users can regist
 - [ ] Global page numbering formula across the notebook
 - [ ] PDF export: async pipeline, SignalR progress push, polling fallback
 - [ ] Export scoping: whole notebook / single lesson / selected lessons
-- [ ] User profile management: name, language, default page size, default instrument, avatar
-- [ ] Account deletion with 30-day grace period and cancellation
 - [ ] English and Hungarian localization (all strings via i18next, HU stubs in place)
 - [ ] Error handling: RFC 7807 infrastructure errors + business rule error codes
 
@@ -99,7 +97,11 @@ The backend (ASP.NET Core 10 WebAPI) is a separate repository and already define
 
 The specification (v2.1, 2026-05-15) is the authoritative source. It covers every API endpoint, request/response shape, enum value, business rule, error code, and architectural decision in detail. GSD agents treat it as ground truth.
 
-**Codebase as of v0.1:** ~450 files (including node_modules), ~2,500 LOC of hand-written source (TypeScript + JSON locales).
+**Codebase as of v0.3:** ~27 hand-written source files, ~5 900 LOC (TypeScript + JSON locales). Core patterns established: feature-scoped API modules, authStore-driven user state, TanStack Query for server state, Zod + react-hook-form for validated forms.
+
+**Open backend gaps:**
+- HttpOnly refresh cookie not invalidated on logout (backend fix pending in separate repo)
+- `GET /instruments` endpoint shape assumed; update `InstrumentOption` interface if it changes
 
 ## Constraints
 
@@ -124,6 +126,11 @@ The specification (v2.1, 2026-05-15) is the authoritative source. It covers ever
 | HttpOnly cookie for refresh token | Cookie not accessible to JS; SameSite=Strict prevents CSRF | ✓ Good — architecture in place |
 | Single-flight refresh pattern | Concurrent 401s share one refresh request — no stampede | ✓ Good — module-level Promise in client.ts |
 | rawClient for auth/refresh | Prevents circular refresh loop in response interceptor | ✓ Good — implemented + tested |
+| AppLayout as pathless nested layout | All /app/* routes get navbar; ProtectedRoute unchanged | ✓ Good — established pattern for all future phases |
+| authStore.updateUser for profile mutations | Syncs in-memory user state without triggering re-auth | ✓ Good — used by ProfilePage on save + avatar upload |
+| Feature-scoped API modules (profileApi.ts) | Profile API isolated to features/profile/api/; no cross-feature coupling | ✓ Good — established for Phase 4+ |
+| Zod + react-hook-form for ProfilePage | Consistent with auth forms; zodResolver wires validation | ✓ Good — pattern confirmed |
+| Language change via i18next.changeLanguage() on save | No page reload; immediate UI update | ✓ Good — UAT test 9 confirmed |
 | TanStack Query for all server state | Avoids duplicating server collections in Zustand | — Pending (Phase 4+) |
 | dnd-kit for canvas drag/drop | Required for free-form 2D module placement and block reorder | — Pending (Phase 6+) |
 | ModuleEditor lazy-loaded via React.lazy | Editor chunk ~30 kB; silences rolldown INEFFECTIVE_DYNAMIC_IMPORT | — Pending (Phase 6+) |
@@ -143,7 +150,7 @@ The specification (v2.1, 2026-05-15) is the authoritative source. It covers ever
 | Backend refresh cookie not invalidated on logout (acknowledged gap) | Backend is a separate repository; frontend-only fix covers the reported UX issue | Tracked — backend fix deferred to backend team |
 
 ---
-*Last updated: 2026-05-16 after Phase 2 Authentication*
+*Last updated: 2026-05-16 after v0.3 User Profile & Account milestone*
 
 ## Evolution
 

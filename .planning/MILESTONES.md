@@ -54,3 +54,31 @@
 **Archive:** `.planning/milestones/v0.2-ROADMAP.md`
 
 ---
+
+## v0.3 — User Profile & Account
+
+**Shipped:** 2026-05-16
+**Phases:** 1 (Phase 3: User Profile & Account)
+**Plans:** 4
+
+**Delivered:** Persistent AppLayout + Navbar on all `/app/*` routes with avatar dropdown. ProfilePage at `/app/profile` covering full profile edit (name, language, page size, default instrument), avatar upload (JPG/PNG/WebP ≤ 2 MB) with initials fallback, account deletion with 30-day grace period dialog and banner, and cancellation flow.
+
+**Commits:** cd9f394 → 6180072 (4 commits, 27 files, 3412 insertions, 24 deletions)
+**Timeline:** 2026-05-16 (1 day)
+
+**Key accomplishments:**
+1. AppLayout + Navbar: persistent sticky header wrapping all `/app/*` routes; avatar dropdown (My Profile / Sign out)
+2. ProfilePage: full USER-01–04 coverage — name/lang/pageSize/instrument form, avatar upload, deletion dialog + banner
+3. profileApi.ts: 6 API functions (getMe, updateMe, uploadAvatar, requestDeletion, cancelDeletion, getInstruments)
+4. UserProfile type reconciliation: `defaultInstrumentId: string | null`, `scheduledDeletionAt: string | null`
+5. authStore.updateUser action added for profile mutations to sync in-memory user state
+
+**UAT:** 13/13 passed (0 issues)
+
+**Known deferred items at close:** 2
+- Hungarian profile strings are `__HU_TODO__` stubs (25 keys) — full HU translation deferred to Phase 12
+- No unit tests for ProfilePage/profileApi — integration via UAT only; unit coverage deferred
+
+**Archive:** `.planning/milestones/v0.3-ROADMAP.md`
+
+---
