@@ -10,19 +10,18 @@ The frontend is a React 19 + TypeScript SPA consuming an ASP.NET Core 10 WebAPI 
 
 A musician can open a notebook, navigate to any lesson, add and arrange content on the dotted-paper canvas, and find exactly what they practiced — organized the way they think, not the way software thinks.
 
-## Current Milestone: v0.2 Authentication
+## Current Milestone: v0.3 User Profile & Account
 
-**Goal:** Users can register, log in (email/password + Google OAuth), stay logged in across page reloads, and log out cleanly.
+**Goal:** Persistent AppLayout with navbar; users can manage their profile, upload an avatar, and exercise the 30-day account deletion grace period.
 
 **Target features:**
-- Email/password registration with immediate dashboard redirect
-- Email/password login with optional 30-day Remember Me
-- Google OAuth login via `@react-oauth/google`
-- Silent session restore on page load via `POST /auth/refresh`
-- Proactive token refresh via `useProactiveRefresh` hook
-- Logout: token revocation + ProtectedRoute redirect (no window.location)
-- Auth error handling: refresh failure → clearAuth(); 5xx retry ×3
-- Full UI for LoginPage and RegisterPage (currently empty stubs)
+- AppLayout component wrapping all `/app/*` routes with a top navbar
+- Navbar avatar button (image or initials fallback) → dropdown: "My Profile" / "Sign out"
+- `/app/profile` route: view and edit firstName, lastName, language, defaultPageSize, defaultInstrumentId
+- Avatar upload (JPG/PNG/WebP ≤ 2 MB) via `POST /users/me/avatar`; URL stored in `UserResponse.avatarUrl`
+- Language change immediately calls `i18next.changeLanguage()`
+- Account deletion request with confirmation dialog → 30-day grace period banner
+- Account deletion cancellation from the warning banner
 
 ## Current State
 

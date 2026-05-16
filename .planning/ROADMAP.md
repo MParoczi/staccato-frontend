@@ -12,7 +12,8 @@
 
 - ✅ **v0.1 Foundation** — Phase 1 (shipped 2026-05-16)
 - ✅ **v0.2 Authentication** — Phase 2 (shipped 2026-05-16)
-- 📋 **v0.3+** — Phases 3–12 (to be planned via `/gsd:new-milestone`)
+- 🚧 **v0.3 User Profile & Account** — Phase 3 (in progress)
+- 📋 **v0.4+** — Phases 4–12 (to be planned via `/gsd:new-milestone`)
 
 ---
 
@@ -36,11 +37,16 @@ See archive: `.planning/milestones/v0.1-ROADMAP.md`
 
 </details>
 
-### 📋 v0.3+ — Phases 3–12 (Planned)
+### 🚧 v0.3 — User Profile & Account (Phase 3)
 
 | # | Phase | Goal | Requirements | Plans |
 |---|-------|------|--------------|-------|
-| 3 | User Profile & Account | Profile, avatar, account deletion cycle | USER-01–04 | TBD |
+| 3 | User Profile & Account | AppLayout navbar, profile edit, avatar upload, account deletion | USER-01–04, NAV-01 | TBD |
+
+### 📋 v0.4+ — Phases 4–12 (To be planned)
+
+| # | Phase | Goal | Requirements | Plans |
+|---|-------|------|--------------|-------|
 | 4 | Notebook Management | Notebook CRUD, dashboard, book navigation | NB-01–05, ERR-01–02 | TBD |
 | 5 | Lessons & Pages | Lesson CRUD, multi-page lessons, page numbering | LES-01–04, PAGE-01–02 | TBD |
 | 6 | Canvas & Module Placement | Dotted-grid canvas; place/drag/resize all 12 module types | CANVAS-01–06, MOD-01–05 | TBD |
@@ -70,15 +76,16 @@ See archive: `.planning/milestones/v0.1-ROADMAP.md`
 ---
 
 ### Phase 3: User Profile & Account
-**Goal:** Users can manage their profile, upload an avatar, and exercise the 30-day account deletion grace period
+**Goal:** Persistent AppLayout with navbar; users can manage their profile, upload an avatar, and exercise the 30-day account deletion grace period
 **Mode:** mvp
-**Requirements:** USER-01, USER-02, USER-03, USER-04
+**Requirements:** USER-01, USER-02, USER-03, USER-04, NAV-01
 
 **Success Criteria:**
-1. User can view and update their profile (first name, last name, language preference, default page size, default instrument) and the updated values persist after page reload
-2. User can upload a custom avatar (JPG/PNG/WebP ≤ 2 MB) and see it reflected immediately in the UI; Google users see their Google photo by default; local users see initials
-3. User can request account deletion from the profile page; a deletion-pending warning banner appears showing the scheduled deletion date
-4. User can cancel the scheduled account deletion; the warning banner disappears and the account returns to normal status
+1. Navbar renders with avatar button (image or initials fallback); dropdown shows "My Profile" and "Sign out"
+2. User can view and update their profile (firstName, lastName, language, defaultPageSize, defaultInstrumentId) and the updated values persist after page reload; language change updates UI locale immediately
+3. User can upload a custom avatar (JPG/PNG/WebP ≤ 2 MB) and see it reflected immediately in the navbar; Google users see their Google photo by default; local users see initials
+4. User can request account deletion from the profile page; a deletion-pending warning banner appears showing the scheduled deletion date
+5. User can cancel the scheduled account deletion; the warning banner disappears and a success toast confirms
 
 ---
 
@@ -210,7 +217,7 @@ See archive: `.planning/milestones/v0.1-ROADMAP.md`
 |-------|------|-----------|-------|--------|-----------|
 | 1 | Foundation | v0.1 | 5/5 | ✅ Complete | 2026-05-16 |
 | 2 | Authentication | v0.2 | 4/4 | ✅ Shipped | 2026-05-16 |
-| 3 | User Profile & Account | v0.2+ | TBD | ○ Pending | — |
+| 3 | User Profile & Account | v0.3 | TBD | 🚧 Active | — |
 | 4 | Notebook Management | v0.2+ | TBD | ○ Pending | — |
 | 5 | Lessons & Pages | v0.2+ | TBD | ○ Pending | — |
 | 6 | Canvas & Module Placement | v0.2+ | TBD | ○ Pending | — |
