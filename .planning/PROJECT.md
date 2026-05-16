@@ -27,17 +27,18 @@ A musician can open a notebook, navigate to any lesson, add and arrange content 
 ## Current State
 
 **Shipped:** v0.1 Foundation (2026-05-16)
-**In progress:** v0.2 Authentication (Phase 2)
+**Verified:** v0.2 Authentication — Phase 2 (2026-05-16)
 
-The technical platform is in place. The application boots, routes, and validates the environment. The auth infrastructure (store, Axios client, ProtectedRoute, boot refresh) is wired but the actual login/register UI and API calls are stubs. No user-facing feature has shipped yet.
+The authentication flows are fully implemented and user-tested. Users can register, log in via email/password or Google OAuth, stay logged in across page reloads via HttpOnly refresh cookie, and log out cleanly with a proactive token refresh hook. 25 tests pass.
 
-**Tech stack as shipped:**
+**Tech stack as of Phase 2:**
 - Vite 8.0.13 + React 19.2.6 + TypeScript 5.9.3
 - Tailwind v4 CSS-first (no tailwind.config.js)
 - shadcn radix-nova (17 UI components)
 - Zustand 5.0.13, TanStack Query 5.100.10, Axios 1.16.1
 - React Router 7.15.1, i18next 26.2.0 (http-backend, 8 namespaces)
-- Vitest + Testing Library (19 tests)
+- @react-oauth/google, @hookform/resolvers 3.10.0, zod 3.24.4
+- Vitest + Testing Library (25 tests)
 
 ## Requirements
 
@@ -49,12 +50,12 @@ The technical platform is in place. The application boots, routes, and validates
 - ✓ i18n bootstrap with Accept-Language header on every request — v0.1, confirmed by tests
 - ✓ ProtectedRoute with loading spinner (no flash-of-login) — v0.1, confirmed by tests
 - ✓ pnpm-only package management enforced — v0.1
+- ✓ Authentication: local email/password registration and login with JWT + HttpOnly refresh cookie strategy — Phase 2
+- ✓ Google OAuth login via `@react-oauth/google` — Phase 2
+- ✓ Silent token refresh on page load and proactive refresh before expiry — Phase 2
 
 ### Active
 
-- [ ] Authentication: local email/password registration and login with JWT + HttpOnly refresh cookie strategy
-- [ ] Google OAuth login via `@react-oauth/google`
-- [ ] Silent token refresh on page load and proactive refresh before expiry
 - [ ] Notebook CRUD: create with instrument, page size, cover color, and style preset
 - [ ] Notebook dashboard listing all user notebooks
 - [ ] Lesson CRUD within a notebook, ordered by creation date
@@ -138,9 +139,12 @@ The specification (v2.1, 2026-05-15) is the authoritative source. It covers ever
 | vitest.config.ts separate from vite.config.ts | @tailwindcss/vite plugin incompatible with jsdom | ✓ Good — test isolation |
 | i18n translation files via http-backend | NOT bundled inline — loaded on demand from public/locales/ | ✓ Good — tree-shaking friendly |
 | Boot refresh before ReactDOM.render | Prevents login-page flash; authStore drives initial render | ✓ Good — confirmed by ProtectedRoute tests |
+| @hookform/resolvers pinned to 3.10.0 | v5.2.2 imports zod/v4/core which is incompatible with installed zod 3.24.4 | ✓ Good — server starts clean |
+| logout: navigate('/login', { replace: true }) | Replaces history entry so back button can't re-enter protected route | ✓ Good — confirmed by UAT test 10 |
+| Backend refresh cookie not invalidated on logout (acknowledged gap) | Backend is a separate repository; frontend-only fix covers the reported UX issue | Tracked — backend fix deferred to backend team |
 
 ---
-*Last updated: 2026-05-16 after v0.1 Foundation milestone*
+*Last updated: 2026-05-16 after Phase 2 Authentication*
 
 ## Evolution
 
