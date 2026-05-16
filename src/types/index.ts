@@ -5,8 +5,8 @@ export interface UserProfile {
   firstName: string | null
   lastName: string | null
   language: string
-  defaultPageSize: string
-  defaultInstrument: string
+  defaultPageSize: string | null
+  defaultInstrumentId: string | null
   avatarUrl: string | null
-  scheduledDeletionDate: string | null
+  scheduledDeletionAt: string | null
 }

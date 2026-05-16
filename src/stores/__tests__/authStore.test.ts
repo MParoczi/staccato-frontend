@@ -9,10 +9,10 @@ const mockUser: UserProfile = {
   firstName: null,
   lastName: null,
   language: 'en',
-  defaultPageSize: 'A4',
-  defaultInstrument: 'guitar',
+  defaultPageSize: null,
+  defaultInstrumentId: null,
   avatarUrl: null,
-  scheduledDeletionDate: null,
+  scheduledDeletionAt: null,
 }
 
 beforeEach(() => {
@@ -47,5 +47,14 @@ describe('authStore', () => {
   it('has no persist middleware', () => {
     // Zustand stores with persist middleware expose a .persist property
     expect((useAuthStore as unknown as Record<string, unknown>).persist).toBeUndefined()
+  })
+
+  it('updateUser updates user without changing accessToken', () => {
+    useAuthStore.getState().setAuth(mockUser, 'token123')
+    const updatedUser: UserProfile = { ...mockUser, firstName: 'Jane' }
+    useAuthStore.getState().updateUser(updatedUser)
+    expect(useAuthStore.getState().user).toEqual(updatedUser)
+    expect(useAuthStore.getState().accessToken).toBe('token123')
+    expect(useAuthStore.getState().status).toBe('authenticated')
   })
 })

@@ -6,5 +6,9 @@
   "save": "__HU_TODO__",
   "delete": "__HU_TODO__",
   "confirm": "__HU_TODO__",
-  "back": "__HU_TODO__"
+  "back": "__HU_TODO__",
+  "navbar": {
+    "myProfile": "__HU_TODO__",
+    "signOut": "__HU_TODO__"
+  }
 }

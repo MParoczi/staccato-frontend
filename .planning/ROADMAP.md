@@ -12,7 +12,7 @@
 
 - ✅ **v0.1 Foundation** — Phase 1 (shipped 2026-05-16)
 - ✅ **v0.2 Authentication** — Phase 2 (shipped 2026-05-16)
-- 🚧 **v0.3 User Profile & Account** — Phase 3 (in progress)
+- ✅ **v0.3 User Profile & Account** — Phase 3 (executed 2026-05-16, pending verification)
 - 📋 **v0.4+** — Phases 4–12 (to be planned via `/gsd:new-milestone`)
 
 ---
@@ -41,7 +41,7 @@ See archive: `.planning/milestones/v0.1-ROADMAP.md`
 
 | # | Phase | Goal | Requirements | Plans |
 |---|-------|------|--------------|-------|
-| 3 | User Profile & Account | AppLayout navbar, profile edit, avatar upload, account deletion | USER-01–04, NAV-01 | TBD |
+| 3 | User Profile & Account | AppLayout navbar, profile edit, avatar upload, account deletion | USER-01–04, NAV-01 | 4 plans |
 
 ### 📋 v0.4+ — Phases 4–12 (To be planned)
 
@@ -217,7 +217,7 @@ See archive: `.planning/milestones/v0.1-ROADMAP.md`
 |-------|------|-----------|-------|--------|-----------|
 | 1 | Foundation | v0.1 | 5/5 | ✅ Complete | 2026-05-16 |
 | 2 | Authentication | v0.2 | 4/4 | ✅ Shipped | 2026-05-16 |
-| 3 | User Profile & Account | v0.3 | TBD | 🚧 Active | — |
+| 3 | User Profile & Account | v0.3 | 4/4 | ✅ Executed | 2026-05-16 |
 | 4 | Notebook Management | v0.2+ | TBD | ○ Pending | — |
 | 5 | Lessons & Pages | v0.2+ | TBD | ○ Pending | — |
 | 6 | Canvas & Module Placement | v0.2+ | TBD | ○ Pending | — |

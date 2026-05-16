@@ -10,6 +10,7 @@ interface AuthState {
   setAuth: (user: UserProfile, accessToken: string) => void
   clearAuth: () => void
   setLoading: () => void
+  updateUser: (user: UserProfile) => void
 }
 
 export const useAuthStore = create<AuthState>()((set) => ({
@@ -19,4 +20,5 @@ export const useAuthStore = create<AuthState>()((set) => ({
   setAuth: (user, accessToken) => set({ status: 'authenticated', user, accessToken }),
   clearAuth: () => set({ status: 'unauthenticated', user: null, accessToken: null }),
   setLoading: () => set({ status: 'loading' }),
+  updateUser: (user) => set({ user }),
 }))

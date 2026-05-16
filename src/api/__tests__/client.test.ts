@@ -37,6 +37,7 @@ describe('Axios client interceptors', () => {
       setAuth: vi.fn(),
       clearAuth: vi.fn(),
       setLoading: vi.fn(),
+      updateUser: vi.fn(),
     })
 
     // Intercept the outgoing request to inspect headers
@@ -58,6 +59,7 @@ describe('Axios client interceptors', () => {
       setAuth: vi.fn(),
       clearAuth: vi.fn(),
       setLoading: vi.fn(),
+      updateUser: vi.fn(),
     })
 
     let capturedHeaders: Record<string, string> = {}

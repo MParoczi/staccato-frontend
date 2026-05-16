@@ -6,5 +6,9 @@
   "save": "Save",
   "delete": "Delete",
   "confirm": "Confirm",
-  "back": "Back"
+  "back": "Back",
+  "navbar": {
+    "myProfile": "My Profile",
+    "signOut": "Sign out"
+  }
 }
