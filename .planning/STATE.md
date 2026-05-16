@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 status: in_progress
 last_updated: "2026-05-15T08:20:00.000Z"
-last_activity: 2026-05-16 — 01-04-PLAN.md complete (router + ProtectedRoute + main.tsx boot)
+last_activity: 2026-05-16 — 01-05-PLAN.md complete (Vitest + Phase 1 test suite)
 progress:
   total_phases: 12
   completed_phases: 0
   total_plans: 5
-  completed_plans: 4
-  percent: 8
+  completed_plans: 5
+  percent: 10
 ---
 
 # Project State
@@ -27,14 +27,14 @@ See: .planning/PROJECT.md (updated 2026-05-15)
 **Phase:** 1 of 12
 **Phase name:** Foundation
 **Phase status:** In progress
-**Plans completed:** 4 of 5
-**Last activity:** 2026-05-16 — 01-04-PLAN.md complete (router + ProtectedRoute + main.tsx boot)
+**Plans completed:** 5 of 5
+**Last activity:** 2026-05-16 — 01-05-PLAN.md complete (Vitest + Phase 1 test suite)
 
 ## Phase Progress
 
 | Phase | Name | Status |
 |-------|------|--------|
-| 1 | Foundation | ◆ Ready to execute (5 plans) |
+| 1 | Foundation | ✓ Complete |
 | 2 | Authentication | ○ Pending |
 | 3 | User Profile & Account | ○ Pending |
 | 4 | Notebook Management | ○ Pending |
@@ -53,6 +53,9 @@ See: .planning/PROJECT.md (updated 2026-05-15)
 - 01-01: radix-nova style uses unified radix-ui package, not @radix-ui/* individual packages
 - 01-01: TypeScript pinned to 5.9.3 (Vite scaffold installs 6.0.3 by default)
 - 01-01: tsconfig.json root given compilerOptions.paths to satisfy shadcn CLI alias validation
+- 01-05: vitest.config.ts separate from vite.config.ts to avoid @tailwindcss/vite in jsdom environment
+- 01-05: tsconfig.app.json excludes test files so pnpm build does not type-check test-only patterns
+- 01-05: i18n test uses i18next.createInstance() with inline resources (no http-backend side effects)
 
 ## Notes
 
@@ -60,4 +63,4 @@ See: .planning/PROJECT.md (updated 2026-05-15)
 - Spec document: Staccato Frontend Documentation v2.1 (2026-05-15) — authoritative source for all API contracts, architectural decisions, and business rules
 - pnpm is the only accepted package manager
 - Backend is a separate repository (ASP.NET Core 10 WebAPI); frontend is a greenfield React 19 + TypeScript 5.9 SPA
-- Stopped at: Completed 01-PLAN-04.md; resume with 01-PLAN-05.md
+- Stopped at: Completed all Phase 1 plans (01-01 through 01-05); ready for verify-work
