@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v0.3
 milestone_name: User Profile & Account
-status: executed
+status: shipped
 last_updated: "2026-05-16T00:00:00.000Z"
-last_activity: 2026-05-16 — Phase 3 executed (4/4 plans, 3 waves); pnpm tsc --noEmit passes; pending /gsd:verify-work
+last_activity: 2026-05-16 — Phase 3 shipped — 13/13 UAT passed, VERIFICATION.md status:passed, committed directly to main
 progress:
   total_phases: 1
   completed_phases: 0
@@ -26,8 +26,8 @@ See: .planning/PROJECT.md (updated 2026-05-16)
 
 Phase: 3 — User Profile & Account
 Plan: 4/4 plans executed
-Status: ✅ Executed — all plans complete, pnpm tsc --noEmit passes; next: `/gsd:verify-work`
-Last activity: 2026-05-16 — Phase 3 fully executed (PLAN-01–04, waves 1–3)
+Status: ✅ Shipped — 13/13 UAT passed, verification complete, committed directly to main
+Last activity: 2026-05-16 — Phase 3 shipped (PLAN-01–04, waves 1–3, all UAT green)
 Resume file: .planning/phases/03-user-profile-account/03-04-SUMMARY.md
 
 ## Phase Progress
@@ -36,7 +36,7 @@ Resume file: .planning/phases/03-user-profile-account/03-04-SUMMARY.md
 |-------|------|-----------|--------|
 | 1 | Foundation | v0.1 | ✅ Shipped |
 | 2 | Authentication | v0.2 | ✅ Shipped |
-| 3 | User Profile & Account | v0.3 | ✅ Executed — pending verification |
+| 3 | User Profile & Account | v0.3 | ✅ Shipped |
 | 4 | Notebook Management | v0.4 | ○ Pending |
 | 5 | Lessons & Pages | v0.4 | ○ Pending |
 | 6 | Canvas & Module Placement | v0.4 | ○ Pending |

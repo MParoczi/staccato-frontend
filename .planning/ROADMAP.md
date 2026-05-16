@@ -12,7 +12,7 @@
 
 - ✅ **v0.1 Foundation** — Phase 1 (shipped 2026-05-16)
 - ✅ **v0.2 Authentication** — Phase 2 (shipped 2026-05-16)
-- ✅ **v0.3 User Profile & Account** — Phase 3 (executed 2026-05-16, pending verification)
+- ✅ **v0.3 User Profile & Account** — Phase 3 (shipped 2026-05-16)
 - 📋 **v0.4+** — Phases 4–12 (to be planned via `/gsd:new-milestone`)
 
 ---
@@ -37,7 +37,7 @@ See archive: `.planning/milestones/v0.1-ROADMAP.md`
 
 </details>
 
-### 🚧 v0.3 — User Profile & Account (Phase 3)
+### ✅ v0.3 — User Profile & Account (Phase 3) — SHIPPED 2026-05-16
 
 | # | Phase | Goal | Requirements | Plans |
 |---|-------|------|--------------|-------|
