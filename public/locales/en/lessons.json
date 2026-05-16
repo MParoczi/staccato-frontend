@@ -1,0 +1,14 @@
+{
+  "create": {
+    "title": "New Lesson",
+    "titleLabel": "Lesson title",
+    "submitButton": "Create lesson"
+  },
+  "actions": {
+    "rename": "Rename lesson",
+    "delete": "Delete lesson",
+    "addPage": "Add page"
+  },
+  "pageCount": "{{count}} page",
+  "pageCount_plural": "{{count}} pages"
+}

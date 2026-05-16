@@ -1,0 +1,19 @@
+{
+  "dashboard": {
+    "title": "__HU_TODO__",
+    "empty": "__HU_TODO__",
+    "createButton": "__HU_TODO__"
+  },
+  "create": {
+    "title": "__HU_TODO__",
+    "titleLabel": "__HU_TODO__",
+    "instrumentLabel": "__HU_TODO__",
+    "pageSizeLabel": "__HU_TODO__",
+    "coverColorLabel": "__HU_TODO__"
+  },
+  "actions": {
+    "rename": "__HU_TODO__",
+    "delete": "__HU_TODO__",
+    "settings": "__HU_TODO__"
+  }
+}

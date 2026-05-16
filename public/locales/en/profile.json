@@ -1,0 +1,11 @@
+{
+  "title": "Profile",
+  "firstNameLabel": "First name",
+  "lastNameLabel": "Last name",
+  "languageLabel": "Language",
+  "saveButton": "Save changes",
+  "deleteAccount": {
+    "button": "Delete account",
+    "warning": "Your account is scheduled for deletion"
+  }
+}

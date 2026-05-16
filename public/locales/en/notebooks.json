@@ -1,0 +1,19 @@
+{
+  "dashboard": {
+    "title": "My Notebooks",
+    "empty": "No notebooks yet. Create your first one!",
+    "createButton": "New Notebook"
+  },
+  "create": {
+    "title": "Create Notebook",
+    "titleLabel": "Title",
+    "instrumentLabel": "Instrument",
+    "pageSizeLabel": "Page Size",
+    "coverColorLabel": "Cover Color"
+  },
+  "actions": {
+    "rename": "Rename",
+    "delete": "Delete notebook",
+    "settings": "Notebook settings"
+  }
+}

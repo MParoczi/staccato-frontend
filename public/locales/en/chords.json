@@ -1,0 +1,8 @@
+{
+  "library": {
+    "title": "Chord Library",
+    "filterRoot": "Root note",
+    "filterQuality": "Quality",
+    "noResults": "No chords found"
+  }
+}

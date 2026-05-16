@@ -1,0 +1,9 @@
+{
+  "toolbar": {
+    "addModule": "Add module"
+  },
+  "module": {
+    "delete": "Delete module",
+    "edit": "Edit module"
+  }
+}

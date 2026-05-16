@@ -1,0 +1,8 @@
+{
+  "editor": {
+    "title": "Style Editor",
+    "presets": "Presets",
+    "apply": "Apply preset",
+    "save": "Save as preset"
+  }
+}
