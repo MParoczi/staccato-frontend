@@ -30,7 +30,7 @@ See archive: `.planning/milestones/v0.1-ROADMAP.md`
 
 | # | Phase | Goal | Requirements | Plans |
 |---|-------|------|--------------|-------|
-| 2 | Authentication | Full auth flows; users can log in and stay logged in | AUTH-01–06, ERR-03–04, I18N-03 | TBD |
+| 2 | Authentication | Full auth flows; users can log in and stay logged in | AUTH-01–06, ERR-03–04, I18N-03 | 4 |
 | 3 | User Profile & Account | Profile, avatar, account deletion cycle | USER-01–04 | TBD |
 | 4 | Notebook Management | Notebook CRUD, dashboard, book navigation | NB-01–05, ERR-01–02 | TBD |
 | 5 | Lessons & Pages | Lesson CRUD, multi-page lessons, page numbering | LES-01–04, PAGE-01–02 | TBD |
@@ -200,7 +200,7 @@ See archive: `.planning/milestones/v0.1-ROADMAP.md`
 | Phase | Name | Milestone | Plans | Status | Completed |
 |-------|------|-----------|-------|--------|-----------|
 | 1 | Foundation | v0.1 | 5/5 | ✅ Complete | 2026-05-16 |
-| 2 | Authentication | v0.2+ | TBD | ○ Pending | — |
+| 2 | Authentication | v0.2+ | 4/4 | ✅ Complete | 2026-05-16 |
 | 3 | User Profile & Account | v0.2+ | TBD | ○ Pending | — |
 | 4 | Notebook Management | v0.2+ | TBD | ○ Pending | — |
 | 5 | Lessons & Pages | v0.2+ | TBD | ○ Pending | — |

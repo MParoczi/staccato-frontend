@@ -128,3 +128,10 @@
     @apply font-sans;
     }
 }
+
+@layer utilities {
+  .bg-auth-dots {
+    background-image: radial-gradient(circle, oklch(0.7 0 0 / 0.12) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+}

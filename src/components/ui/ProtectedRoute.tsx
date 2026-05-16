@@ -1,9 +1,11 @@
 import { Navigate, Outlet } from 'react-router'
 import { Loader2 } from 'lucide-react'
 import { useAuthStore } from '@/stores/authStore'
+import { useProactiveRefresh } from '@/features/auth/hooks/useProactiveRefresh'
 
 export function ProtectedRoute() {
   const status = useAuthStore((s) => s.status)
+  useProactiveRefresh()
   if (status === 'loading') {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-background">

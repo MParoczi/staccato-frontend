@@ -3,11 +3,13 @@ import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { RouterProvider } from 'react-router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 import { Toaster } from '@/components/ui/sonner'
 import { rawClient } from './api/rawClient'
 import { useAuthStore } from './stores/authStore'
 import type { UserProfile } from './types'
 import { router } from './router'
+import { env } from './env'
 import './index.css'
 
 rawClient
@@ -33,12 +35,14 @@ const queryClient = new QueryClient({
 })
 
 createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <React.Suspense fallback={null}>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-        <Toaster />
-      </QueryClientProvider>
-    </React.Suspense>
-  </React.StrictMode>
+  <GoogleOAuthProvider clientId={env.VITE_GOOGLE_CLIENT_ID}>
+    <React.StrictMode>
+      <React.Suspense fallback={null}>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+          <Toaster />
+        </QueryClientProvider>
+      </React.Suspense>
+    </React.StrictMode>
+  </GoogleOAuthProvider>
 )
