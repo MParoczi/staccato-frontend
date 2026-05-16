@@ -10,12 +10,26 @@ The frontend is a React 19 + TypeScript SPA consuming an ASP.NET Core 10 WebAPI 
 
 A musician can open a notebook, navigate to any lesson, add and arrange content on the dotted-paper canvas, and find exactly what they practiced — organized the way they think, not the way software thinks.
 
+## Current Milestone: v0.2 Authentication
+
+**Goal:** Users can register, log in (email/password + Google OAuth), stay logged in across page reloads, and log out cleanly.
+
+**Target features:**
+- Email/password registration with immediate dashboard redirect
+- Email/password login with optional 30-day Remember Me
+- Google OAuth login via `@react-oauth/google`
+- Silent session restore on page load via `POST /auth/refresh`
+- Proactive token refresh via `useProactiveRefresh` hook
+- Logout: token revocation + ProtectedRoute redirect (no window.location)
+- Auth error handling: refresh failure → clearAuth(); 5xx retry ×3
+- Full UI for LoginPage and RegisterPage (currently empty stubs)
+
 ## Current State
 
 **Shipped:** v0.1 Foundation (2026-05-16)
-**Next milestone:** v0.2 (Authentication + Profile, Phases 2–3) — requirements to be defined via `/gsd:new-milestone`
+**In progress:** v0.2 Authentication (Phase 2)
 
-The technical platform is in place. The application boots, routes, and validates the environment. The auth infrastructure (store, Axios client, ProtectedRoute) is wired but the actual login/register UI and API calls are stubs. No user-facing feature has shipped yet.
+The technical platform is in place. The application boots, routes, and validates the environment. The auth infrastructure (store, Axios client, ProtectedRoute, boot refresh) is wired but the actual login/register UI and API calls are stubs. No user-facing feature has shipped yet.
 
 **Tech stack as shipped:**
 - Vite 8.0.13 + React 19.2.6 + TypeScript 5.9.3

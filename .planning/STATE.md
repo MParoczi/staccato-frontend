@@ -1,16 +1,16 @@
 ---
 gsd_state_version: 1.0
 milestone: v0.2
-milestone_name: TBD
-status: in_progress
+milestone_name: Authentication
+status: planning
 last_updated: "2026-05-16T00:00:00.000Z"
-last_activity: 2026-05-16 — v0.1 milestone archived; Phase 2 next
+last_activity: 2026-05-16 — Milestone v0.2 started; defining requirements
 progress:
-  total_phases: 12
-  completed_phases: 1
-  total_plans: 5
-  completed_plans: 5
-  percent: 8
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -20,22 +20,21 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-16)
 
 **Core value:** A musician can open a notebook, navigate to any lesson, add and arrange content on the dotted-paper canvas, and find exactly what they practiced.
-**Current focus:** Planning v0.2 milestone — run `/gsd:new-milestone` to define requirements and roadmap
+**Current focus:** v0.2 Authentication — Phase 2
 
-## Current Status
+## Current Position
 
-**Milestone:** v0.1 ✅ shipped; v0.2 not yet defined
-**Phase:** 1 of 12 complete; Phase 2 (Authentication) is next
-**Phase status:** Milestone v0.1 archived
-**Plans completed:** 5 of 5
-**Last activity:** 2026-05-16 — v0.1 milestone archived; REQUIREMENTS.md deleted; ready for `/gsd:new-milestone`
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-05-16 — Milestone v0.2 Authentication started
 
 ## Phase Progress
 
-| Phase | Name | Status |
-|-------|------|--------|
-| 1 | Foundation | ✅ Shipped (v0.1) |
-| 2 | Authentication | ○ Pending |
+| Phase | Name | Milestone | Status |
+|-------|------|-----------|--------|
+| 1 | Foundation | v0.1 | ✅ Shipped |
+| 2 | Authentication | v0.2 | ○ Planning |
 | 3 | User Profile & Account | ○ Pending |
 | 4 | Notebook Management | ○ Pending |
 | 5 | Lessons & Pages | ○ Pending |
