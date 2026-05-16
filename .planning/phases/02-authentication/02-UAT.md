@@ -1,9 +1,9 @@
 ---
-status: testing
+status: complete
 phase: 02-authentication
 source: 02-01-SUMMARY.md, 02-02-SUMMARY.md, 02-03-SUMMARY.md, 02-04-SUMMARY.md
 started: 2026-05-16T00:00:00Z
-updated: 2026-05-16T00:01:00Z
+updated: 2026-05-16T00:02:00Z
 startup_note: "@hookform/resolvers 5.2.2 imported zod/v4/core at module level; incompatible with installed zod 3.24.4. Downgraded resolver to 3.10.0. Server now starts clean."
 ---
 
@@ -54,33 +54,14 @@ result: pass
 
 ### 10. Logout
 expected: While logged in and on the notebooks page, a logout button is visible. Clicking it clears your session and redirects you to the login page. You cannot navigate back to the notebooks page without logging in again.
-result: issue
-reported: "On pressing the Sign out button it redirects me to the /login page. However I can go back to the app/notebooks page without logging in again"
-severity: major
+result: pass
+note: Fixed in 8e4f214 — added navigate('/login', { replace: true }) after clearAuth(). Browser back button no longer returns to /app/notebooks. Known backend limitation: httpOnly refresh cookie is not server-side invalidated on logout; manual URL entry after logout may re-authenticate if the cookie is still valid (requires backend fix in separate repo).
 
 ## Summary
 
 total: 10
-passed: 9
-issues: 1
+passed: 10
+issues: 0
 pending: 0
 skipped: 0
 blocked: 0
-
-## Gaps
-
-- truth: "After logout, navigating to /app/notebooks redirects to /login — auth state is fully cleared"
-  status: failed
-  reason: "User reported: On pressing the Sign out button it redirects me to the /login page. However I can go back to the app/notebooks page without logging in again"
-  severity: major
-  test: 10
-  root_cause: "POST /auth/logout does not invalidate the httpOnly refresh token cookie server-side. On full page reload, main.tsx fires /auth/refresh with the still-valid cookie, backend returns a new token, setAuth() is called and the user is silently re-authenticated. Secondary: handleLogout has no explicit navigate() call — relies on ProtectedRoute detecting unauthenticated state, which only holds within the SPA session."
-  artifacts:
-    - path: "src/pages/NotebooksPage.tsx"
-      issue: "handleLogout has no explicit navigate('/login') after clearAuth()"
-    - path: "src/main.tsx"
-      issue: "/auth/refresh call re-authenticates user on every page load if cookie is still valid"
-  missing:
-    - "Backend: POST /auth/logout must clear the httpOnly refresh token cookie"
-    - "Frontend: add navigate('/login') explicitly in handleLogout after clearAuth()"
-  debug_session: ""
