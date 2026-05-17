@@ -1,12 +1,12 @@
 ---
 gsd_state_version: 1.0
 milestone: v0.6
-milestone_name: TBD
-status: "⬜ v0.5 Archived — run /gsd:new-milestone to define v0.6 scope"
+milestone_name: Canvas & Module Placement
+status: planning
 last_updated: "2026-05-17T00:00:00.000Z"
-last_activity: 2026-05-17 — v0.5 milestone archived; Phase 5 complete (10/10 UAT, 6/6 requirements); ready for /gsd:new-milestone
+last_activity: 2026-05-17 — Milestone v0.6 started; requirements defined (CANVAS-01–06, MOD-01–05); roadmap pending
 progress:
-  total_phases: 0
+  total_phases: 1
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -20,13 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-17 after v0.5 milestone archive)
 
 **Core value:** A musician can open a notebook, navigate to any lesson, add and arrange content on the dotted-paper canvas, and find exactly what they practiced.
-**Current focus:** v0.6 — TBD — run `/gsd:new-milestone` to define scope
+**Current focus:** v0.6 Canvas & Module Placement — Phase 6 in planning
 
 ## Current Position
 
-Phase: — (between milestones)
-Status: ⬜ Ready for next milestone — v0.5 archived 2026-05-17
-Last activity: 2026-05-17 — v0.5 Lessons & Pages milestone archived; Phase 5 shipped (commits 033f8f3–aafb584); 10/10 UAT passed; 6 requirements satisfied (LES-01–04, PAGE-01–02)
+Phase: 6 — Canvas & Module Placement (planning)
+Plan: —
+Status: Defining roadmap
+Last activity: 2026-05-17 — Milestone v0.6 started; requirements defined (CANVAS-01–06, MOD-01–05); research complete (dnd-kit 6.x, @dnd-kit/core + @dnd-kit/utilities, 32px grid, 12 module type shells)
 
 ## Phase Progress
 

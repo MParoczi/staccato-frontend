@@ -12,7 +12,7 @@ A musician can open a notebook, navigate to any lesson, add and arrange content 
 
 ## Current State
 
-**Active:** v0.6 TBD — run `/gsd:new-milestone` to define Phase 6 scope and requirements
+**Active:** v0.6 Canvas & Module Placement — Phase 6 in planning
 
 **Last shipped:** v0.5 Lessons & Pages (2026-05-17)
 
@@ -28,13 +28,21 @@ Users can create and manage lessons within a notebook; navigate pages with URL-b
 - Vitest + Testing Library (26 tests)
 - react-hook-form 7.75.0
 
-## Next Milestone
+## Current Milestone: v0.6 Canvas & Module Placement
 
-**v0.6 — TBD** *(not yet defined)*
+**Goal:** The dotted-grid canvas renders on lesson pages; users can place, drag, resize, and z-order all 12 module type shells — persisted to the backend.
 
-Phase 6 is Canvas & Module Placement — run `/gsd:new-milestone` to define scope, scope requirements, and begin planning.
+**Target features:**
+- Dotted-grid canvas (32px cell, CSS radial-gradient, fixed to page dimensions)
+- Module placement from palette (12 types, POST /pages/{pageId}/modules)
+- Drag-to-reposition with grid snapping (PATCH /modules/{id}/layout)
+- Resize via 8 custom handles with per-type minimum dimensions enforced
+- Z-order control (Bring Forward / Send Backward)
+- Module selection with action bar, deselect on canvas click
+- Delete with confirmation
+- 12 module type shells (styled header + icon + placeholder body, no content editing)
 
-Candidate phases: 6 (Canvas & Module Placement), 7 (Text Building Blocks), 8 (Chord Library), 9–12 (Rich BBs, Styling, PDF, i18n)
+**Stack additions:** `@dnd-kit/core ^6.3.1`, `@dnd-kit/utilities ^3.2.2`
 
 ## Requirements
 
