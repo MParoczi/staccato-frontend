@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v0.5
 milestone_name: Lessons & Pages
-status: active
-last_updated: "2026-05-17T10:00:00Z"
-last_activity: 2026-05-17 — v0.5 milestone started; REQUIREMENTS.md written (Phase 5 scope); swagger.json saved; ready for /gsd:plan-phase 5
+status: "○ Pending — REQUIREMENTS.md written; next: `/gsd:plan-phase 5`"
+last_updated: "2026-05-17T13:50:26.226Z"
+last_activity: 2026-05-17 — v0.5 milestone started; Phase 5 requirements (LES-01–04, PAGE-01–02) defined; API swagger.json saved to .planning/
 progress:
-  total_phases: 1
+  total_phases: 9
   completed_phases: 0
   total_plans: 0
-  completed_plans: 0
+  completed_plans: 4
   percent: 0
 ---
 
