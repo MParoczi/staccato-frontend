@@ -57,3 +57,29 @@ export type NotebookStylePreset = (typeof NOTEBOOK_STYLE_PRESETS)[number]
 export const NOTEBOOK_PAGE_SIZES = ['A4', 'A5', 'Letter'] as const
 
 export type NotebookPageSize = (typeof NOTEBOOK_PAGE_SIZES)[number]
+
+export interface Lesson {
+  id: string
+  notebookId: string
+  title: string
+  pageCount: number
+  globalPageStart: number
+  createdAt: string
+  updatedAt: string
+}
+
+export interface LessonPage {
+  id: string
+  lessonId: string
+  pageNumber: number
+  globalPageNumber: number
+  createdAt: string
+}
+
+export interface CreateLessonPayload {
+  title: string
+}
+
+export interface UpdateLessonPayload {
+  title?: string
+}
