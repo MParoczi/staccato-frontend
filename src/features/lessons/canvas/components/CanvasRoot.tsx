@@ -6,13 +6,13 @@ import { toast } from 'sonner'
 import { useCanvasScale } from '../hooks/useCanvasScale'
 import { CANVAS_CONFIG, CELL } from '../lib/canvasDimensions'
 import { createScaleModifier } from '../lib/scaleModifier'
-import { getModules, createModule, deleteModule } from '../api/modulesApi'
+import { getModules, createModule, patchModuleLayout, deleteModule } from '../api/modulesApi'
 import { MODULE_TYPE_REGISTRY } from '../lib/moduleRegistry'
 import type { ModuleType } from '../lib/moduleRegistry'
 import { findAutoPlacement } from '../lib/autoPlacement'
 import { ModuleShell } from './ModuleShell'
 import { DeleteModuleDialog } from './DeleteModuleDialog'
-import type { NotebookPageSize, Module, CreateModulePayload } from '@/types'
+import type { NotebookPageSize, Module, CreateModulePayload, PatchModuleLayoutPayload } from '@/types'
 
 function extractErrorMessage(error: unknown, fallback: string): string {
   if (error && typeof error === 'object' && 'response' in error) {
@@ -32,9 +32,23 @@ export function CanvasRoot({ pageId, pageSize, onAddModuleRef }: CanvasRootProps
   const config = CANVAS_CONFIG[pageSize]
   const { wrapperRef, scale } = useCanvasScale(config.width)
   const scaleRef = useRef(scale)
+  const patchAbortRefs = useRef<Map<string, AbortController>>(new Map())
   const queryClient = useQueryClient()
 
   useEffect(() => { scaleRef.current = scale }, [scale])
+
+  function patchLayout(moduleId: string, payload: PatchModuleLayoutPayload) {
+    // Abort any in-flight PATCH for this module before sending a new one
+    patchAbortRefs.current.get(moduleId)?.abort()
+    const controller = new AbortController()
+    patchAbortRefs.current.set(moduleId, controller)
+
+    patchModuleLayout(moduleId, payload, controller.signal).catch((err: unknown) => {
+      // Axios represents AbortController cancellation as 'CanceledError' (US spelling)
+      if (err instanceof Error && err.name === 'CanceledError') return
+      toast.error(extractErrorMessage(err, 'Failed to save changes'))
+    })
+  }
 
   // Server state: module list
   const { data: serverModules = [] } = useQuery({
@@ -120,10 +134,16 @@ export function CanvasRoot({ pageId, pageSize, onAddModuleRef }: CanvasRootProps
     const clampedX = Math.max(0, Math.min(config.maxCols - module.gridWidth, snappedX))
     const clampedY = Math.max(0, Math.min(config.maxRows - module.gridHeight, snappedY))
 
-    // Update local state immediately (PATCH persistence in Plan 4)
+    // Only patch if position actually changed (avoid unnecessary requests)
+    if (clampedX === module.gridX && clampedY === module.gridY) return
+
+    // Update local state immediately
     setLocalModules(prev => prev.map(m =>
       m.id === module.id ? { ...m, gridX: clampedX, gridY: clampedY } : m
     ))
+
+    // Persist to backend — abort any previous in-flight PATCH for this module
+    patchLayout(module.id, { gridX: clampedX, gridY: clampedY })
   }
 
   function handleResize(
@@ -144,7 +164,9 @@ export function CanvasRoot({ pageId, pageSize, onAddModuleRef }: CanvasRootProps
     setLocalModules(prev => prev.map(m =>
       m.id === moduleId ? { ...m, ...patch } : m
     ))
-    // PATCH persistence added in Plan 4
+
+    // Persist to backend
+    patchLayout(moduleId, patch)
   }
 
   function handleDeselectAll() {
@@ -152,17 +174,28 @@ export function CanvasRoot({ pageId, pageSize, onAddModuleRef }: CanvasRootProps
   }
 
   function handleBringForward(moduleId: string) {
+    // Compute new zIndex BEFORE entering the state updater — keeps the updater pure
+    // (React 19 Strict Mode double-invokes updaters in development; side effects inside
+    // updaters would fire twice, causing two PATCH requests per z-order change)
+    const current = localModules.find(m => m.id === moduleId)
+    if (!current) return
+    const newZIndex = current.zIndex + 1
+
     setLocalModules(prev => prev.map(m =>
-      m.id === moduleId ? { ...m, zIndex: m.zIndex + 1 } : m
+      m.id === moduleId ? { ...m, zIndex: newZIndex } : m
     ))
-    // PATCH persistence added in Plan 4
+    patchLayout(moduleId, { zIndex: newZIndex })
   }
 
   function handleSendBackward(moduleId: string) {
+    const current = localModules.find(m => m.id === moduleId)
+    if (!current) return
+    const newZIndex = Math.max(0, current.zIndex - 1)
+
     setLocalModules(prev => prev.map(m =>
-      m.id === moduleId ? { ...m, zIndex: Math.max(0, m.zIndex - 1) } : m
+      m.id === moduleId ? { ...m, zIndex: newZIndex } : m
     ))
-    // PATCH persistence added in Plan 4
+    patchLayout(moduleId, { zIndex: newZIndex })
   }
 
   function handleDeleteRequest(moduleId: string) {

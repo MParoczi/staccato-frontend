@@ -188,7 +188,7 @@ export default function LessonPage() {
 
       {/* Canvas — real dotted-grid at fixed page dimensions, scaled to fit width */}
       {activePage && (
-        <CanvasRoot pageId={activePage.id} pageSize={pageSize} onAddModuleRef={addModuleRef} />
+        <CanvasRoot key={activePage.id} pageId={activePage.id} pageSize={pageSize} onAddModuleRef={addModuleRef} />
       )}
 
       <DeletePageDialog
