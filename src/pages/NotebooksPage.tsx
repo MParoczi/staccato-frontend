@@ -7,6 +7,7 @@ import type { Notebook } from '@/types'
 import { getNotebooks } from '@/features/notebooks/api/notebooksApi'
 import { NotebookCard } from '@/features/notebooks/components/NotebookCard'
 import { NotebookFormDialog } from '@/features/notebooks/components/NotebookFormDialog'
+import { DeleteNotebookDialog } from '@/features/notebooks/components/DeleteNotebookDialog'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 
@@ -15,6 +16,7 @@ export default function NotebooksPage() {
   const navigate = useNavigate()
   const [createOpen, setCreateOpen] = useState(false)
   const [editNotebook, setEditNotebook] = useState<Notebook | null>(null)
+  const [deleteTarget, setDeleteTarget] = useState<Notebook | null>(null)
   const { data: notebooks = [], isLoading } = useQuery({
     queryKey: ['notebooks'],
     queryFn: getNotebooks,
@@ -66,7 +68,7 @@ export default function NotebooksPage() {
               notebook={notebook}
               onOpen={() => navigate(`/app/notebooks/${notebook.id}`)}
               onSettings={() => setEditNotebook(notebook)}
-              onDelete={() => void 0}
+              onDelete={() => setDeleteTarget(notebook)}
             />
           ))}
         </div>
@@ -80,6 +82,11 @@ export default function NotebooksPage() {
         onOpenChange={(open) => {
           if (!open) setEditNotebook(null)
         }}
+      />
+      <DeleteNotebookDialog
+        notebook={deleteTarget}
+        open={!!deleteTarget}
+        onOpenChange={(open) => { if (!open) setDeleteTarget(null) }}
       />
     </div>
   )
