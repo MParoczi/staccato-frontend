@@ -62,6 +62,7 @@ export function RenameLessonDialog({ lesson, notebookId, open, onOpenChange }: R
       updateLesson(lesson!.id, { title: values.title.trim() }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['lessons', notebookId] })
+      queryClient.invalidateQueries({ queryKey: ['lesson', lesson!.id] })
       onOpenChange(false)
     },
     onError: (error) => {

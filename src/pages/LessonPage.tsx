@@ -43,21 +43,22 @@ export default function LessonPage() {
   const activePage = pages?.[currentPage - 1] ?? null
   const canDeletePage = totalPages > 1
   const globalPageNumber =
-    activePage?.globalPageNumber ?? ((lesson?.globalPageStart ?? 0) + currentPage - 1)
+    (activePage?.globalPageNumber ?? ((lesson?.globalPageStart ?? 0) + currentPage - 1)) + 1
 
   const goToPrev = () => setSearchParams({ page: String(currentPage - 1) })
   const goToNext = () => setSearchParams({ page: String(currentPage + 1) })
 
   const addPageMutation = useMutation({
     mutationFn: () => addPage(lessonId!),
-    onSuccess: (newPage) => {
-      setSearchParams({ page: String(newPage.pageNumber) })
+    onSuccess: () => {
+      const nextPage = totalPages + 1
+      setSearchParams({ page: String(nextPage) })
+      if (nextPage === 10) {
+        toast.warning(t('warnings.tenPages'))
+      }
       queryClient.invalidateQueries({ queryKey: ['lesson', lessonId] })
       queryClient.invalidateQueries({ queryKey: ['lessonPages', lessonId] })
       queryClient.invalidateQueries({ queryKey: ['lessons', notebookId] })
-      if (newPage.pageNumber === 10) {
-        toast.warning(t('warnings.tenPages'))
-      }
     },
     onError: (error) => {
       toast.error(extractErrorMessage(error, t('errors.addPageFailed')))
@@ -169,7 +170,7 @@ export default function LessonPage() {
         className="min-h-[70vh]"
         style={{
           backgroundImage:
-            'radial-gradient(circle, hsl(var(--muted-foreground) / 0.25) 1px, transparent 1px)',
+            'radial-gradient(circle, color-mix(in oklch, var(--muted-foreground) 25%, transparent) 1px, transparent 1px)',
           backgroundSize: '24px 24px',
           backgroundColor: 'hsl(var(--background))',
         }}
