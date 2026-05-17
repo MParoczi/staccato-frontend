@@ -12,13 +12,11 @@ A musician can open a notebook, navigate to any lesson, add and arrange content 
 
 ## Current State
 
-**Active:** v0.5 Lessons & Pages (started 2026-05-17)
+**Active:** v0.6 TBD — run `/gsd:new-milestone` to define Phase 6 scope and requirements
 
-Phase 5 requirements defined (LES-01–04, PAGE-01–02). API swagger.json saved to `.planning/swagger.json` as the authoritative contract for all remaining phases. Ready for `/gsd:plan-phase 5`.
+**Last shipped:** v0.5 Lessons & Pages (2026-05-17)
 
-**Last shipped:** v0.4 Notebook Management (2026-05-17)
-
-Users can create and manage notebooks from a responsive dashboard, configure notebooks (title, cover color, style preset), open any notebook to see its cover page and empty index, and delete notebooks with an irreversible confirmation. The `PageErrorBoundary` protects all page routes from crashes. TanStack Query is established as the server-state pattern for all future phases.
+Users can create and manage lessons within a notebook; navigate pages with URL-based previous/next controls; add pages (soft 10-page warning) and delete pages (blocked on last page); and see correct global page numbers across the notebook. The lesson list is fully CRUD with inline rename/delete dialogs. A CSS-only dotted-grid canvas placeholder awaits Phase 6 module placement. 10/10 UAT tests passed.
 
 **Tech stack as of Phase 4:**
 - Vite 8.0.13 + React 19.2.6 + TypeScript 5.9.3
@@ -32,12 +30,11 @@ Users can create and manage notebooks from a responsive dashboard, configure not
 
 ## Next Milestone
 
-**v0.5 — Lessons & Pages** *(active)*
+**v0.6 — TBD** *(not yet defined)*
 
-Goal: Users can create and manage lessons within a notebook; add and delete pages; see correct global page numbers.
+Phase 6 is Canvas & Module Placement — run `/gsd:new-milestone` to define scope, scope requirements, and begin planning.
 
-Scope: Phase 5 (Lessons & Pages) — requirements defined; plan via `/gsd:plan-phase 5`
-Requirements: LES-01–04, PAGE-01–02 (see `.planning/REQUIREMENTS.md`)
+Candidate phases: 6 (Canvas & Module Placement), 7 (Text Building Blocks), 8 (Chord Library), 9–12 (Rich BBs, Styling, PDF, i18n)
 
 ## Requirements
 
@@ -64,11 +61,13 @@ Requirements: LES-01–04, PAGE-01–02 (see `.planning/REQUIREMENTS.md`)
 - ✓ Notebook book view (cover page, empty index page, tab navigation, Navbar breadcrumb) — Phase 4 (NB-05)
 - ✓ Mutation errors surface as exactly one Sonner toast per failure — Phase 4 (ERR-01)
 - ✓ `PageErrorBoundary` catches page crashes without white screen — Phase 4 (ERR-02)
+- ✓ Lesson CRUD within a notebook, ordered by creation date — Phase 5 (LES-01–03)
+- ✓ Lesson navigation shell with URL-based page controls, global page numbers, 3-level breadcrumb — Phase 5 (LES-04)
+- ✓ Add page with soft 10-page warning toast — Phase 5 (PAGE-01)
+- ✓ Delete page blocked on last page; global page numbers correct across lessons — Phase 5 (PAGE-02)
 
 ### Active
 
-- [ ] Lesson CRUD within a notebook, ordered by creation date
-- [ ] Multi-page lessons: add/delete pages with soft 10-page warning
 - [ ] 2D dotted-grid canvas: place, drag, resize, and z-order modules
 - [ ] 12 module types with per-type minimum dimensions and building block allow-lists
 - [ ] 10 building block types with full editor UI (text, lists, tables, chord diagrams, progressions, musical notes, checkboxes)
@@ -107,7 +106,7 @@ The backend (ASP.NET Core 10 WebAPI) is a separate repository and already define
 
 The specification (v2.1, 2026-05-15) is the authoritative source. It covers every API endpoint, request/response shape, enum value, business rule, error code, and architectural decision in detail. GSD agents treat it as ground truth.
 
-**Codebase as of v0.3:** ~27 hand-written source files, ~5 900 LOC (TypeScript + JSON locales). Core patterns established: feature-scoped API modules, authStore-driven user state, TanStack Query for server state, Zod + react-hook-form for validated forms.
+**Codebase as of v0.5:** ~37 hand-written source files, ~7 450 LOC (TypeScript + JSON locales). Core patterns established: feature-scoped API modules, authStore-driven user state, TanStack Query for server state, Zod + react-hook-form for validated forms, URL-based page navigation via useSearchParams, inline extractErrorMessage per feature.
 
 **Open backend gaps:**
 - HttpOnly refresh cookie not invalidated on logout (backend fix pending in separate repo)

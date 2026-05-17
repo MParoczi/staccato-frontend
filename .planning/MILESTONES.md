@@ -110,3 +110,31 @@
 **Archive:** `.planning/milestones/v0.4-ROADMAP.md`
 
 ---
+
+## v0.5 — Lessons & Pages
+
+**Shipped:** 2026-05-17
+**Phases:** 1 (Phase 5: Lessons & Pages)
+**Plans:** 4
+**Tests:** 26 (unchanged — Phase 5 covered by UAT; no new unit tests added)
+
+**Delivered:** Lesson CRUD within a notebook (create with auto-navigate, rename with immediate cache update, delete with irreversible confirmation). Multi-page lesson navigation using URL search params (?page=N) with previous/next controls, global page number display, and a dotted-grid CSS canvas placeholder. Soft 10-page warning toast. Delete page blocked on last page. 3-level Navbar breadcrumb on lesson routes. 4 bugs found and fixed during UAT.
+
+**Commits:** 033f8f3 → aafb584 (20 commits, 22 files, 1552 insertions, 19 deletions)
+**Timeline:** 2026-05-17 (1 day)
+
+**Key accomplishments:**
+1. lessonsApi.ts + lessonPagesApi.ts: full CRUD API layer following the notebooksApi.ts feature-scoped pattern
+2. LessonsPage: lesson list with dashed first-slot create button, skeleton loading, empty state, row action dropdown (Open / Rename / Delete)
+3. Three CRUD dialogs: CreateLessonDialog (zod form, auto-navigate on create), RenameLessonDialog (pre-filled form), DeleteLessonDialog (destructive confirmation)
+4. LessonPage shell: URL-based page navigation (?page=N), top controls bar with global page number, prev/next buttons, add/delete page actions, 10-page Sonner warning
+5. DeletePageDialog: last-page guard (button disabled at pageCount === 1), adjacent-page navigation on delete
+6. Navbar 3-level breadcrumb on lesson routes; LessonsPage as tab child of NotebookPage, LessonPage as full-screen sibling
+
+**Known deferred items at close:** 2
+- Hungarian lesson strings are `__HU_TODO__` stubs (all values) — deferred to Phase 12
+- Canvas content area is CSS-only dotted-grid placeholder — content modules deferred to Phase 6+
+
+**Archive:** `.planning/milestones/v0.5-ROADMAP.md`
+
+---

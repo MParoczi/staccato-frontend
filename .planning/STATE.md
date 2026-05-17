@@ -1,32 +1,32 @@
 ---
 gsd_state_version: 1.0
-milestone: v0.5
-milestone_name: Lessons & Pages
-status: "✅ Phase 5 Shipped — shipped to main (branching_strategy: none); commits 033f8f3–aafb584"
+milestone: v0.6
+milestone_name: TBD
+status: "⬜ v0.5 Archived — run /gsd:new-milestone to define v0.6 scope"
 last_updated: "2026-05-17T00:00:00.000Z"
-last_activity: 2026-05-17 — Phase 5 shipped to main; 10/10 UAT passed; 6 requirements satisfied (LES-01–04, PAGE-01–02)
+last_activity: 2026-05-17 — v0.5 milestone archived; Phase 5 complete (10/10 UAT, 6/6 requirements); ready for /gsd:new-milestone
 progress:
-  total_phases: 9
+  total_phases: 0
   completed_phases: 0
-  total_plans: 4
-  completed_plans: 4
-  percent: 100
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-05-17 for v0.5)
+See: .planning/PROJECT.md (updated 2026-05-17 after v0.5 milestone archive)
 
 **Core value:** A musician can open a notebook, navigate to any lesson, add and arrange content on the dotted-paper canvas, and find exactly what they practiced.
-**Current focus:** v0.5 Phase 6 — Canvas & Module Placement — next up
+**Current focus:** v0.6 — TBD — run `/gsd:new-milestone` to define scope
 
 ## Current Position
 
-Phase: 5 — Lessons & Pages
-Status: ✅ Shipped — 4/4 plans complete; shipped to main (branching_strategy: none); commits 033f8f3–aafb584
-Last activity: 2026-05-17 — Phase 5 shipped to main; 10/10 UAT passed; 6 requirements covered (LES-01–04, PAGE-01–02)
+Phase: — (between milestones)
+Status: ⬜ Ready for next milestone — v0.5 archived 2026-05-17
+Last activity: 2026-05-17 — v0.5 Lessons & Pages milestone archived; Phase 5 shipped (commits 033f8f3–aafb584); 10/10 UAT passed; 6 requirements satisfied (LES-01–04, PAGE-01–02)
 
 ## Phase Progress
 
@@ -37,13 +37,13 @@ Last activity: 2026-05-17 — Phase 5 shipped to main; 10/10 UAT passed; 6 requi
 | 3 | User Profile & Account | v0.3 | ✅ Shipped |
 | 4 | Notebook Management | v0.4 | ✅ Shipped |
 | 5 | Lessons & Pages | v0.5 | ✅ Shipped |
-| 6 | Canvas & Module Placement | v0.5 | ○ Pending |
-| 7 | Text Building Blocks | v0.5 | ○ Pending |
-| 8 | Chord Library | v0.5 | ○ Pending |
-| 9 | Rich Building Blocks | v0.5 | ○ Pending |
-| 10 | Styling System | v0.5 | ○ Pending |
-| 11 | Notebook Index & PDF Export | v0.5 | ○ Pending |
-| 12 | Localization & Polish | v0.5 | ○ Pending |
+| 6 | Canvas & Module Placement | v0.6+ | ○ Pending |
+| 7 | Text Building Blocks | v0.6+ | ○ Pending |
+| 8 | Chord Library | v0.6+ | ○ Pending |
+| 9 | Rich Building Blocks | v0.6+ | ○ Pending |
+| 10 | Styling System | v0.6+ | ○ Pending |
+| 11 | Notebook Index & PDF Export | v0.6+ | ○ Pending |
+| 12 | Localization & Polish | v0.6+ | ○ Pending |
 
 ## Key Decisions Carried Forward
 
@@ -56,16 +56,19 @@ Last activity: 2026-05-17 — Phase 5 shipped to main; 10/10 UAT passed; 6 requi
 - extractErrorMessage inline per component — consistent with plan spec, prevents double-toast
 - TanStack Query cache invalidation on mutation success is the established pattern for all list/detail data
 
-## New Decisions for v0.5
+## Decisions from v0.5 (Carried Forward)
 
 - Lessons feature lives at `src/features/lessons/` — follows same feature-scoped structure as notebooks
 - LessonPages feature shares `src/features/lessons/` (not a separate feature) — pages are subordinate to lessons
-- API spec is now authoritative at `.planning/swagger.json` — consult before every plan to avoid endpoint mismatches
+- API spec is authoritative at `.planning/swagger.json` — consult before every plan to avoid endpoint mismatches
 - Global page formula: cover=1, index=2, lessons start at 3 (cumulative by pageCount)
+- URL-based page navigation: `useSearchParams` with `?page=N` (1-based) — page position survives refresh
+- LessonsPage as tab child of NotebookPage (inherits tab chrome); LessonPage as AppLayout sibling (full-screen, no tab bar)
+- Backend `globalPageStart` is 0-indexed — frontend always adds +1 for display
+- `POST /lessons/{id}/pages` response does not include `pageNumber` — compute client-side as `totalPages + 1`
 
 ## Notes
 
-- REQUIREMENTS.md covers Phase 5 only (LES-01–04, PAGE-01–02); Phase 6+ requirements written at next /gsd:new-milestone
-- swagger.json saved at .planning/swagger.json — full API contract; must be consulted during plan-phase research to prevent v0.3-style 405 errors
-- 4 open questions flagged in REQUIREMENTS.md (Q1–Q4) — resolve during /gsd:plan-phase 5 research
-- Phase 4 left "Lessons" tab in NotebookPage.tsx as disabled — Phase 5 enables it
+- REQUIREMENTS.md is now a placeholder — run `/gsd:new-milestone` to define v0.6 scope and requirements
+- swagger.json at `.planning/swagger.json` is the authoritative API contract; consult before every plan-phase
+- Phase 5 open questions (Q1–Q4) all resolved — see `.planning/milestones/v0.5-REQUIREMENTS.md`
