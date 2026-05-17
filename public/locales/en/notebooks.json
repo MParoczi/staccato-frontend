@@ -1,19 +1,54 @@
 {
   "dashboard": {
     "title": "My Notebooks",
-    "empty": "No notebooks yet. Create your first one!",
-    "createButton": "New Notebook"
+    "empty": "No notebooks yet",
+    "emptyHint": "Create your first notebook to start tracking your practice.",
+    "createButton": "New Notebook",
+    "newSlotLabel": "+ New Notebook"
   },
   "create": {
     "title": "Create Notebook",
     "titleLabel": "Title",
+    "titlePlaceholder": "My Guitar Notebook",
     "instrumentLabel": "Instrument",
     "pageSizeLabel": "Page Size",
-    "coverColorLabel": "Cover Color"
+    "coverColorLabel": "Cover Color",
+    "stylePresetLabel": "Style"
+  },
+  "edit": {
+    "title": "Notebook Settings"
+  },
+  "delete": {
+    "title": "Delete \"{{name}}\"?",
+    "description": "This can't be undone. All lessons and content will be permanently removed.",
+    "confirm": "Delete"
   },
   "actions": {
+    "open": "Open",
     "rename": "Rename",
     "delete": "Delete notebook",
     "settings": "Notebook settings"
+  },
+  "book": {
+    "coverTab": "Cover",
+    "indexTab": "Index",
+    "lessonsTab": "Lessons",
+    "indexEmpty": "No lessons yet",
+    "indexEmptyHint": "Once you add lessons, they'll appear here.",
+    "breadcrumb": "Notebooks"
+  },
+  "errors": {
+    "createFailed": "Failed to create notebook. Please try again.",
+    "updateFailed": "Failed to update notebook. Please try again.",
+    "deleteFailed": "Failed to delete notebook. Please try again.",
+    "loadFailed": "Failed to load notebooks. Please try again.",
+    "notFound": "Notebook not found"
+  },
+  "presets": {
+    "Classic": "Classic",
+    "Colorful": "Colorful",
+    "Dark": "Dark",
+    "Minimal": "Minimal",
+    "Pastel": "Pastel"
   }
 }

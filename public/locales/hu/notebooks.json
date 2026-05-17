@@ -2,18 +2,53 @@
   "dashboard": {
     "title": "__HU_TODO__",
     "empty": "__HU_TODO__",
-    "createButton": "__HU_TODO__"
+    "emptyHint": "__HU_TODO__",
+    "createButton": "__HU_TODO__",
+    "newSlotLabel": "__HU_TODO__"
   },
   "create": {
     "title": "__HU_TODO__",
     "titleLabel": "__HU_TODO__",
+    "titlePlaceholder": "__HU_TODO__",
     "instrumentLabel": "__HU_TODO__",
     "pageSizeLabel": "__HU_TODO__",
-    "coverColorLabel": "__HU_TODO__"
+    "coverColorLabel": "__HU_TODO__",
+    "stylePresetLabel": "__HU_TODO__"
+  },
+  "edit": {
+    "title": "__HU_TODO__"
+  },
+  "delete": {
+    "title": "__HU_TODO__",
+    "description": "__HU_TODO__",
+    "confirm": "__HU_TODO__"
   },
   "actions": {
+    "open": "__HU_TODO__",
     "rename": "__HU_TODO__",
     "delete": "__HU_TODO__",
     "settings": "__HU_TODO__"
+  },
+  "book": {
+    "coverTab": "__HU_TODO__",
+    "indexTab": "__HU_TODO__",
+    "lessonsTab": "__HU_TODO__",
+    "indexEmpty": "__HU_TODO__",
+    "indexEmptyHint": "__HU_TODO__",
+    "breadcrumb": "__HU_TODO__"
+  },
+  "errors": {
+    "createFailed": "__HU_TODO__",
+    "updateFailed": "__HU_TODO__",
+    "deleteFailed": "__HU_TODO__",
+    "loadFailed": "__HU_TODO__",
+    "notFound": "__HU_TODO__"
+  },
+  "presets": {
+    "Classic": "__HU_TODO__",
+    "Colorful": "__HU_TODO__",
+    "Dark": "__HU_TODO__",
+    "Minimal": "__HU_TODO__",
+    "Pastel": "__HU_TODO__"
   }
 }
