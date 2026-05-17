@@ -1,32 +1,32 @@
 ---
 gsd_state_version: 1.0
-milestone: v0.4
-milestone_name: Notebook Management
-status: archived
-last_updated: "2026-05-17T09:30:00Z"
-last_activity: 2026-05-17 — v0.4 milestone archived; REQUIREMENTS.md deleted; archive written to milestones/; ready for /gsd:new-milestone
+milestone: v0.5
+milestone_name: Lessons & Pages
+status: active
+last_updated: "2026-05-17T10:00:00Z"
+last_activity: 2026-05-17 — v0.5 milestone started; REQUIREMENTS.md written (Phase 5 scope); swagger.json saved; ready for /gsd:plan-phase 5
 progress:
   total_phases: 1
-  completed_phases: 1
-  total_plans: 4
-  completed_plans: 4
-  percent: 100
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-05-17 for v0.4)
+See: .planning/PROJECT.md (updated 2026-05-17 for v0.5)
 
 **Core value:** A musician can open a notebook, navigate to any lesson, add and arrange content on the dotted-paper canvas, and find exactly what they practiced.
-**Current focus:** v0.4 Notebook Management — ✅ Archived — next: `/gsd:new-milestone` for v0.5
+**Current focus:** v0.5 Phase 5 — Lessons & Pages — requirements defined; ready to plan
 
 ## Current Position
 
-Phase: 4 — Notebook Management
-Status: ✅ Archived — milestone closed; archive at `.planning/milestones/v0.4-ROADMAP.md`
-Last activity: 2026-05-17 — v0.4 archived; REQUIREMENTS.md deleted; PROJECT.md + MILESTONES.md + ROADMAP.md updated
+Phase: 5 — Lessons & Pages
+Status: ○ Pending — REQUIREMENTS.md written; next: `/gsd:plan-phase 5`
+Last activity: 2026-05-17 — v0.5 milestone started; Phase 5 requirements (LES-01–04, PAGE-01–02) defined; API swagger.json saved to .planning/
 
 ## Phase Progress
 
@@ -48,15 +48,24 @@ Last activity: 2026-05-17 — v0.4 archived; REQUIREMENTS.md deleted; PROJECT.md
 ## Key Decisions Carried Forward
 
 - AppLayout wraps all /app/* routes — foundational for all phases; never remove or restructure without updating all child routes
-- authStore.updateUser is the pattern for syncing profile mutations; TanStack Query for all server state (notebooks, lessons, etc.)
+- authStore.updateUser is the pattern for syncing profile mutations; TanStack Query for all server state
 - Feature-scoped API modules: `src/features/{feature}/api/{feature}Api.ts` — all calls via shared `src/api/client.ts`
 - HU translation stubs deferred to Phase 12 — add HU stub keys for new strings but do not block on translations
-- COVER_COLORS / NOTEBOOK_STYLE_PRESETS / NOTEBOOK_PAGE_SIZES exported as as-const arrays (erasableSyntaxOnly constraint — no enum)
-- Instrument hardcoded as "Guitar" in all Phase 4 UI (backend only supports 6-string guitar; generalize in future phase)
-- extractErrorMessage inline per component (not shared utility) — consistent with plan spec
+- COVER_COLORS / NOTEBOOK_STYLE_PRESETS / NOTEBOOK_PAGE_SIZES exported as as-const arrays (erasableSyntaxOnly — no enum)
+- Instrument hardcoded as "Guitar" in all Phase 4 UI (backend only supports 6-string guitar)
+- extractErrorMessage inline per component — consistent with plan spec, prevents double-toast
+- TanStack Query cache invalidation on mutation success is the established pattern for all list/detail data
+
+## New Decisions for v0.5
+
+- Lessons feature lives at `src/features/lessons/` — follows same feature-scoped structure as notebooks
+- LessonPages feature shares `src/features/lessons/` (not a separate feature) — pages are subordinate to lessons
+- API spec is now authoritative at `.planning/swagger.json` — consult before every plan to avoid endpoint mismatches
+- Global page formula: cover=1, index=2, lessons start at 3 (cumulative by pageCount)
 
 ## Notes
 
-- v0.4 archived: milestone complete, requirements archived, REQUIREMENTS.md deleted
-- Next: `/gsd:new-milestone` to define v0.5 requirements (Phase 5: Lessons & Pages)
-- Phases 5–12 to be planned via `/gsd:new-milestone`
+- REQUIREMENTS.md covers Phase 5 only (LES-01–04, PAGE-01–02); Phase 6+ requirements written at next /gsd:new-milestone
+- swagger.json saved at .planning/swagger.json — full API contract; must be consulted during plan-phase research to prevent v0.3-style 405 errors
+- 4 open questions flagged in REQUIREMENTS.md (Q1–Q4) — resolve during /gsd:plan-phase 5 research
+- Phase 4 left "Lessons" tab in NotebookPage.tsx as disabled — Phase 5 enables it

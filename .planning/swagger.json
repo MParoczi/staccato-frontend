@@ -1,0 +1,628 @@
+{
+  "openapi": "3.0.4",
+  "info": {
+    "title": "Staccato API",
+    "description": "Backend API for the Staccato instrument learning notebook application.",
+    "version": "v1"
+  },
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/RegisterRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/LoginRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": ["Auth"],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/auth/google": {
+      "post": {
+        "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/GoogleAuthRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/chords": {
+      "get": {
+        "tags": ["Chords"],
+        "parameters": [
+          { "name": "instrument", "in": "query", "required": true, "schema": { "$ref": "#/components/schemas/InstrumentKey" } },
+          { "name": "root", "in": "query", "schema": { "type": "string" } },
+          { "name": "quality", "in": "query", "schema": { "type": "string" } },
+          { "name": "extension", "in": "query", "schema": { "type": "string" } },
+          { "name": "alternation", "in": "query", "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/chords/{id}": {
+      "get": {
+        "tags": ["Chords"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/exports": {
+      "post": {
+        "tags": ["Exports"],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CreatePdfExportRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "get": {
+        "tags": ["Exports"],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/exports/{id}": {
+      "get": {
+        "tags": ["Exports"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Exports"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/exports/{id}/download": {
+      "get": {
+        "tags": ["Exports"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/instruments": {
+      "get": {
+        "tags": ["Instruments"],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/lessons/{id}/pages": {
+      "get": {
+        "tags": ["LessonPages"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["LessonPages"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/lessons/{lessonId}/pages/{pageId}": {
+      "delete": {
+        "tags": ["LessonPages"],
+        "parameters": [
+          { "name": "lessonId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } },
+          { "name": "pageId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/notebooks/{id}/lessons": {
+      "get": {
+        "tags": ["Lessons"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["Lessons"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CreateLessonRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/lessons/{id}": {
+      "get": {
+        "tags": ["Lessons"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "put": {
+        "tags": ["Lessons"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/UpdateLessonRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Lessons"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/notebooks/{id}/index": {
+      "get": {
+        "tags": ["Lessons"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/pages/{pageId}/modules": {
+      "get": {
+        "tags": ["Modules"],
+        "parameters": [
+          { "name": "pageId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["Modules"],
+        "parameters": [
+          { "name": "pageId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CreateModuleRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/modules/{moduleId}": {
+      "put": {
+        "tags": ["Modules"],
+        "parameters": [
+          { "name": "moduleId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/UpdateModuleRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Modules"],
+        "parameters": [
+          { "name": "moduleId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/modules/{moduleId}/layout": {
+      "patch": {
+        "tags": ["Modules"],
+        "parameters": [
+          { "name": "moduleId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/PatchModuleLayoutRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/notebooks": {
+      "get": {
+        "tags": ["Notebooks"],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["Notebooks"],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CreateNotebookRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/notebooks/{id}": {
+      "get": {
+        "tags": ["Notebooks"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "put": {
+        "tags": ["Notebooks"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/UpdateNotebookRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Notebooks"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/notebooks/{id}/styles": {
+      "get": {
+        "tags": ["Notebooks"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "put": {
+        "tags": ["Notebooks"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "type": "array", "items": { "$ref": "#/components/schemas/ModuleStyleRequest" } }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/notebooks/{id}/styles/apply-preset/{presetId}": {
+      "post": {
+        "tags": ["Notebooks"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } },
+          { "name": "presetId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/presets": {
+      "get": {
+        "tags": ["Presets"],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/users/me": {
+      "get": {
+        "tags": ["Users"],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "put": {
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/UpdateProfileRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/users/me/cancel-deletion": {
+      "post": {
+        "tags": ["Users"],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/users/me/avatar": {
+      "put": {
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": { "File": { "type": "string", "format": "binary" } }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/users/me/presets": {
+      "get": {
+        "tags": ["Users"],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/SavePresetRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/users/me/presets/{id}": {
+      "put": {
+        "tags": ["Users"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/UpdatePresetRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateLessonRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "nullable": true }
+        },
+        "additionalProperties": false
+      },
+      "CreateModuleRequest": {
+        "type": "object",
+        "properties": {
+          "moduleType": { "type": "string", "nullable": true },
+          "gridX": { "type": "integer", "format": "int32" },
+          "gridY": { "type": "integer", "format": "int32" },
+          "gridWidth": { "type": "integer", "format": "int32" },
+          "gridHeight": { "type": "integer", "format": "int32" },
+          "zIndex": { "type": "integer", "format": "int32" },
+          "content": {}
+        },
+        "additionalProperties": false
+      },
+      "CreateNotebookRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "nullable": true },
+          "instrumentId": { "type": "string", "format": "uuid" },
+          "pageSize": { "type": "string", "nullable": true },
+          "coverColor": { "type": "string", "nullable": true },
+          "styles": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ModuleStyleRequest" },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreatePdfExportRequest": {
+        "type": "object",
+        "properties": {
+          "notebookId": { "type": "string", "format": "uuid" },
+          "lessonIds": {
+            "type": "array",
+            "items": { "type": "string", "format": "uuid" },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GoogleAuthRequest": {
+        "type": "object",
+        "properties": {
+          "idToken": { "type": "string", "nullable": true }
+        },
+        "additionalProperties": false
+      },
+      "InstrumentKey": {
+        "enum": [0, 1, 2, 3, 4, 5, 6],
+        "type": "integer",
+        "format": "int32"
+      },
+      "LoginRequest": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string", "nullable": true },
+          "password": { "type": "string", "nullable": true },
+          "rememberMe": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      },
+      "ModuleStyleRequest": {
+        "type": "object",
+        "properties": {
+          "moduleType": { "type": "string", "nullable": true },
+          "backgroundColor": { "type": "string", "nullable": true },
+          "borderColor": { "type": "string", "nullable": true },
+          "borderStyle": { "type": "string", "nullable": true },
+          "borderWidth": { "type": "integer", "format": "int32" },
+          "borderRadius": { "type": "integer", "format": "int32" },
+          "headerBgColor": { "type": "string", "nullable": true },
+          "headerTextColor": { "type": "string", "nullable": true },
+          "bodyTextColor": { "type": "string", "nullable": true },
+          "fontFamily": { "type": "string", "nullable": true }
+        },
+        "additionalProperties": false
+      },
+      "PatchModuleLayoutRequest": {
+        "type": "object",
+        "properties": {
+          "gridX": { "type": "integer", "format": "int32" },
+          "gridY": { "type": "integer", "format": "int32" },
+          "gridWidth": { "type": "integer", "format": "int32" },
+          "gridHeight": { "type": "integer", "format": "int32" },
+          "zIndex": { "type": "integer", "format": "int32" }
+        },
+        "additionalProperties": false
+      },
+      "RegisterRequest": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string", "nullable": true },
+          "displayName": { "type": "string", "nullable": true },
+          "password": { "type": "string", "nullable": true }
+        },
+        "additionalProperties": false
+      },
+      "SavePresetRequest": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "nullable": true },
+          "styles": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/StyleEntryDto" },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StyleEntryDto": {
+        "type": "object",
+        "properties": {
+          "moduleType": { "type": "string", "nullable": true },
+          "stylesJson": { "type": "string", "nullable": true }
+        },
+        "additionalProperties": false
+      },
+      "UpdateLessonRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "nullable": true }
+        },
+        "additionalProperties": false
+      },
+      "UpdateModuleRequest": {
+        "type": "object",
+        "properties": {
+          "moduleType": { "type": "string", "nullable": true },
+          "gridX": { "type": "integer", "format": "int32" },
+          "gridY": { "type": "integer", "format": "int32" },
+          "gridWidth": { "type": "integer", "format": "int32" },
+          "gridHeight": { "type": "integer", "format": "int32" },
+          "zIndex": { "type": "integer", "format": "int32" },
+          "content": {}
+        },
+        "additionalProperties": false
+      },
+      "UpdateNotebookRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "nullable": true },
+          "coverColor": { "type": "string", "nullable": true },
+          "instrumentId": { "type": "string", "format": "uuid", "nullable": true },
+          "pageSize": { "type": "string", "nullable": true }
+        },
+        "additionalProperties": false
+      },
+      "UpdatePresetRequest": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "nullable": true },
+          "styles": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/StyleEntryDto" },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateProfileRequest": {
+        "type": "object",
+        "properties": {
+          "firstName": { "type": "string", "nullable": true },
+          "lastName": { "type": "string", "nullable": true },
+          "language": { "type": "string", "nullable": true },
+          "defaultPageSize": { "type": "string", "nullable": true },
+          "defaultInstrumentId": { "type": "string", "format": "uuid", "nullable": true }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "description": "Enter your JWT access token.",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [{}],
+  "tags": [
+    { "name": "Auth" },
+    { "name": "Chords" },
+    { "name": "Exports" },
+    { "name": "Instruments" },
+    { "name": "LessonPages" },
+    { "name": "Lessons" },
+    { "name": "Modules" },
+    { "name": "Notebooks" },
+    { "name": "Presets" },
+    { "name": "Users" }
+  ]
+}

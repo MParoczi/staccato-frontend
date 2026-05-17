@@ -14,7 +14,7 @@
 - ✅ **v0.2 Authentication** — Phase 2 (shipped 2026-05-16)
 - ✅ **v0.3 User Profile & Account** — Phase 3 (shipped 2026-05-16)
 - ✅ **v0.4 Notebook Management** — Phase 4 (shipped 2026-05-17)
-- ⬜ **v0.5 Lessons & Pages** — Phases 5–12 (to be planned via `/gsd:new-milestone`)
+- 🔄 **v0.5 Lessons & Pages** — Phases 5–12 (active — Phase 5 requirements defined)
 
 ---
 
@@ -62,7 +62,7 @@ See archive: `.planning/milestones/v0.4-ROADMAP.md`
 
 </details>
 
-### ⬜ v0.5+ — Phases 5–12 (To be planned via `/gsd:new-milestone`)
+### 🔄 v0.5 Lessons & Pages — Phases 5–12 (Active)
 
 | # | Phase | Goal | Requirements | Plans |
 |---|-------|------|--------------|-------|

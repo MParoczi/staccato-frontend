@@ -12,9 +12,13 @@ A musician can open a notebook, navigate to any lesson, add and arrange content 
 
 ## Current State
 
-**Shipped:** v0.4 Notebook Management (2026-05-17)
+**Active:** v0.5 Lessons & Pages (started 2026-05-17)
 
-Users can now create and manage notebooks from a responsive dashboard, configure notebooks (title, cover color, style preset), open any notebook to see its cover page and empty index, and delete notebooks with an irreversible confirmation. The `PageErrorBoundary` protects all page routes from crashes. TanStack Query is established as the server-state pattern for all future phases.
+Phase 5 requirements defined (LES-01–04, PAGE-01–02). API swagger.json saved to `.planning/swagger.json` as the authoritative contract for all remaining phases. Ready for `/gsd:plan-phase 5`.
+
+**Last shipped:** v0.4 Notebook Management (2026-05-17)
+
+Users can create and manage notebooks from a responsive dashboard, configure notebooks (title, cover color, style preset), open any notebook to see its cover page and empty index, and delete notebooks with an irreversible confirmation. The `PageErrorBoundary` protects all page routes from crashes. TanStack Query is established as the server-state pattern for all future phases.
 
 **Tech stack as of Phase 4:**
 - Vite 8.0.13 + React 19.2.6 + TypeScript 5.9.3
@@ -28,12 +32,12 @@ Users can now create and manage notebooks from a responsive dashboard, configure
 
 ## Next Milestone
 
-**v0.5 — Lessons & Pages** *(up next)*
+**v0.5 — Lessons & Pages** *(active)*
 
 Goal: Users can create and manage lessons within a notebook; add and delete pages; see correct global page numbers.
 
-Scope: Phase 5 (Lessons & Pages) — to be planned via `/gsd:new-milestone`
-Requirements: LES-01–04, PAGE-01–02
+Scope: Phase 5 (Lessons & Pages) — requirements defined; plan via `/gsd:plan-phase 5`
+Requirements: LES-01–04, PAGE-01–02 (see `.planning/REQUIREMENTS.md`)
 
 ## Requirements
 
