@@ -14,7 +14,7 @@
 - ✅ **v0.2 Authentication** — Phase 2 (shipped 2026-05-16)
 - ✅ **v0.3 User Profile & Account** — Phase 3 (shipped 2026-05-16)
 - ✅ **v0.4 Notebook Management** — Phase 4 (shipped 2026-05-17)
-- 🔄 **v0.5 Lessons & Pages** — Phases 5–12 (active — Phase 5 requirements defined)
+- 🔄 **v0.5 Lessons & Pages** — Phases 5–12 (active — Phase 5 shipped 2026-05-17)
 
 ---
 
@@ -66,7 +66,7 @@ See archive: `.planning/milestones/v0.4-ROADMAP.md`
 
 | # | Phase | Goal | Requirements | Plans |
 |---|-------|------|--------------|-------|
-| 5 | Lessons & Pages | Lesson CRUD, multi-page lessons, page numbering | LES-01–04, PAGE-01–02 | 4/4 plans ✅ |
+| 5 | Lessons & Pages | Lesson CRUD, multi-page lessons, page numbering | LES-01–04, PAGE-01–02 | 4/4 plans ✅ — shipped 2026-05-17 |
 | 6 | Canvas & Module Placement | Dotted-grid canvas; place/drag/resize all 12 module types | CANVAS-01–06, MOD-01–05 | TBD |
 | 7 | Text Building Blocks | All text/structured block editors, undo/redo, dirty guard | BB-01–06, BB-10–11 | TBD |
 | 8 | Chord Library | Browse chords, fretboard diagrams, reusable chord selector | CHORD-01–03 | TBD |

@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v0.5
 milestone_name: Lessons & Pages
-status: "✅ Phase 5 Executed — 4/4 plans complete; next: `/gsd:verify-work 5`"
+status: "✅ Phase 5 Shipped — shipped to main (branching_strategy: none); commits 033f8f3–aafb584"
 last_updated: "2026-05-17T00:00:00.000Z"
-last_activity: 2026-05-17 — Phase 5 executed; all 4 plans shipped (foundation, lessons list, lesson page shell, routing)
+last_activity: 2026-05-17 — Phase 5 shipped to main; 10/10 UAT passed; 6 requirements satisfied (LES-01–04, PAGE-01–02)
 progress:
   total_phases: 9
   completed_phases: 0
@@ -20,13 +20,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-17 for v0.5)
 
 **Core value:** A musician can open a notebook, navigate to any lesson, add and arrange content on the dotted-paper canvas, and find exactly what they practiced.
-**Current focus:** v0.5 Phase 5 — Lessons & Pages — executed; next: `/gsd:verify-work 5`
+**Current focus:** v0.5 Phase 6 — Canvas & Module Placement — next up
 
 ## Current Position
 
 Phase: 5 — Lessons & Pages
-Status: ✅ Executed — 4/4 plans complete; commits ed07384–c0d598f
-Last activity: 2026-05-17 — Phase 5 executed via 3-wave parallel execution; TypeScript clean; next: `/gsd:verify-work 5`
+Status: ✅ Shipped — 4/4 plans complete; shipped to main (branching_strategy: none); commits 033f8f3–aafb584
+Last activity: 2026-05-17 — Phase 5 shipped to main; 10/10 UAT passed; 6 requirements covered (LES-01–04, PAGE-01–02)
 
 ## Phase Progress
 
@@ -36,7 +36,7 @@ Last activity: 2026-05-17 — Phase 5 executed via 3-wave parallel execution; Ty
 | 2 | Authentication | v0.2 | ✅ Shipped |
 | 3 | User Profile & Account | v0.3 | ✅ Shipped |
 | 4 | Notebook Management | v0.4 | ✅ Shipped |
-| 5 | Lessons & Pages | v0.5 | ◑ Planned (4 plans) |
+| 5 | Lessons & Pages | v0.5 | ✅ Shipped |
 | 6 | Canvas & Module Placement | v0.5 | ○ Pending |
 | 7 | Text Building Blocks | v0.5 | ○ Pending |
 | 8 | Chord Library | v0.5 | ○ Pending |
