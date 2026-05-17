@@ -89,17 +89,17 @@
 
 | REQ-ID | Phase | Plan | Status |
 |--------|-------|------|--------|
-| CANVAS-01 | 6 | TBD | Pending |
-| CANVAS-02 | 6 | TBD | Pending |
-| CANVAS-03 | 6 | TBD | Pending |
-| CANVAS-04 | 6 | TBD | Pending |
-| CANVAS-05 | 6 | TBD | Pending |
-| CANVAS-06 | 6 | TBD | Pending |
-| MOD-01 | 6 | TBD | Pending |
-| MOD-02 | 6 | TBD | Pending |
-| MOD-03 | 6 | TBD | Pending |
-| MOD-04 | 6 | TBD | Pending |
-| MOD-05 | 6 | TBD | Pending |
+| CANVAS-01 | 6 | Plan 1 — Foundation | Pending |
+| CANVAS-02 | 6 | Plan 4 — Integration | Pending |
+| CANVAS-03 | 6 | Plan 3 — Interactions | Pending |
+| CANVAS-04 | 6 | Plan 3 — Interactions | Pending |
+| CANVAS-05 | 6 | Plan 3 — Interactions | Pending |
+| CANVAS-06 | 6 | Plan 3 — Interactions | Pending |
+| MOD-01 | 6 | Plan 3 — Interactions | Pending |
+| MOD-02 | 6 | Plan 2 — Shell | Pending |
+| MOD-03 | 6 | Plan 2 — Shell | Pending |
+| MOD-04 | 6 | Plan 3 — Interactions | Pending |
+| MOD-05 | 6 | Plan 4 — Integration | Pending |
 
 ---
 

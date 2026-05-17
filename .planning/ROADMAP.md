@@ -15,7 +15,7 @@
 - ✅ **v0.3 User Profile & Account** — Phase 3 (shipped 2026-05-16)
 - ✅ **v0.4 Notebook Management** — Phase 4 (shipped 2026-05-17)
 - ✅ **v0.5 Lessons & Pages** — Phase 5 (shipped 2026-05-17)
-- ⬜ **v0.6 TBD** — Phases 6+ (run `/gsd:new-milestone` to define)
+- ⬜ **v0.6 Canvas & Module Placement** — Phase 6 (roadmap defined 2026-05-17)
 
 ---
 
@@ -74,13 +74,13 @@ See archive: `.planning/milestones/v0.5-ROADMAP.md`
 
 </details>
 
-### ⬜ v0.6 TBD — Phases 6+ (Unassigned)
+### ⬜ v0.6 Canvas & Module Placement — Phase 6
 
-> Run `/gsd:new-milestone` to define the next milestone scope and requirements.
+- [ ] **Phase 6: Canvas & Module Placement** — Dotted-grid canvas; place, drag, resize, z-order, and delete all 12 module types on a lesson page
 
 | # | Phase | Goal | Requirements | Plans |
 |---|-------|------|--------------|-------|
-| 6 | Canvas & Module Placement | Dotted-grid canvas; place/drag/resize all 12 module types | CANVAS-01–06, MOD-01–05 | TBD |
+| 6 | Canvas & Module Placement | Dotted-grid canvas; place/drag/resize all 12 module types | CANVAS-01–06, MOD-01–05 | 4 |
 | 7 | Text Building Blocks | All text/structured block editors, undo/redo, dirty guard | BB-01–06, BB-10–11 | TBD |
 | 8 | Chord Library | Browse chords, fretboard diagrams, reusable chord selector | CHORD-01–03 | TBD |
 | 9 | Rich Building Blocks | MusicalNotes, ChordProgression, ChordTablatureGroup editors | BB-07–09 | TBD |
@@ -125,6 +125,15 @@ See archive: `.planning/milestones/v0.5-ROADMAP.md`
 **Goal:** The dotted-grid canvas renders; users can place, move, resize, and z-order all 12 module types on a lesson page
 **Mode:** mvp
 **Requirements:** CANVAS-01, CANVAS-02, CANVAS-03, CANVAS-04, CANVAS-05, CANVAS-06, MOD-01, MOD-02, MOD-03, MOD-04, MOD-05
+**Plans:** 4 plans
+
+**Success Criteria:**
+1. User can open a lesson page and see the dotted-grid canvas sized to the notebook's page dimensions (A4 / A5 / Letter)
+2. User can open the module palette, select a module type, and see a new module shell appear on the canvas at an auto-selected position; the module persists after page reload
+3. User can drag a module to a new position; the position snaps to the 32 px grid on release and persists after page reload; modules are clamped to canvas bounds
+4. User can resize a module using resize handles; per-type minimum dimensions are enforced; the snapped size persists after page reload
+5. User can adjust module z-order (Bring Forward / Send Backward) and delete a module with confirmation; both operations persist after page reload
+**UI hint**: yes
 
 ---
 

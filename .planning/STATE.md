@@ -4,11 +4,11 @@ milestone: v0.6
 milestone_name: Canvas & Module Placement
 status: planning
 last_updated: "2026-05-17T00:00:00.000Z"
-last_activity: 2026-05-17 — Milestone v0.6 started; requirements defined (CANVAS-01–06, MOD-01–05); roadmap pending
+last_activity: 2026-05-17 — Roadmap defined for v0.6 Phase 6; 4 plans scoped; success criteria set; ready to plan-phase
 progress:
   total_phases: 1
   completed_phases: 0
-  total_plans: 0
+  total_plans: 4
   completed_plans: 0
   percent: 0
 ---
@@ -20,14 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-17 after v0.5 milestone archive)
 
 **Core value:** A musician can open a notebook, navigate to any lesson, add and arrange content on the dotted-paper canvas, and find exactly what they practiced.
-**Current focus:** v0.6 Canvas & Module Placement — Phase 6 in planning
+**Current focus:** v0.6 Canvas & Module Placement — Phase 6 roadmap defined, ready for plan-phase
 
 ## Current Position
 
-Phase: 6 — Canvas & Module Placement (planning)
+Phase: 6 — Canvas & Module Placement (roadmap defined)
 Plan: —
-Status: Defining roadmap
-Last activity: 2026-05-17 — Milestone v0.6 started; requirements defined (CANVAS-01–06, MOD-01–05); research complete (dnd-kit 6.x, @dnd-kit/core + @dnd-kit/utilities, 32px grid, 12 module type shells)
+Status: Ready to plan Phase 6
+Last activity: 2026-05-17 — Roadmap defined; 4-plan structure set (Foundation → Shell → Interactions → Integration); success criteria written; REQUIREMENTS.md traceability updated
 
 ## Phase Progress
 
@@ -38,7 +38,7 @@ Last activity: 2026-05-17 — Milestone v0.6 started; requirements defined (CANV
 | 3 | User Profile & Account | v0.3 | ✅ Shipped |
 | 4 | Notebook Management | v0.4 | ✅ Shipped |
 | 5 | Lessons & Pages | v0.5 | ✅ Shipped |
-| 6 | Canvas & Module Placement | v0.6+ | ○ Pending |
+| 6 | Canvas & Module Placement | v0.6 | ○ Pending |
 | 7 | Text Building Blocks | v0.6+ | ○ Pending |
 | 8 | Chord Library | v0.6+ | ○ Pending |
 | 9 | Rich Building Blocks | v0.6+ | ○ Pending |
@@ -68,8 +68,19 @@ Last activity: 2026-05-17 — Milestone v0.6 started; requirements defined (CANV
 - Backend `globalPageStart` is 0-indexed — frontend always adds +1 for display
 - `POST /lessons/{id}/pages` response does not include `pageNumber` — compute client-side as `totalPages + 1`
 
+## Decisions from v0.6 Research
+
+- Canvas lives at `src/features/lessons/canvas/` — inside lessons feature to avoid cross-feature import violations
+- New stack: `@dnd-kit/core ^6.3.1`, `@dnd-kit/utilities ^3.2.2` (dynamically imported if needed)
+- Grid cell: 32 px; canvas root must be `position: relative` only — no `transform` (breaks Radix portal z-index)
+- Use `CSS.Transform.toString(t)` from @dnd-kit/utilities for style-prop transforms — never Tailwind dynamic classes (purged at build)
+- AbortController per module for PATCH layout race condition prevention
+- Single `snapToGrid(px)` utility at all write paths to prevent coordinate drift
+- TanStack Query for module list persistence; local component state for transient drag/resize in-flight state
+- 12 module type shells in Phase 6; content editing deferred to Phases 7–9
+
 ## Notes
 
-- REQUIREMENTS.md is now a placeholder — run `/gsd:new-milestone` to define v0.6 scope and requirements
 - swagger.json at `.planning/swagger.json` is the authoritative API contract; consult before every plan-phase
 - Phase 5 open questions (Q1–Q4) all resolved — see `.planning/milestones/v0.5-REQUIREMENTS.md`
+- Phase 6 plan structure: Plan 1 Foundation, Plan 2 Shell, Plan 3 Interactions, Plan 4 Integration
