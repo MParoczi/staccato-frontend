@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useAuthStore } from '@/stores/authStore'
 import { logout } from '@/features/auth/api/authApi'
 import { getNotebook } from '@/features/notebooks/api/notebooksApi'
+import { getLesson } from '@/features/lessons/api/lessonsApi'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import {
   DropdownMenu,
@@ -47,6 +48,16 @@ export function Navbar() {
     staleTime: 5 * 60 * 1000,
   })
 
+  const lessonMatch = useMatch('/app/notebooks/:id/lessons/:lessonId')
+  const lessonId = lessonMatch?.params?.lessonId as string | undefined
+
+  const { data: breadcrumbLesson } = useQuery({
+    queryKey: ['lesson', lessonId],
+    queryFn: () => getLesson(lessonId!),
+    enabled: !!lessonId,
+    staleTime: 5 * 60 * 1000,
+  })
+
   const initials = user
     ? getInitials(user.firstName, user.lastName, user.displayName)
     : '?'
@@ -64,9 +75,24 @@ export function Navbar() {
             {tn('book.breadcrumb')}
           </Link>
           <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden />
-          <span className="max-w-48 truncate text-sm font-medium">
-            {breadcrumbNotebook?.title ?? '…'}
-          </span>
+          {lessonId ? (
+            <>
+              <Link
+                to={`/app/notebooks/${notebookId}/lessons`}
+                className="max-w-48 truncate text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {breadcrumbNotebook?.title ?? '…'}
+              </Link>
+              <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden />
+              <span className="max-w-48 truncate text-sm font-medium">
+                {breadcrumbLesson?.title ?? '…'}
+              </span>
+            </>
+          ) : (
+            <span className="max-w-48 truncate text-sm font-medium">
+              {breadcrumbNotebook?.title ?? '…'}
+            </span>
+          )}
         </>
       )}
       <div className="ml-auto">
