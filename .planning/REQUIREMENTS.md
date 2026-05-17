@@ -11,17 +11,17 @@
 
 - [ ] **CANVAS-01** — Dotted-grid canvas renders on each lesson page; background is CSS `radial-gradient` at 32 px cell size matching the notebook's page dimensions (A4 / A5 / Letter per notebook setting)
 - [ ] **CANVAS-02** — Users can load a lesson page and see all previously placed modules rendered at their saved positions and sizes
-- [ ] **CANVAS-03** — Users can drag a module to a new position; position snaps to the 32 px grid on release; new position is persisted via `PATCH /modules/{id}/layout`
-- [ ] **CANVAS-04** — Users can resize a module via 8 drag handles; size snaps to the grid; per-type minimum dimensions are enforced; new size is persisted via `PATCH /modules/{id}/layout`
-- [ ] **CANVAS-05** — Users can adjust module z-order via Bring Forward / Send Backward controls; z-index is persisted via `PATCH /modules/{id}/layout`
-- [ ] **CANVAS-06** — Modules stay within canvas bounds; drag and resize operations are clamped to prevent overflow beyond the page boundary
+- [x] **CANVAS-03** — Users can drag a module to a new position; position snaps to the 32 px grid on release; new position is persisted via `PATCH /modules/{id}/layout`
+- [x] **CANVAS-04** — Users can resize a module via 8 drag handles; size snaps to the grid; per-type minimum dimensions are enforced; new size is persisted via `PATCH /modules/{id}/layout`
+- [x] **CANVAS-05** — Users can adjust module z-order via Bring Forward / Send Backward controls; z-index is persisted via `PATCH /modules/{id}/layout`
+- [x] **CANVAS-06** — Modules stay within canvas bounds; drag and resize operations are clamped to prevent overflow beyond the page boundary
 
 ## Module Requirements
 
 - [x] **MOD-01** — Users can open a module palette and select from all 12 module types; selecting a type creates a new module at an auto-selected empty-area position via `POST /pages/{pageId}/modules`; the module appears immediately on the canvas
 - [x] **MOD-02** — Users can select a module by clicking it; a selected module shows resize handles and an action bar (z-order controls + delete); clicking the canvas background deselects all modules
 - [x] **MOD-03** — Each module shell displays its type name, a type-specific Lucide icon, and a per-type header color; the body shows an empty placeholder (content editing deferred to Phase 7+)
-- [ ] **MOD-04** — Users can delete a module; deletion is confirmed before calling `DELETE /modules/{id}`; the module disappears immediately from the canvas (TanStack Query cache updated)
+- [x] **MOD-04** — Users can delete a module; deletion is confirmed before calling `DELETE /modules/{id}`; the module disappears immediately from the canvas (TanStack Query cache updated)
 - [ ] **MOD-05** — Module type, position (gridX / gridY), size (gridWidth / gridHeight), and z-index are fully persisted to the backend; reloading the page restores the exact canvas state
 
 ---
