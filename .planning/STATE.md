@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v0.5
 milestone_name: Lessons & Pages
-status: "◑ Planned — Phase 5 has 4 plans; next: `/gsd:execute-phase 5`"
-last_updated: "2026-05-17T14:30:00.000Z"
-last_activity: 2026-05-17 — Phase 5 planned; 4 plans created (01 foundation, 02 lessons list, 03 lesson page + navbar, 04 router integration)
+status: "✅ Phase 5 Executed — 4/4 plans complete; next: `/gsd:verify-work 5`"
+last_updated: "2026-05-17T00:00:00.000Z"
+last_activity: 2026-05-17 — Phase 5 executed; all 4 plans shipped (foundation, lessons list, lesson page shell, routing)
 progress:
   total_phases: 9
   completed_phases: 0
   total_plans: 4
   completed_plans: 4
-  percent: 0
+  percent: 100
 ---
 
 # Project State
@@ -20,13 +20,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-17 for v0.5)
 
 **Core value:** A musician can open a notebook, navigate to any lesson, add and arrange content on the dotted-paper canvas, and find exactly what they practiced.
-**Current focus:** v0.5 Phase 5 — Lessons & Pages — 4 plans ready; next: `/gsd:execute-phase 5`
+**Current focus:** v0.5 Phase 5 — Lessons & Pages — executed; next: `/gsd:verify-work 5`
 
 ## Current Position
 
 Phase: 5 — Lessons & Pages
-Status: ◑ Planned — 4 plans created; next: `/gsd:execute-phase 5`
-Last activity: 2026-05-17 — Phase 5 planned; RESEARCH.md + 4 PLAN.md files created; plan checker passed (0 blockers)
+Status: ✅ Executed — 4/4 plans complete; commits ed07384–c0d598f
+Last activity: 2026-05-17 — Phase 5 executed via 3-wave parallel execution; TypeScript clean; next: `/gsd:verify-work 5`
 
 ## Phase Progress
 

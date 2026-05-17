@@ -66,7 +66,7 @@ See archive: `.planning/milestones/v0.4-ROADMAP.md`
 
 | # | Phase | Goal | Requirements | Plans |
 |---|-------|------|--------------|-------|
-| 5 | Lessons & Pages | Lesson CRUD, multi-page lessons, page numbering | LES-01–04, PAGE-01–02 | 4 plans |
+| 5 | Lessons & Pages | Lesson CRUD, multi-page lessons, page numbering | LES-01–04, PAGE-01–02 | 4/4 plans ✅ |
 | 6 | Canvas & Module Placement | Dotted-grid canvas; place/drag/resize all 12 module types | CANVAS-01–06, MOD-01–05 | TBD |
 | 7 | Text Building Blocks | All text/structured block editors, undo/redo, dirty guard | BB-01–06, BB-10–11 | TBD |
 | 8 | Chord Library | Browse chords, fretboard diagrams, reusable chord selector | CHORD-01–03 | TBD |
