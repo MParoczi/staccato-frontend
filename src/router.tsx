@@ -10,6 +10,8 @@ import ProfilePage from '@/pages/ProfilePage'
 import NotebookPage from '@/pages/NotebookPage'
 import NotebookCoverPage from '@/pages/NotebookCoverPage'
 import NotebookIndexPage from '@/pages/NotebookIndexPage'
+import LessonsPage from '@/pages/LessonsPage'
+import LessonPage from '@/pages/LessonPage'
 
 export const router = createBrowserRouter([
   { path: '/', element: <RootPage /> },
@@ -32,7 +34,12 @@ export const router = createBrowserRouter([
               { index: true, element: <Navigate to="cover" replace /> },
               { path: 'cover', element: <NotebookCoverPage /> },
               { path: 'index', element: <NotebookIndexPage /> },
+              { path: 'lessons', element: <LessonsPage /> },
             ],
+          },
+          {
+            path: 'notebooks/:id/lessons/:lessonId',
+            element: <PageErrorBoundary><LessonPage /></PageErrorBoundary>,
           },
         ],
       },
