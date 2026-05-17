@@ -4,9 +4,9 @@ import type { DragEndEvent } from '@dnd-kit/core'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { useCanvasScale } from '../hooks/useCanvasScale'
-import { CANVAS_CONFIG } from '../lib/canvasDimensions'
+import { CANVAS_CONFIG, CELL } from '../lib/canvasDimensions'
 import { createScaleModifier } from '../lib/scaleModifier'
-import { getModules, createModule } from '../api/modulesApi'
+import { getModules, createModule, deleteModule } from '../api/modulesApi'
 import { MODULE_TYPE_REGISTRY } from '../lib/moduleRegistry'
 import type { ModuleType } from '../lib/moduleRegistry'
 import { findAutoPlacement } from '../lib/autoPlacement'
@@ -43,7 +43,7 @@ export function CanvasRoot({ pageId, pageSize, onAddModuleRef }: CanvasRootProps
     enabled: !!pageId,
   })
 
-  // Local state mirrors server state; updated optimistically for drag/resize in Plan 3
+  // Local state mirrors server state; updated optimistically for drag/resize
   const [localModules, setLocalModules] = useState<Module[]>([])
   useEffect(() => { setLocalModules(serverModules) }, [serverModules])
 
@@ -66,6 +66,18 @@ export function CanvasRoot({ pageId, pageSize, onAddModuleRef }: CanvasRootProps
     onError: (error: unknown) => {
       const msg = extractErrorMessage(error, 'Failed to add module')
       toast.error(msg)
+    },
+  })
+
+  const deleteMutation = useMutation({
+    mutationFn: (moduleId: string) => deleteModule(moduleId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['modules', pageId] })
+      setDeleteDialogModuleId(null)
+      setSelectedModuleId(null)
+    },
+    onError: (error: unknown) => {
+      toast.error(extractErrorMessage(error, 'Failed to delete module'))
     },
   })
 
@@ -92,26 +104,65 @@ export function CanvasRoot({ pageId, pageSize, onAddModuleRef }: CanvasRootProps
     if (onAddModuleRef) onAddModuleRef.current = handleAddModule
   })
 
-  function handleDragEnd(_event: DragEndEvent) {
-    // Full drag handling implemented in Plan 3
-    // Plan 2: drag activates (module "lifts") but returns to original position on release
+  function handleDragEnd({ active, delta }: DragEndEvent) {
+    // delta is already scale-corrected by createScaleModifier (in canvas-px)
+    const module = localModules.find(m => m.id === String(active.id))
+    if (!module) return
+
+    // Convert canvas-px delta to grid units, then snap to integer grid units
+    const rawNewX = module.gridX + delta.x / CELL
+    const rawNewY = module.gridY + delta.y / CELL
+
+    const snappedX = Math.round(rawNewX)
+    const snappedY = Math.round(rawNewY)
+
+    // Clamp to canvas bounds (CANVAS-06)
+    const clampedX = Math.max(0, Math.min(config.maxCols - module.gridWidth, snappedX))
+    const clampedY = Math.max(0, Math.min(config.maxRows - module.gridHeight, snappedY))
+
+    // Update local state immediately (PATCH persistence in Plan 4)
+    setLocalModules(prev => prev.map(m =>
+      m.id === module.id ? { ...m, gridX: clampedX, gridY: clampedY } : m
+    ))
+  }
+
+  function handleResize(
+    moduleId: string,
+    patch: { gridX: number; gridY: number; gridWidth: number; gridHeight: number }
+  ) {
+    // Live preview — fractional values allowed, no persistence yet
+    setLocalModules(prev => prev.map(m =>
+      m.id === moduleId ? { ...m, ...patch } : m
+    ))
+  }
+
+  function handleResizeCommit(
+    moduleId: string,
+    patch: { gridX: number; gridY: number; gridWidth: number; gridHeight: number }
+  ) {
+    // Patch is already snapped and clamped by ResizeHandle.handlePointerUp
+    setLocalModules(prev => prev.map(m =>
+      m.id === moduleId ? { ...m, ...patch } : m
+    ))
+    // PATCH persistence added in Plan 4
   }
 
   function handleDeselectAll() {
     setSelectedModuleId(null)
   }
 
-  // Stubs for z-order and delete — wired fully in Plan 3
   function handleBringForward(moduleId: string) {
     setLocalModules(prev => prev.map(m =>
       m.id === moduleId ? { ...m, zIndex: m.zIndex + 1 } : m
     ))
+    // PATCH persistence added in Plan 4
   }
 
   function handleSendBackward(moduleId: string) {
     setLocalModules(prev => prev.map(m =>
       m.id === moduleId ? { ...m, zIndex: Math.max(0, m.zIndex - 1) } : m
     ))
+    // PATCH persistence added in Plan 4
   }
 
   function handleDeleteRequest(moduleId: string) {
@@ -119,8 +170,8 @@ export function CanvasRoot({ pageId, pageSize, onAddModuleRef }: CanvasRootProps
   }
 
   function handleDeleteConfirm() {
-    // Full DELETE mutation wired in Plan 3; stub for now
-    setDeleteDialogModuleId(null)
+    if (!deleteDialogModuleId) return
+    deleteMutation.mutate(deleteDialogModuleId)
   }
 
   return (
@@ -149,10 +200,14 @@ export function CanvasRoot({ pageId, pageSize, onAddModuleRef }: CanvasRootProps
               module={module}
               isSelected={selectedModuleId === module.id}
               scale={scale}
+              maxCols={config.maxCols}
+              maxRows={config.maxRows}
               onSelect={setSelectedModuleId}
               onBringForward={handleBringForward}
               onSendBackward={handleSendBackward}
               onDeleteRequest={handleDeleteRequest}
+              onResize={handleResize}
+              onResizeCommit={handleResizeCommit}
             />
           ))}
         </DndContext>
@@ -163,6 +218,7 @@ export function CanvasRoot({ pageId, pageSize, onAddModuleRef }: CanvasRootProps
         open={deleteDialogModuleId !== null}
         onOpenChange={(open) => { if (!open) setDeleteDialogModuleId(null) }}
         onConfirm={handleDeleteConfirm}
+        isPending={deleteMutation.isPending}
       />
     </div>
   )

@@ -4,50 +4,37 @@ import type { Module } from '@/types'
 import { MODULE_TYPE_REGISTRY } from '../lib/moduleRegistry'
 import type { ModuleType } from '../lib/moduleRegistry'
 import { FloatingActionBar } from './FloatingActionBar'
+import { ResizeHandle } from './ResizeHandle'
+import type { HandleDirection } from './ResizeHandle'
 
 const CELL = 32
-
-// The 8 handle directions for resize
-const HANDLE_DIRECTIONS = ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'] as const
-type HandleDirection = (typeof HANDLE_DIRECTIONS)[number]
-
-function getHandleStyle(dir: HandleDirection): React.CSSProperties {
-  const base: React.CSSProperties = {
-    position: 'absolute',
-    width: 8,
-    height: 8,
-    background: 'var(--primary)',
-    borderRadius: 2,
-    zIndex: 10,
-    cursor: `${dir}-resize`,
-  }
-  if (dir.includes('n')) base.top = -4
-  if (dir.includes('s')) base.bottom = -4
-  if (dir.includes('e')) base.right = -4
-  if (dir.includes('w')) base.left = -4
-  if (dir === 'n' || dir === 's') { base.left = '50%'; base.marginLeft = -4 }
-  if (dir === 'e' || dir === 'w') { base.top = '50%'; base.marginTop = -4 }
-  return base
-}
 
 interface ModuleShellProps {
   module: Module
   isSelected: boolean
   scale: number
+  maxCols: number
+  maxRows: number
   onSelect: (id: string) => void
   onBringForward: (id: string) => void
   onSendBackward: (id: string) => void
   onDeleteRequest: (id: string) => void
+  onResize: (id: string, patch: { gridX: number; gridY: number; gridWidth: number; gridHeight: number }) => void
+  onResizeCommit: (id: string, patch: { gridX: number; gridY: number; gridWidth: number; gridHeight: number }) => void
 }
 
 export function ModuleShell({
   module,
   isSelected,
   scale,
+  maxCols,
+  maxRows,
   onSelect,
   onBringForward,
   onSendBackward,
   onDeleteRequest,
+  onResize,
+  onResizeCommit,
 }: ModuleShellProps) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: module.id,
@@ -124,14 +111,17 @@ export function ModuleShell({
         </span>
       </div>
 
-      {/* Resize handle stubs — 8 directions, visual only in Plan 2 */}
-      {isSelected && HANDLE_DIRECTIONS.map((dir) => (
-        <div
+      {/* Resize handles — 8 directions, replacing stub divs from Plan 2 */}
+      {isSelected && (['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'] as const).map((dir) => (
+        <ResizeHandle
           key={dir}
-          data-resize-handle={dir}
-          style={getHandleStyle(dir)}
-          // stopPropagation prevents drag activation when clicking a handle
-          onPointerDown={(e) => e.stopPropagation()}
+          direction={dir as HandleDirection}
+          module={module}
+          scale={scale}
+          maxCols={maxCols}
+          maxRows={maxRows}
+          onResize={(patch) => onResize(module.id, patch)}
+          onResizeCommit={(patch) => onResizeCommit(module.id, patch)}
         />
       ))}
 

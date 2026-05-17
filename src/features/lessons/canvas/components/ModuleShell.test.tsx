@@ -21,10 +21,14 @@ function renderShell(overrides: Partial<Parameters<typeof ModuleShell>[0]> = {})
     module: baseModule,
     isSelected: false,
     scale: 1,
+    maxCols: 24,
+    maxRows: 35,
     onSelect: vi.fn(),
     onBringForward: vi.fn(),
     onSendBackward: vi.fn(),
     onDeleteRequest: vi.fn(),
+    onResize: vi.fn(),
+    onResizeCommit: vi.fn(),
     ...overrides,
   }
   return render(
