@@ -1,14 +1,55 @@
 {
+  "list": {
+    "title": "__HU_TODO__",
+    "empty": "__HU_TODO__",
+    "emptyHint": "__HU_TODO__",
+    "newLessonButton": "__HU_TODO__",
+    "newSlotLabel": "__HU_TODO__"
+  },
+  "pageCount": "__HU_TODO__",
+  "pageCount_plural": "__HU_TODO__",
   "create": {
+    "title": "__HU_TODO__",
+    "titleLabel": "__HU_TODO__",
+    "titlePlaceholder": "__HU_TODO__",
+    "submitButton": "__HU_TODO__"
+  },
+  "rename": {
     "title": "__HU_TODO__",
     "titleLabel": "__HU_TODO__",
     "submitButton": "__HU_TODO__"
   },
+  "delete": {
+    "title": "__HU_TODO__",
+    "description": "__HU_TODO__",
+    "confirm": "__HU_TODO__"
+  },
+  "deletePage": {
+    "title": "__HU_TODO__",
+    "description": "__HU_TODO__",
+    "confirm": "__HU_TODO__"
+  },
   "actions": {
+    "open": "__HU_TODO__",
     "rename": "__HU_TODO__",
     "delete": "__HU_TODO__",
-    "addPage": "__HU_TODO__"
+    "addPage": "__HU_TODO__",
+    "deletePage": "__HU_TODO__",
+    "backToLessons": "__HU_TODO__"
   },
-  "pageCount": "__HU_TODO__",
-  "pageCount_plural": "__HU_TODO__"
+  "page": {
+    "pageOf": "__HU_TODO__",
+    "globalPage": "__HU_TODO__"
+  },
+  "warnings": {
+    "tenPages": "__HU_TODO__"
+  },
+  "errors": {
+    "createFailed": "__HU_TODO__",
+    "updateFailed": "__HU_TODO__",
+    "deleteFailed": "__HU_TODO__",
+    "addPageFailed": "__HU_TODO__",
+    "deletePageFailed": "__HU_TODO__",
+    "loadFailed": "__HU_TODO__"
+  }
 }

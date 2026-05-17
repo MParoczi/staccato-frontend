@@ -1,14 +1,55 @@
 {
+  "list": {
+    "title": "Lessons",
+    "empty": "No lessons yet",
+    "emptyHint": "Add your first lesson to start tracking your practice.",
+    "newLessonButton": "New Lesson",
+    "newSlotLabel": "+ New Lesson"
+  },
+  "pageCount": "{{count}} page",
+  "pageCount_plural": "{{count}} pages",
   "create": {
     "title": "New Lesson",
     "titleLabel": "Lesson title",
+    "titlePlaceholder": "e.g. Scales",
     "submitButton": "Create lesson"
   },
-  "actions": {
-    "rename": "Rename lesson",
-    "delete": "Delete lesson",
-    "addPage": "Add page"
+  "rename": {
+    "title": "Rename Lesson",
+    "titleLabel": "Lesson title",
+    "submitButton": "Save"
   },
-  "pageCount": "{{count}} page",
-  "pageCount_plural": "{{count}} pages"
+  "delete": {
+    "title": "Delete \"{{name}}\"?",
+    "description": "This can't be undone. All pages and content will be permanently removed.",
+    "confirm": "Delete"
+  },
+  "deletePage": {
+    "title": "Delete this page?",
+    "description": "This can't be undone. All content on this page will be permanently removed.",
+    "confirm": "Delete page"
+  },
+  "actions": {
+    "open": "Open",
+    "rename": "Rename",
+    "delete": "Delete lesson",
+    "addPage": "Add page",
+    "deletePage": "Delete page",
+    "backToLessons": "Lessons"
+  },
+  "page": {
+    "pageOf": "Page {{current}} of {{total}}",
+    "globalPage": "Notebook p. {{number}}"
+  },
+  "warnings": {
+    "tenPages": "This lesson has 10 pages — consider splitting it into multiple lessons."
+  },
+  "errors": {
+    "createFailed": "Failed to create lesson. Please try again.",
+    "updateFailed": "Failed to update lesson. Please try again.",
+    "deleteFailed": "Failed to delete lesson. Please try again.",
+    "addPageFailed": "Failed to add page. Please try again.",
+    "deletePageFailed": "Failed to delete page. Please try again.",
+    "loadFailed": "Failed to load lessons. Please try again."
+  }
 }
