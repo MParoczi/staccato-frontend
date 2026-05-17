@@ -83,3 +83,35 @@ export interface CreateLessonPayload {
 export interface UpdateLessonPayload {
   title?: string
 }
+
+export interface Module {
+  id: string
+  pageId: string
+  moduleType: string
+  gridX: number
+  gridY: number
+  gridWidth: number
+  gridHeight: number
+  zIndex: number
+  content: unknown
+  createdAt: string
+  updatedAt: string
+}
+
+export interface CreateModulePayload {
+  moduleType: string
+  gridX: number
+  gridY: number
+  gridWidth: number
+  gridHeight: number
+  zIndex: number
+  content?: unknown
+}
+
+export interface PatchModuleLayoutPayload {
+  gridX?: number
+  gridY?: number
+  gridWidth?: number
+  gridHeight?: number
+  zIndex?: number
+}

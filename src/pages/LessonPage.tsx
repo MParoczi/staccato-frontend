@@ -6,6 +6,9 @@ import { toast } from 'sonner'
 import { ChevronLeft, ChevronRight, Plus, Trash2, Loader2 } from 'lucide-react'
 import { getLesson } from '@/features/lessons/api/lessonsApi'
 import { getLessonPages, addPage } from '@/features/lessons/api/lessonPagesApi'
+import { getNotebook } from '@/features/notebooks/api/notebooksApi'
+import { CanvasRoot } from '@/features/lessons/canvas/components/CanvasRoot'
+import type { NotebookPageSize } from '@/types'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -38,6 +41,14 @@ export default function LessonPage() {
     queryFn: () => getLessonPages(lessonId!),
     enabled: !!lessonId,
   })
+
+  const { data: notebook } = useQuery({
+    queryKey: ['notebook', notebookId],
+    queryFn: () => getNotebook(notebookId!),
+    enabled: !!notebookId,
+  })
+
+  const pageSize = (notebook?.pageSize ?? 'A4') as NotebookPageSize
 
   const totalPages = pages?.length ?? 1
   const activePage = pages?.[currentPage - 1] ?? null
@@ -165,16 +176,10 @@ export default function LessonPage() {
         </div>
       </div>
 
-      {/* Canvas placeholder — dotted-grid CSS background */}
-      <div
-        className="min-h-[70vh]"
-        style={{
-          backgroundImage:
-            'radial-gradient(circle, color-mix(in oklch, var(--muted-foreground) 25%, transparent) 1px, transparent 1px)',
-          backgroundSize: '24px 24px',
-          backgroundColor: 'hsl(var(--background))',
-        }}
-      />
+      {/* Canvas — real dotted-grid at fixed page dimensions, scaled to fit width */}
+      {activePage && (
+        <CanvasRoot pageId={activePage.id} pageSize={pageSize} />
+      )}
 
       <DeletePageDialog
         lessonId={lessonId!}
