@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useParams, useSearchParams, Link } from 'react-router'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
@@ -8,6 +8,8 @@ import { getLesson } from '@/features/lessons/api/lessonsApi'
 import { getLessonPages, addPage } from '@/features/lessons/api/lessonPagesApi'
 import { getNotebook } from '@/features/notebooks/api/notebooksApi'
 import { CanvasRoot } from '@/features/lessons/canvas/components/CanvasRoot'
+import { ModulePalette } from '@/features/lessons/canvas/components/ModulePalette'
+import type { ModuleType } from '@/features/lessons/canvas/lib/moduleRegistry'
 import type { NotebookPageSize } from '@/types'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
@@ -75,6 +77,8 @@ export default function LessonPage() {
       toast.error(extractErrorMessage(error, t('errors.addPageFailed')))
     },
   })
+
+  const addModuleRef = useRef<((type: ModuleType) => void) | null>(null)
 
   const [deletePageOpen, setDeletePageOpen] = useState(false)
   const handlePageDeleted = () => {
@@ -173,12 +177,18 @@ export default function LessonPage() {
             <Trash2 className="size-4 mr-1" />
             <span className="hidden sm:inline">{t('actions.deletePage')}</span>
           </Button>
+
+          <Separator orientation="vertical" className="h-4 shrink-0" />
+          <ModulePalette
+            onSelect={(type) => addModuleRef.current?.(type)}
+            disabled={!activePage}
+          />
         </div>
       </div>
 
       {/* Canvas — real dotted-grid at fixed page dimensions, scaled to fit width */}
       {activePage && (
-        <CanvasRoot pageId={activePage.id} pageSize={pageSize} />
+        <CanvasRoot pageId={activePage.id} pageSize={pageSize} onAddModuleRef={addModuleRef} />
       )}
 
       <DeletePageDialog
