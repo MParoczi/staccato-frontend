@@ -1,6 +1,7 @@
-import { createBrowserRouter } from 'react-router'
+import { createBrowserRouter, Navigate } from 'react-router'
 import { ProtectedRoute } from '@/components/ui/ProtectedRoute'
 import { AppLayout } from '@/components/AppLayout'
+import { PageErrorBoundary } from '@/components/PageErrorBoundary'
 import RootPage from '@/pages/RootPage'
 import LoginPage from '@/pages/LoginPage'
 import RegisterPage from '@/pages/RegisterPage'
@@ -18,8 +19,9 @@ export const router = createBrowserRouter([
       {
         element: <AppLayout />,
         children: [
-          { path: 'notebooks', element: <NotebooksPage /> },
-          { path: 'profile', element: <ProfilePage /> },
+          { index: true, element: <Navigate to="notebooks" replace /> },
+          { path: 'notebooks', element: <PageErrorBoundary><NotebooksPage /></PageErrorBoundary> },
+          { path: 'profile', element: <PageErrorBoundary><ProfilePage /></PageErrorBoundary> },
         ],
       },
     ],
