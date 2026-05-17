@@ -51,11 +51,17 @@ See archive: `.planning/milestones/v0.3-ROADMAP.md`
 
 </details>
 
-### 📋 v0.4 — Notebook Management (Current Milestone)
+### ✅ v0.4 — Notebook Management — SHIPPED 2026-05-17
 
 | # | Phase | Goal | Requirements | Plans |
 |---|-------|------|--------------|-------|
-| 4 | Notebook Management | Notebook CRUD, dashboard, book navigation | NB-01–05, ERR-01–02 | TBD |
+| 4 | Notebook Management | Notebook CRUD, dashboard, book navigation | NB-01–05, ERR-01–02 | 4/4 plans |
+
+Plans:
+- [x] 04-01-PLAN.md — Types, API module, PageErrorBoundary, i18n locale files, router foundation
+- [x] 04-02-PLAN.md — Dashboard + NotebookCard + Create dialog + Edit dialog (NB-01, NB-02, NB-03)
+- [x] 04-03-PLAN.md — Book view (cover + index + tab bar) + Navbar breadcrumb + router routes (NB-05)
+- [x] 04-04-PLAN.md — Delete confirmation dialog + wire into dashboard (NB-04, ERR-01 complete, ERR-02 verified)
 
 ### ⬜ v0.5+ — Phases 5–12 (To be planned via `/gsd:new-milestone`)
 
@@ -78,6 +84,7 @@ See archive: `.planning/milestones/v0.3-ROADMAP.md`
 **Goal:** Users can create, browse, configure, and delete notebooks; open a notebook and navigate it as a book (cover → index → lessons)
 **Mode:** mvp
 **Requirements:** NB-01, NB-02, NB-03, NB-04, NB-05, ERR-01, ERR-02
+**Plans:** 4 plans
 
 **Success Criteria:**
 1. User can create a notebook (title, instrument, page size, cover color) and see it appear on the dashboard with the correct cover color and metadata
