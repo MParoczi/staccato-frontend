@@ -82,3 +82,31 @@
 **Archive:** `.planning/milestones/v0.3-ROADMAP.md`
 
 ---
+
+## v0.4 — Notebook Management
+
+**Shipped:** 2026-05-17
+**Phases:** 1 (Phase 4: Notebook Management)
+**Plans:** 4
+**Tests:** 26 (up from 25)
+
+**Delivered:** Full notebook CRUD — create with cover color, instrument, page size, and style preset; dashboard with responsive grid, skeleton loading, and empty state; notebook book view with full-bleed cover page (luminance contrast), empty index page, and tab navigation; Navbar breadcrumb on notebook routes; `DeleteNotebookDialog` with irreversible confirmation; `PageErrorBoundary` class component wrapping all 4 page routes.
+
+**Commits:** 812acd6 → c093bf1 (23 commits, 35 files, 3691 insertions, 62 deletions)
+**Timeline:** 2026-05-17 (1 day)
+
+**Key accomplishments:**
+1. Notebook types, constants (`COVER_COLORS`, `NOTEBOOK_STYLE_PRESETS`, `NOTEBOOK_PAGE_SIZES` as-const) and `notebooksApi` 5-function CRUD module
+2. `NotebooksPage` dashboard with responsive grid, skeleton loading, empty state — TanStack Query throughout
+3. `NotebookFormDialog` dual create/edit mode with color picker, style preset thumbnails, zod + react-hook-form validation
+4. Notebook book view: full-bleed cover page (luminance contrast), empty index page, tab navigation shell
+5. Navbar breadcrumb for `/app/notebooks/:id` routes via `useMatch` with 5-min stale-time optimization
+6. `DeleteNotebookDialog` with irreversible confirmation + `PageErrorBoundary` class component on all 4 page routes
+
+**Known deferred items at close:** 2
+- T-09 offline mutation toast not reproducible via DevTools (accepted gap — 4xx errors do toast correctly)
+- Hungarian notebook strings are `__HU_TODO__` stubs — deferred to Phase 12
+
+**Archive:** `.planning/milestones/v0.4-ROADMAP.md`
+
+---

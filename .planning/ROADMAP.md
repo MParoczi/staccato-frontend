@@ -13,8 +13,8 @@
 - ✅ **v0.1 Foundation** — Phase 1 (shipped 2026-05-16)
 - ✅ **v0.2 Authentication** — Phase 2 (shipped 2026-05-16)
 - ✅ **v0.3 User Profile & Account** — Phase 3 (shipped 2026-05-16)
-- 📋 **v0.4 Notebook Management** — Phase 4 (current milestone)
-- ⬜ **v0.5+** — Phases 5–12 (to be planned via `/gsd:new-milestone`)
+- ✅ **v0.4 Notebook Management** — Phase 4 (shipped 2026-05-17)
+- ⬜ **v0.5 Lessons & Pages** — Phases 5–12 (to be planned via `/gsd:new-milestone`)
 
 ---
 
@@ -51,17 +51,16 @@ See archive: `.planning/milestones/v0.3-ROADMAP.md`
 
 </details>
 
-### ✅ v0.4 — Notebook Management — SHIPPED 2026-05-17
+<details>
+<summary>✅ v0.4 Notebook Management (Phase 4) — SHIPPED 2026-05-17</summary>
 
-| # | Phase | Goal | Requirements | Plans |
-|---|-------|------|--------------|-------|
-| 4 | Notebook Management | Notebook CRUD, dashboard, book navigation | NB-01–05, ERR-01–02 | 4/4 plans |
+- [x] Phase 4: Notebook Management (4/4 plans) — completed 2026-05-17
+- Shipped directly to main (branching_strategy: none) — commits 812acd6–c093bf1
+- VERIFICATION.md: status:passed, 5/5 success criteria ✓, 26/26 tests passed, 7/7 requirements satisfied
 
-Plans:
-- [x] 04-01-PLAN.md — Types, API module, PageErrorBoundary, i18n locale files, router foundation
-- [x] 04-02-PLAN.md — Dashboard + NotebookCard + Create dialog + Edit dialog (NB-01, NB-02, NB-03)
-- [x] 04-03-PLAN.md — Book view (cover + index + tab bar) + Navbar breadcrumb + router routes (NB-05)
-- [x] 04-04-PLAN.md — Delete confirmation dialog + wire into dashboard (NB-04, ERR-01 complete, ERR-02 verified)
+See archive: `.planning/milestones/v0.4-ROADMAP.md`
+
+</details>
 
 ### ⬜ v0.5+ — Phases 5–12 (To be planned via `/gsd:new-milestone`)
 

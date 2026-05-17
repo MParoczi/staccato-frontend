@@ -12,28 +12,28 @@ A musician can open a notebook, navigate to any lesson, add and arrange content 
 
 ## Current State
 
-**Shipped:** v0.3 User Profile & Account (2026-05-16)
+**Shipped:** v0.4 Notebook Management (2026-05-17)
 
-Users can now register, log in, manage their profile (name, avatar, language, preferences), and request or cancel account deletion. The persistent AppLayout + Navbar is in place — all authenticated routes have consistent navigation chrome. The foundation, auth, and identity layers are complete and fully tested.
+Users can now create and manage notebooks from a responsive dashboard, configure notebooks (title, cover color, style preset), open any notebook to see its cover page and empty index, and delete notebooks with an irreversible confirmation. The `PageErrorBoundary` protects all page routes from crashes. TanStack Query is established as the server-state pattern for all future phases.
 
-**Tech stack as of Phase 3:**
+**Tech stack as of Phase 4:**
 - Vite 8.0.13 + React 19.2.6 + TypeScript 5.9.3
 - Tailwind v4 CSS-first (no tailwind.config.js)
 - shadcn radix-nova (17 UI components)
 - Zustand 5.0.13, TanStack Query 5.100.10, Axios 1.16.1
-- React Router 7.15.1, i18next 26.2.0 (http-backend, 8 namespaces, 25 profile keys added)
+- React Router 7.15.1, i18next 26.2.0 (http-backend, 8 namespaces, notebook keys added)
 - @react-oauth/google, @hookform/resolvers 3.10.0, zod 3.24.4
-- Vitest + Testing Library (25 tests)
-- react-hook-form 7.75.0 (added for ProfilePage)
+- Vitest + Testing Library (26 tests)
+- react-hook-form 7.75.0
 
 ## Next Milestone
 
-**v0.4 — Notebook Management** *(current)*
+**v0.5 — Lessons & Pages** *(up next)*
 
-Goal: Users can create, browse, configure, and delete notebooks; open a notebook and navigate it as a book (cover → index).
+Goal: Users can create and manage lessons within a notebook; add and delete pages; see correct global page numbers.
 
-Scope: Phase 4 only (Notebook Management). Phase 5 (Lessons & Pages) moves to v0.5.
-Requirements: NB-01–05, ERR-01–02 — see `.planning/REQUIREMENTS.md`
+Scope: Phase 5 (Lessons & Pages) — to be planned via `/gsd:new-milestone`
+Requirements: LES-01–04, PAGE-01–02
 
 ## Requirements
 
@@ -53,11 +53,16 @@ Requirements: NB-01–05, ERR-01–02 — see `.planning/REQUIREMENTS.md`
 - ✓ Avatar upload (JPG/PNG/WebP ≤ 2 MB) with initials fallback — Phase 3 (USER-02)
 - ✓ Account deletion request with 30-day grace period and banner — Phase 3 (USER-03)
 - ✓ Cancel scheduled account deletion from banner — Phase 3 (USER-04)
+- ✓ Notebook dashboard with grid, empty state, skeleton loading — Phase 4 (NB-01)
+- ✓ Create notebook (title, instrument, page size, cover color, style preset) — Phase 4 (NB-02)
+- ✓ Rename notebook and change cover color; dashboard reflects immediately — Phase 4 (NB-03)
+- ✓ Delete notebook with irreversible confirmation dialog — Phase 4 (NB-04)
+- ✓ Notebook book view (cover page, empty index page, tab navigation, Navbar breadcrumb) — Phase 4 (NB-05)
+- ✓ Mutation errors surface as exactly one Sonner toast per failure — Phase 4 (ERR-01)
+- ✓ `PageErrorBoundary` catches page crashes without white screen — Phase 4 (ERR-02)
 
 ### Active
 
-- [ ] Notebook CRUD: create with instrument, page size, cover color, and style preset
-- [ ] Notebook dashboard listing all user notebooks
 - [ ] Lesson CRUD within a notebook, ordered by creation date
 - [ ] Multi-page lessons: add/delete pages with soft 10-page warning
 - [ ] 2D dotted-grid canvas: place, drag, resize, and z-order modules
@@ -132,7 +137,7 @@ The specification (v2.1, 2026-05-15) is the authoritative source. It covers ever
 | Feature-scoped API modules (profileApi.ts) | Profile API isolated to features/profile/api/; no cross-feature coupling | ✓ Good — established for Phase 4+ |
 | Zod + react-hook-form for ProfilePage | Consistent with auth forms; zodResolver wires validation | ✓ Good — pattern confirmed |
 | Language change via i18next.changeLanguage() on save | No page reload; immediate UI update | ✓ Good — UAT test 9 confirmed |
-| TanStack Query for all server state | Avoids duplicating server collections in Zustand | — Pending (Phase 4+) |
+| TanStack Query for all server state | Avoids duplicating server collections in Zustand | ✓ Good — confirmed in Phase 4 (notebooks CRUD, dashboard, book view) |
 | dnd-kit for canvas drag/drop | Required for free-form 2D module placement and block reorder | — Pending (Phase 6+) |
 | ModuleEditor lazy-loaded via React.lazy | Editor chunk ~30 kB; silences rolldown INEFFECTIVE_DYNAMIC_IMPORT | — Pending (Phase 6+) |
 | Content save debounced 1000ms | Reduces API calls during active editing | — Pending (Phase 7+) |
@@ -151,7 +156,7 @@ The specification (v2.1, 2026-05-15) is the authoritative source. It covers ever
 | Backend refresh cookie not invalidated on logout (acknowledged gap) | Backend is a separate repository; frontend-only fix covers the reported UX issue | Tracked — backend fix deferred to backend team |
 
 ---
-*Last updated: 2026-05-16 after v0.3 User Profile & Account milestone*
+*Last updated: 2026-05-17 after v0.4 Notebook Management milestone*
 
 ## Evolution
 
