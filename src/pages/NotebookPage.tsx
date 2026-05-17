@@ -37,7 +37,7 @@ export default function NotebookPage() {
   const tabs = [
     { path: 'cover', label: t('book.coverTab'), disabled: false },
     { path: 'index', label: t('book.indexTab'), disabled: false },
-    { path: 'lessons', label: t('book.lessonsTab'), disabled: true },
+    { path: 'lessons', label: t('book.lessonsTab'), disabled: false },
   ]
 
   return (
