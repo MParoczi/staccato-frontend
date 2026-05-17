@@ -18,9 +18,9 @@
 
 ## Module Requirements
 
-- [ ] **MOD-01** — Users can open a module palette and select from all 12 module types; selecting a type creates a new module at an auto-selected empty-area position via `POST /pages/{pageId}/modules`; the module appears immediately on the canvas
-- [ ] **MOD-02** — Users can select a module by clicking it; a selected module shows resize handles and an action bar (z-order controls + delete); clicking the canvas background deselects all modules
-- [ ] **MOD-03** — Each module shell displays its type name, a type-specific Lucide icon, and a per-type header color; the body shows an empty placeholder (content editing deferred to Phase 7+)
+- [x] **MOD-01** — Users can open a module palette and select from all 12 module types; selecting a type creates a new module at an auto-selected empty-area position via `POST /pages/{pageId}/modules`; the module appears immediately on the canvas
+- [x] **MOD-02** — Users can select a module by clicking it; a selected module shows resize handles and an action bar (z-order controls + delete); clicking the canvas background deselects all modules
+- [x] **MOD-03** — Each module shell displays its type name, a type-specific Lucide icon, and a per-type header color; the body shows an empty placeholder (content editing deferred to Phase 7+)
 - [ ] **MOD-04** — Users can delete a module; deletion is confirmed before calling `DELETE /modules/{id}`; the module disappears immediately from the canvas (TanStack Query cache updated)
 - [ ] **MOD-05** — Module type, position (gridX / gridY), size (gridWidth / gridHeight), and z-index are fully persisted to the backend; reloading the page restores the exact canvas state
 
