@@ -13,7 +13,8 @@
 - ✅ **v0.1 Foundation** — Phase 1 (shipped 2026-05-16)
 - ✅ **v0.2 Authentication** — Phase 2 (shipped 2026-05-16)
 - ✅ **v0.3 User Profile & Account** — Phase 3 (shipped 2026-05-16)
-- 📋 **v0.4+** — Phases 4–12 (to be planned via `/gsd:new-milestone`)
+- 📋 **v0.4 Notebook Management** — Phase 4 (current milestone)
+- ⬜ **v0.5+** — Phases 5–12 (to be planned via `/gsd:new-milestone`)
 
 ---
 
@@ -50,11 +51,16 @@ See archive: `.planning/milestones/v0.3-ROADMAP.md`
 
 </details>
 
-### 📋 v0.4+ — Phases 4–12 (To be planned)
+### 📋 v0.4 — Notebook Management (Current Milestone)
 
 | # | Phase | Goal | Requirements | Plans |
 |---|-------|------|--------------|-------|
 | 4 | Notebook Management | Notebook CRUD, dashboard, book navigation | NB-01–05, ERR-01–02 | TBD |
+
+### ⬜ v0.5+ — Phases 5–12 (To be planned via `/gsd:new-milestone`)
+
+| # | Phase | Goal | Requirements | Plans |
+|---|-------|------|--------------|-------|
 | 5 | Lessons & Pages | Lesson CRUD, multi-page lessons, page numbering | LES-01–04, PAGE-01–02 | TBD |
 | 6 | Canvas & Module Placement | Dotted-grid canvas; place/drag/resize all 12 module types | CANVAS-01–06, MOD-01–05 | TBD |
 | 7 | Text Building Blocks | All text/structured block editors, undo/redo, dirty guard | BB-01–06, BB-10–11 | TBD |

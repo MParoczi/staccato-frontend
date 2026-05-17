@@ -28,11 +28,12 @@ Users can now register, log in, manage their profile (name, avatar, language, pr
 
 ## Next Milestone
 
-**v0.4 — Notebook Management**
+**v0.4 — Notebook Management** *(current)*
 
-Goal: Users can create, browse, configure, and delete notebooks; open a notebook and navigate it as a book (cover → index → lessons).
+Goal: Users can create, browse, configure, and delete notebooks; open a notebook and navigate it as a book (cover → index).
 
-Key phases: Phase 4 (Notebook Management), Phase 5 (Lessons & Pages)
+Scope: Phase 4 only (Notebook Management). Phase 5 (Lessons & Pages) moves to v0.5.
+Requirements: NB-01–05, ERR-01–02 — see `.planning/REQUIREMENTS.md`
 
 ## Requirements
 
