@@ -16,18 +16,28 @@
     "stylePresetLabel": "__HU_TODO__"
   },
   "edit": {
-    "title": "__HU_TODO__"
+    "title": "__HU_TODO__",
+    "saveButton": "__HU_TODO__"
   },
   "delete": {
     "title": "__HU_TODO__",
     "description": "__HU_TODO__",
     "confirm": "__HU_TODO__"
   },
+  "fields": {
+    "title": "__HU_TODO__",
+    "coverColor": "__HU_TODO__",
+    "stylePreset": "__HU_TODO__",
+    "instrument": "__HU_TODO__",
+    "pageSize": "__HU_TODO__"
+  },
   "actions": {
     "open": "__HU_TODO__",
     "rename": "__HU_TODO__",
     "delete": "__HU_TODO__",
-    "settings": "__HU_TODO__"
+    "settings": "__HU_TODO__",
+    "cancel": "__HU_TODO__",
+    "saving": "__HU_TODO__"
   },
   "book": {
     "coverTab": "__HU_TODO__",

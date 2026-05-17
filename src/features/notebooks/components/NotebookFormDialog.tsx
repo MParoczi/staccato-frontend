@@ -2,13 +2,13 @@ import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
 import type { Notebook } from '@/types'
 import { COVER_COLORS, NOTEBOOK_STYLE_PRESETS, NOTEBOOK_PAGE_SIZES } from '@/types'
-import { createNotebook, updateNotebook } from '@/features/notebooks/api/notebooksApi'
+import { createNotebook, updateNotebook, getNotebook, getInstruments } from '@/features/notebooks/api/notebooksApi'
 import { useAuthStore } from '@/stores/authStore'
 import {
   Dialog,
@@ -45,9 +45,10 @@ function extractErrorMessage(error: unknown, fallback: string): string {
 
 const schema = z.object({
   title: z.string().min(1, 'Title is required'),
-  coverColor: z.string(),
-  pageSize: z.string(),
-  stylePreset: z.string(),
+  coverColor: z.string().min(1),
+  pageSize: z.string().min(1),
+  stylePreset: z.string().min(1),
+  instrumentId: z.string().min(1, 'Instrument is required'),
 })
 type FormValues = z.infer<typeof schema>
 
@@ -76,6 +77,19 @@ export function NotebookFormDialog({
   const queryClient = useQueryClient()
   const userDefaultPageSize = useAuthStore((s) => s.user?.defaultPageSize)
 
+  const { data: instruments } = useQuery({
+    queryKey: ['instruments'],
+    queryFn: getInstruments,
+    staleTime: Infinity,
+  })
+  // Fetch full notebook for edit so stylePreset (and other detail-only fields) are available
+  const { data: fullNotebook } = useQuery({
+    queryKey: ['notebooks', notebook?.id],
+    queryFn: () => getNotebook(notebook!.id),
+    enabled: mode === 'edit' && !!notebook?.id,
+    staleTime: 30 * 1000,
+  })
+
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -83,35 +97,38 @@ export function NotebookFormDialog({
       coverColor: COVER_COLORS[0],
       pageSize: userDefaultPageSize ?? 'A4',
       stylePreset: 'Classic',
+      instrumentId: '',
     },
   })
 
   useEffect(() => {
-    if (open) {
-      form.reset(
-        mode === 'edit' && notebook
-          ? {
-              title: notebook.title,
-              coverColor: notebook.coverColor,
-              pageSize: notebook.pageSize,
-              stylePreset: notebook.stylePreset,
-            }
-          : {
-              title: '',
-              coverColor: COVER_COLORS[0],
-              pageSize: userDefaultPageSize ?? 'A4',
-              stylePreset: 'Classic',
-            },
-      )
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    // Intentionally fires only on open — form is stable, mode/notebook/userDefaultPageSize captured at open time
-  }, [open])
+    if (!open) return
+    if (mode === 'edit' && !fullNotebook) return
+    form.reset(
+      mode === 'edit' && fullNotebook
+        ? {
+            title: fullNotebook.title,
+            coverColor: fullNotebook.coverColor ?? COVER_COLORS[0],
+            pageSize: fullNotebook.pageSize ?? 'A4',
+            stylePreset: fullNotebook.stylePreset ?? 'Classic',
+            instrumentId: fullNotebook.instrumentId ?? instruments?.[0]?.id ?? '',
+          }
+        : {
+            title: '',
+            coverColor: COVER_COLORS[0],
+            pageSize: userDefaultPageSize ?? 'A4',
+            stylePreset: 'Classic',
+            instrumentId: instruments?.[0]?.id ?? '',
+          },
+    )
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, fullNotebook, instruments])
 
   const createMutation = useMutation({
     mutationFn: (values: FormValues) =>
       createNotebook({
         title: values.title,
+        instrumentId: values.instrumentId,
         coverColor: values.coverColor,
         pageSize: values.pageSize,
         stylePreset: values.stylePreset,
@@ -130,8 +147,6 @@ export function NotebookFormDialog({
       updateNotebook(notebook!.id, {
         title: values.title,
         coverColor: values.coverColor,
-        pageSize: values.pageSize,
-        stylePreset: values.stylePreset,
       }),
     onSuccess: (updatedNotebook) => {
       queryClient.invalidateQueries({ queryKey: ['notebooks'] })
@@ -154,6 +169,7 @@ export function NotebookFormDialog({
   }
 
   const dialogTitle = mode === 'create' ? t('create.title') : t('edit.title')
+  const submitLabel = mode === 'create' ? t('create.title') : t('edit.saveButton')
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -204,76 +220,95 @@ export function NotebookFormDialog({
               )}
             />
 
-            {/* Style preset picker */}
-            <FormField
-              control={form.control}
-              name="stylePreset"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('fields.stylePreset')}</FormLabel>
-                  <FormControl>
-                    <div className="flex flex-wrap gap-2">
-                      {NOTEBOOK_STYLE_PRESETS.map((preset) => (
-                        <button
-                          key={preset}
-                          type="button"
-                          onClick={() => field.onChange(preset)}
-                          className="flex flex-col items-center gap-1"
-                          aria-label={preset}
-                        >
-                          <div
-                            className={`w-12 h-9 rounded cursor-pointer ${PRESET_STYLES[preset]} ${field.value === preset ? 'ring-2 ring-primary ring-offset-1' : ''}`}
-                          />
-                          <span className="text-xs text-muted-foreground">
-                            {t(`presets.${preset}`)}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Instrument (disabled — hardcoded Guitar per CLAUDE.md) */}
-            <FormItem>
-              <FormLabel>{t('fields.instrument')}</FormLabel>
-              <Select value="guitar" disabled>
-                <SelectTrigger className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="guitar">Guitar</SelectItem>
-                </SelectContent>
-              </Select>
-            </FormItem>
-
-            {/* Page size */}
-            <FormField
-              control={form.control}
-              name="pageSize"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('fields.pageSize')}</FormLabel>
-                  <Select value={field.value} onValueChange={field.onChange}>
+            {/* Style preset picker — create only; backend does not return preset name in GET */}
+            {mode === 'create' && (
+              <FormField
+                control={form.control}
+                name="stylePreset"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('fields.stylePreset')}</FormLabel>
                     <FormControl>
-                      <SelectTrigger className="w-full">
-                        <SelectValue />
-                      </SelectTrigger>
+                      <div className="flex flex-wrap gap-2">
+                        {NOTEBOOK_STYLE_PRESETS.map((preset) => (
+                          <button
+                            key={preset}
+                            type="button"
+                            onClick={() => field.onChange(preset)}
+                            className="flex flex-col items-center gap-1"
+                            aria-label={preset}
+                          >
+                            <div
+                              className={`w-12 h-9 rounded cursor-pointer ${PRESET_STYLES[preset]} ${field.value === preset ? 'ring-2 ring-primary ring-offset-1' : ''}`}
+                            />
+                            <span className="text-xs text-muted-foreground">
+                              {t(`presets.${preset}`)}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
                     </FormControl>
-                    <SelectContent>
-                      {NOTEBOOK_PAGE_SIZES.map((size) => (
-                        <SelectItem key={size} value={size}>
-                          {size}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {mode === 'create' && (
+              <>
+                {/* Instrument */}
+                <FormField
+                  control={form.control}
+                  name="instrumentId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('fields.instrument')}</FormLabel>
+                      <Select value={field.value} onValueChange={field.onChange} disabled={!instruments?.length}>
+                        <FormControl>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder={t('fields.instrument')} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {instruments?.map((inst) => (
+                            <SelectItem key={inst.id} value={inst.id}>
+                              {inst.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Page size */}
+                <FormField
+                  control={form.control}
+                  name="pageSize"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('fields.pageSize')}</FormLabel>
+                      <Select value={field.value} onValueChange={field.onChange}>
+                        <FormControl>
+                          <SelectTrigger className="w-full">
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {NOTEBOOK_PAGE_SIZES.map((size) => (
+                            <SelectItem key={size} value={size}>
+                              {size}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
 
             <DialogFooter>
               <Button
@@ -291,7 +326,7 @@ export function NotebookFormDialog({
                     {t('actions.saving')}
                   </>
                 ) : (
-                  dialogTitle
+                  submitLabel
                 )}
               </Button>
             </DialogFooter>

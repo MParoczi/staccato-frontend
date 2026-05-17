@@ -16,18 +16,28 @@
     "stylePresetLabel": "Style"
   },
   "edit": {
-    "title": "Notebook Settings"
+    "title": "Notebook Settings",
+    "saveButton": "Save Changes"
   },
   "delete": {
     "title": "Delete \"{{name}}\"?",
     "description": "This can't be undone. All lessons and content will be permanently removed.",
     "confirm": "Delete"
   },
+  "fields": {
+    "title": "Title",
+    "coverColor": "Cover Color",
+    "stylePreset": "Style Preset",
+    "instrument": "Instrument",
+    "pageSize": "Page Size"
+  },
   "actions": {
     "open": "Open",
     "rename": "Rename",
     "delete": "Delete notebook",
-    "settings": "Notebook settings"
+    "settings": "Notebook settings",
+    "cancel": "Cancel",
+    "saving": "Saving…"
   },
   "book": {
     "coverTab": "Cover",

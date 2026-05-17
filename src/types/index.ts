@@ -32,10 +32,7 @@ export interface CreateNotebookPayload {
 
 export interface UpdateNotebookPayload {
   title?: string
-  instrumentId?: string | null
-  pageSize?: string
   coverColor?: string
-  stylePreset?: string
 }
 
 export const COVER_COLORS = [

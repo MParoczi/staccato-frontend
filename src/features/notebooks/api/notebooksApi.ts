@@ -1,6 +1,16 @@
 import { client } from '@/api/client'
 import type { Notebook, CreateNotebookPayload, UpdateNotebookPayload } from '@/types'
 
+export interface InstrumentOption {
+  id: string
+  name: string
+}
+
+export async function getInstruments(): Promise<InstrumentOption[]> {
+  const { data } = await client.get<InstrumentOption[]>('/instruments')
+  return data
+}
+
 export async function getNotebooks(): Promise<Notebook[]> {
   const { data } = await client.get<Notebook[]>('/notebooks')
   return data
@@ -17,7 +27,7 @@ export async function createNotebook(payload: CreateNotebookPayload): Promise<No
 }
 
 export async function updateNotebook(id: string, payload: UpdateNotebookPayload): Promise<Notebook> {
-  const { data } = await client.patch<Notebook>(`/notebooks/${id}`, payload)
+  const { data } = await client.put<Notebook>(`/notebooks/${id}`, payload)
   return data
 }
 

@@ -9,6 +9,7 @@ import { NotebookCard } from '@/features/notebooks/components/NotebookCard'
 import { NotebookFormDialog } from '@/features/notebooks/components/NotebookFormDialog'
 import { DeleteNotebookDialog } from '@/features/notebooks/components/DeleteNotebookDialog'
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 
 export default function NotebooksPage() {
@@ -54,14 +55,6 @@ export default function NotebooksPage() {
 
       {!isLoading && notebooks.length > 0 && (
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-          <button
-            type="button"
-            onClick={() => setCreateOpen(true)}
-            className="flex h-40 flex-col items-center justify-center rounded-xl border-2 border-dashed border-muted-foreground/30 text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
-          >
-            <Plus className="mb-1 size-6" />
-            <span className="text-sm font-medium">{t('dashboard.newSlotLabel')}</span>
-          </button>
           {notebooks.map((notebook) => (
             <NotebookCard
               key={notebook.id}
@@ -71,6 +64,13 @@ export default function NotebooksPage() {
               onDelete={() => setDeleteTarget(notebook)}
             />
           ))}
+          <Card
+            className="flex cursor-pointer flex-col items-center justify-center border-2 border-dashed border-muted-foreground/30 bg-transparent text-muted-foreground shadow-none transition-colors hover:border-primary/50 hover:text-primary"
+            onClick={() => setCreateOpen(true)}
+          >
+            <Plus className="mb-1 size-6" />
+            <span className="text-sm font-medium">{t('dashboard.newSlotLabel')}</span>
+          </Card>
         </div>
       )}
 

@@ -8,6 +8,7 @@ import type { UserProfile } from '@/types'
 const client = axios.create({
   baseURL: env.VITE_API_BASE_URL,
   withCredentials: true,
+  timeout: 15000,
 })
 
 client.interceptors.request.use((config) => {

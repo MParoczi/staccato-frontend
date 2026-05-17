@@ -21,7 +21,9 @@ export function AppLayout() {
     <div className="flex min-h-screen flex-col">
       <Navbar />
       <main className="flex-1">
-        <Outlet />
+        <div className="mx-auto w-full max-w-7xl px-6 py-8">
+          <Outlet />
+        </div>
       </main>
     </div>
   )
