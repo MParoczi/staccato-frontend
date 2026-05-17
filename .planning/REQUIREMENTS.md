@@ -95,7 +95,7 @@
 | CANVAS-04 | 6 | Plan 3 — Interactions | Pending |
 | CANVAS-05 | 6 | Plan 3 — Interactions | Pending |
 | CANVAS-06 | 6 | Plan 3 — Interactions | Pending |
-| MOD-01 | 6 | Plan 3 — Interactions | Pending |
+| MOD-01 | 6 | Plan 2 — Shell | Pending |
 | MOD-02 | 6 | Plan 2 — Shell | Pending |
 | MOD-03 | 6 | Plan 2 — Shell | Pending |
 | MOD-04 | 6 | Plan 3 — Interactions | Pending |
