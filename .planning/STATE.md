@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v0.4
 milestone_name: Notebook Management
-status: complete
-last_updated: "2026-05-17T00:00:00.000Z"
-last_activity: 2026-05-17 — Phase 4 execution complete; all 4 plans shipped; 26/26 tests pass; pnpm tsc clean
+status: shipped
+last_updated: "2026-05-17T08:56:00Z"
+last_activity: 2026-05-17 — Phase 4 shipped (branching_strategy: none, direct to main); VERIFICATION.md: passed, 5/5 criteria, 26/26 tests
 progress:
   total_phases: 1
   completed_phases: 1
@@ -20,13 +20,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-17 for v0.4)
 
 **Core value:** A musician can open a notebook, navigate to any lesson, add and arrange content on the dotted-paper canvas, and find exactly what they practiced.
-**Current focus:** v0.4 Notebook Management — Phase 4 ✅ Complete
+**Current focus:** v0.4 Notebook Management — Phase 4 ✅ Shipped
 
 ## Current Position
 
 Phase: 4 — Notebook Management
-Status: ✅ Complete — run `/gsd:verify-work 4` or `/gsd:complete-milestone`
-Last activity: 2026-05-17 — Phase 4 execution complete across 3 waves (Plans 01–04); 12 commits; pnpm tsc 0 errors; 26/26 tests pass
+Status: ✅ Shipped — direct to main (branching_strategy: none); VERIFICATION.md: passed
+Last activity: 2026-05-17 — Phase 4 shipped; 12 commits on main; pnpm tsc 0 errors; 26/26 tests pass; 5/5 success criteria verified
 
 ## Phase Progress
 
@@ -35,7 +35,7 @@ Last activity: 2026-05-17 — Phase 4 execution complete across 3 waves (Plans 0
 | 1 | Foundation | v0.1 | ✅ Shipped |
 | 2 | Authentication | v0.2 | ✅ Shipped |
 | 3 | User Profile & Account | v0.3 | ✅ Shipped |
-| 4 | Notebook Management | v0.4 | ✅ Complete |
+| 4 | Notebook Management | v0.4 | ✅ Shipped |
 | 5 | Lessons & Pages | v0.5 | ○ Pending |
 | 6 | Canvas & Module Placement | v0.5 | ○ Pending |
 | 7 | Text Building Blocks | v0.5 | ○ Pending |
@@ -57,6 +57,6 @@ Last activity: 2026-05-17 — Phase 4 execution complete across 3 waves (Plans 0
 
 ## Notes
 
-- v0.4 shipped: Phase 4 complete (Notebook CRUD, dashboard, book view, delete)
-- Next: `/gsd:verify-work 4` for UAT, then `/gsd:complete-milestone` to archive v0.4
-- Phases 5–12 scoped to v0.5+ (plan via `/gsd:new-milestone` after v0.4 verified)
+- v0.4 shipped: Phase 4 complete and verified (Notebook CRUD, dashboard, book view, delete) — shipped direct to main
+- Next: `/gsd:complete-milestone` to archive v0.4 and start v0.5 planning
+- Phases 5–12 scoped to v0.5+ (plan via `/gsd:new-milestone`)
