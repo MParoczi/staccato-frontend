@@ -7,6 +7,9 @@ import LoginPage from '@/pages/LoginPage'
 import RegisterPage from '@/pages/RegisterPage'
 import NotebooksPage from '@/pages/NotebooksPage'
 import ProfilePage from '@/pages/ProfilePage'
+import NotebookPage from '@/pages/NotebookPage'
+import NotebookCoverPage from '@/pages/NotebookCoverPage'
+import NotebookIndexPage from '@/pages/NotebookIndexPage'
 
 export const router = createBrowserRouter([
   { path: '/', element: <RootPage /> },
@@ -22,6 +25,15 @@ export const router = createBrowserRouter([
           { index: true, element: <Navigate to="notebooks" replace /> },
           { path: 'notebooks', element: <PageErrorBoundary><NotebooksPage /></PageErrorBoundary> },
           { path: 'profile', element: <PageErrorBoundary><ProfilePage /></PageErrorBoundary> },
+          {
+            path: 'notebooks/:id',
+            element: <PageErrorBoundary><NotebookPage /></PageErrorBoundary>,
+            children: [
+              { index: true, element: <Navigate to="cover" replace /> },
+              { path: 'cover', element: <NotebookCoverPage /> },
+              { path: 'index', element: <NotebookIndexPage /> },
+            ],
+          },
         ],
       },
     ],
