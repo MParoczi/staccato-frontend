@@ -76,7 +76,10 @@ See archive: `.planning/milestones/v0.5-ROADMAP.md`
 
 ### ⬜ v0.6 Canvas & Module Placement — Phase 6
 
-- [ ] **Phase 6: Canvas & Module Placement** — Dotted-grid canvas; place, drag, resize, z-order, and delete all 12 module types on a lesson page
+- [x] Plan 1 of 4: Foundation — canvas utilities, CanvasRoot, Module types (commit 5d6ef79)
+- [ ] Plan 2 of 4: ModuleShell — module shell component, palette popover, add module flow
+- [ ] Plan 3 of 4: Interactions — drag-to-reposition, resize handles, scale-corrected sensor
+- [ ] Plan 4 of 4: Integration — z-order, delete, persistence, AbortController race prevention
 
 | # | Phase | Goal | Requirements | Plans |
 |---|-------|------|--------------|-------|
