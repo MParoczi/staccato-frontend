@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v0.5
 milestone_name: Lessons & Pages
-status: "○ Pending — REQUIREMENTS.md written; next: `/gsd:plan-phase 5`"
-last_updated: "2026-05-17T13:50:26.226Z"
-last_activity: 2026-05-17 — v0.5 milestone started; Phase 5 requirements (LES-01–04, PAGE-01–02) defined; API swagger.json saved to .planning/
+status: "◑ Planned — Phase 5 has 4 plans; next: `/gsd:execute-phase 5`"
+last_updated: "2026-05-17T14:30:00.000Z"
+last_activity: 2026-05-17 — Phase 5 planned; 4 plans created (01 foundation, 02 lessons list, 03 lesson page + navbar, 04 router integration)
 progress:
   total_phases: 9
   completed_phases: 0
-  total_plans: 0
+  total_plans: 4
   completed_plans: 4
   percent: 0
 ---
@@ -20,13 +20,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-17 for v0.5)
 
 **Core value:** A musician can open a notebook, navigate to any lesson, add and arrange content on the dotted-paper canvas, and find exactly what they practiced.
-**Current focus:** v0.5 Phase 5 — Lessons & Pages — requirements defined; ready to plan
+**Current focus:** v0.5 Phase 5 — Lessons & Pages — 4 plans ready; next: `/gsd:execute-phase 5`
 
 ## Current Position
 
 Phase: 5 — Lessons & Pages
-Status: ○ Pending — REQUIREMENTS.md written; next: `/gsd:plan-phase 5`
-Last activity: 2026-05-17 — v0.5 milestone started; Phase 5 requirements (LES-01–04, PAGE-01–02) defined; API swagger.json saved to .planning/
+Status: ◑ Planned — 4 plans created; next: `/gsd:execute-phase 5`
+Last activity: 2026-05-17 — Phase 5 planned; RESEARCH.md + 4 PLAN.md files created; plan checker passed (0 blockers)
 
 ## Phase Progress
 
@@ -36,7 +36,7 @@ Last activity: 2026-05-17 — v0.5 milestone started; Phase 5 requirements (LES-
 | 2 | Authentication | v0.2 | ✅ Shipped |
 | 3 | User Profile & Account | v0.3 | ✅ Shipped |
 | 4 | Notebook Management | v0.4 | ✅ Shipped |
-| 5 | Lessons & Pages | v0.5 | ○ Pending |
+| 5 | Lessons & Pages | v0.5 | ◑ Planned (4 plans) |
 | 6 | Canvas & Module Placement | v0.5 | ○ Pending |
 | 7 | Text Building Blocks | v0.5 | ○ Pending |
 | 8 | Chord Library | v0.5 | ○ Pending |
